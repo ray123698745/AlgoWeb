@@ -4,7 +4,7 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  /*color: #00B7FF;*/
 }
 
 
@@ -15,9 +15,9 @@ a {
 
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
-    background-color: #49484d;
-    margin-bottom: 0;
-    border-radius: 0;
+    /*background-color: #49484d;*/
+    /*margin-bottom: 0;*/
+    /*border-radius: 0;*/
 }
 
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */

@@ -1,18 +1,30 @@
 'use strict';
 
-angular.module('AlgoWeb', ['ngAnimate', 'ui.bootstrap']);
+angular.module('AlgoWeb')
+    .controller('queryCtrl', function ($scope, $http, $location, dataFactory) {
 
-angular.module('AlgoWeb').controller('AlertDemoCtrl', function ($scope) {
-    $scope.alerts = [
-        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-        { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-    ];
+        $scope.sendPost = function() {
 
-    $scope.addAlert = function() {
-        $scope.alerts.push({msg: 'Another alert!'});
-    };
+            var query = {
+                location: $scope.location,
+                weather: $scope.weather,
+                theme: $scope.theme,
+                object: $scope.object
+                // annotated: $scope.annotated,
+                // from: $scope.from,
+                // to: $scope.to
+            };
 
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-    };
-});
+
+            $http.post("/api/sequence", JSON.stringify(query)).success(function(data) {
+                $scope.result = data;
+                dataFactory.set(data);
+                // $scope.path = data[0].sequencePath;
+                $location.path("/result");
+
+            }).error(function (data, status, header, config) {
+                $scope.result = "failed!";
+
+            });
+        }
+    });

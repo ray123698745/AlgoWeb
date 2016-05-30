@@ -1,0 +1,181 @@
+
+<!--<div class="jumbotron text-center">-->
+    <!--<h1>Result</h1>-->
+    <!--&lt;!&ndash;<p>Development Tool Kit.</p>&ndash;&gt;-->
+<!--</div>-->
+
+
+<!--result: {{result}}-->
+
+<div class="container-fluid">
+    <!--<div class="page-header">-->
+        <!--<h1>Query Result <small> </small></h1></div>-->
+    <div class="row">
+        <div class="col-lg-9 col-md-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/X0qZXyWwEC8"></iframe>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="embed-responsive embed-responsive-16by9">
+
+
+                        <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed/v1/place?q=Ambarella,+Jay+Street,+Santa+Clara,+CA,+United+States&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-lg-offset-0 col-md-12 download-col">
+                    <div class="well">
+                        <h3>Download </h3>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label>File Path: </label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input class="form-control" type="text" value="C:/sample/path/sequence001">
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-default btn-block" type="button">Metadata </button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-default btn-block" type="button">Annotation </button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-default btn-block" type="button">Sensor </button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <!--<button class="btn btn-default btn-block" type="button">Toner </button>-->
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default">Toner</button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Toner 1</a></li>
+                                        <li><a href="#">Toner 2</a></li>
+                                        <li><a href="#">Toner 3</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <h3>Sequence Info</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="well" style="background-color:#272b30">
+                                    <ul style="list-style-type:none">
+                                        <li>Sequence ID: {{result[0].sequenceID}}</li>
+                                        <li>Location: {{result[0].location}}</li>
+                                        <li>Weather: {{result[0].weather}}</li>
+                                        <li>Theme :{{result[0].theme}}</li>
+                                        <li>Date: {{result[0].date}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="well" style="background-color:#272b30">
+                                    <ul style="list-style-type:none">
+                                        <li>Light Condition: </li>
+                                        <li>GPS: </li>
+                                        <li>Road Type: </li>
+                                        <li>Average Speed: </li>
+                                        <li>Land Marking type: </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {{result}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3">
+            <div class="well">
+                <h3>Other Results </h3>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>Sequence ID</h4>
+                        <p>Some sequence info. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

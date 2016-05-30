@@ -1,0 +1,14 @@
+div.container-fluid{
+    padding-left:5%;
+    padding-right:5%;
+    padding-top:3%;
+}
+
+div.download-col{
+    padding-top:3%;
+}
+
+span.label.label-primary{
+    margin-right:10px;
+}
+
