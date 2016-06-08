@@ -10,12 +10,14 @@
 <div class="container-fluid">
     <!--<div class="page-header">-->
         <!--<h1>Query Result <small> </small></h1></div>-->
+    <!--<h1>{{result[0]._id}}</h1>-->
     <div class="row">
         <div class="col-lg-9 col-md-9">
             <div class="row">
                 <div class="col-md-6">
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/X0qZXyWwEC8"></iframe>
+                        <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/X0qZXyWwEC8"></iframe>-->
+                        <iframe class="embed-responsive-item" src="assets/video/sample.mp4"></iframe>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -36,7 +38,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <input class="form-control" type="text" value="C:/sample/path/sequence001">
+                                <input class="form-control" type="text" value={{result[0].sequence_root_path}}>
                             </div>
 
                             <div class="col-md-2">
@@ -44,18 +46,18 @@
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-default btn-block" type="button">Annotation </button>
+                                <button class="btn btn-default btn-block" type="button">Sensor </button>
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-default btn-block" type="button">Sensor </button>
+                                <button class="btn btn-default btn-block disabled" type="button">Annotation </button>
                             </div>
 
                             <div class="col-md-2">
                                 <!--<button class="btn btn-default btn-block" type="button">Toner </button>-->
 
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-default">Toner</button>
+                                    <button type="button" class="btn btn-default disabled">iTuner</button>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -78,16 +80,20 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="well">
-                        <h3>Sequence Info</h3>
+                        <div class="row">
+                            <div class="col-md-11"><h3>Sequence Info</h3></div>
+                            <div class="col-md-1"><button class="btn btn-default btn-block" type="button">Edit </button></div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="well" style="background-color:#272b30">
                                     <ul style="list-style-type:none">
-                                        <li>Sequence ID: {{result[0].sequenceID}}</li>
+                                        <li>Sequence ID: {{result[0]._id}}</li>
                                         <li>Location: {{result[0].location}}</li>
                                         <li>Weather: {{result[0].weather}}</li>
                                         <li>Theme :{{result[0].theme}}</li>
                                         <li>Date: {{result[0].date}}</li>
+                                        <li>Upload By: {{result[0].uploader}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -99,10 +105,11 @@
                                         <li>Road Type: </li>
                                         <li>Average Speed: </li>
                                         <li>Land Marking type: </li>
+                                        <li>Special Condition: </li>
                                     </ul>
                                 </div>
                             </div>
-                            {{result}}
+                            <!--{{result}}-->
                         </div>
                     </div>
                 </div>
@@ -111,7 +118,10 @@
 
         <div class="col-lg-3 col-md-3">
             <div class="well">
-                <h3>Other Results </h3>
+                <div class="row">
+                    <div class="col-md-6"><h3>7 Results </h3></div>
+                    <div class="col-md-6"><button class="btn btn-default btn-block" type="button">Refine Search</button></div>
+                </div>
                 <div class="media">
                     <div class="media-left">
                         <a><img src="assets/img/thumb.jpg"></a>

@@ -14,7 +14,9 @@ module.exports = function(app) {
     
     // Insert routes below
     app.use('/api/sequence', require('./server/api/sequence'));
-    // app.use('/auth', require('./auth').default);
+    app.use('/api/script', require('./server/api/script'));
+
+
 
 
 

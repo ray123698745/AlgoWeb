@@ -1,6 +1,8 @@
 'use strict';
 
 var Sequence = require('./sequence.model.js');
+var log = require('log4js').getLogger('db');
+
 
 module.exports = {
 
@@ -12,9 +14,9 @@ module.exports = {
             res.send(sequence);
         });
     },
-    sequenceID: function(req, res) {
+    findByID: function(req, res) {
 
-        Sequence.find({ sequenceID: req.params.sequenceID }, function(err, sequence) {
+        Sequence.find({ _id: req.params.id }, function(err, sequence) {
             if (err) throw err;
 
             res.send(sequence);
@@ -23,24 +25,55 @@ module.exports = {
 
     result: function(req, res) {
 
-        var data = req.body;
+        var query = req.body;
 
-        console.log(req.body);
+        console.log(query);
+        log.debug("Result function");
 
-        // res.send(data);
 
-
-        Sequence.find({
-            // location: req.body.location,
-            weather: req.body.weather,
-            theme: req.body.theme
-            }
-
-            , function(err, sequence) {
-                if (err) throw err;
-
+        Sequence.find(query, function(err, sequence) {
+            if (err) {
+                log.debug("Result error: ", err);
+                throw err;
+            } else{
+                log.debug("Result found: ", sequence);
                 res.send(sequence);
+            }
         });
+
+    },
+
+    insert: function(req, res) {
+
+
+        var data = {
+            location: req.body.meta.location,
+            keywords: req.body.meta.keywords,
+            gps: req.body.meta.gps,
+            avg_speed: req.body.meta.avg_speed,
+            capture_time: req.body.meta.capture_time,
+            usage: req.body.meta.usage,
+            file_location: req.body.meta.file_location,
+            yuv: req.body.meta.yuv,
+            annotation: req.body.meta.annotation
+        };
+
+        log.debug('Insert', data);
+
+
+        var newSequence = new Sequence(data);
+
+        newSequence.save(function (err, data) {
+            if (err) {
+                log.debug(err);
+                // rollback
+            } else {
+                log.debug('Saved : ', data );
+                res.status(200);
+                res.send({res: 'ok'});
+            }
+        });
+
     }
 
 

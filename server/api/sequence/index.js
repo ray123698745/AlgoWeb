@@ -7,11 +7,11 @@ var seed = require('./seed');
 var router = express.Router();
 
 router.get('/', controller.index);
-// router.get('/:sequenceID', controller.sequenceID);
+router.get('/findByID/:id', controller.findByID);
 router.get('/seed', seed);
 
-router.post('/', controller.result);
-// router.put('/:id', controller.update);
+router.post('/query', controller.result);
+router.put('/insert', controller.insert);
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);
 
