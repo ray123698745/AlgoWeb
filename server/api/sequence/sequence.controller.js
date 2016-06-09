@@ -45,32 +45,33 @@ module.exports = {
 
     insert: function(req, res) {
 
+        log.debug('Insert: ', req.body);
 
         var data = {
-            location: req.body.meta.location,
-            keywords: req.body.meta.keywords,
-            gps: req.body.meta.gps,
-            avg_speed: req.body.meta.avg_speed,
-            capture_time: req.body.meta.capture_time,
-            usage: req.body.meta.usage,
-            file_location: req.body.meta.file_location,
-            yuv: req.body.meta.yuv,
-            annotation: req.body.meta.annotation
+            location: req.body.location,
+            keywords: req.body.keywords,
+            gps: req.body.gps,
+            avg_speed: req.body.avg_speed,
+            capture_time: req.body.capture_time,
+            usage: req.body.usage,
+            file_location: req.body.file_location,
+            yuv: req.body.yuv,
+            annotation: req.body.annotation
         };
 
-        log.debug('Insert', data);
+        log.debug('data: ', data);
 
 
         var newSequence = new Sequence(data);
 
         newSequence.save(function (err, data) {
             if (err) {
-                log.debug(err);
+                log.debug("Insert failed: ", err);
                 // rollback
             } else {
                 log.debug('Saved : ', data );
                 res.status(200);
-                res.send({res: 'ok'});
+                res.send({res: 'ok', _id: data._id, origin_path: req.body.origin_path});
             }
         });
 

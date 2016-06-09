@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('AlgoWeb')
-    .controller('queryCtrl', function ($scope, $http, $location, dataFactory) {
+app.controller('queryCtrl', ['$scope', '$http', '$location', 'dataFactory', function ($scope, $http, $location, dataFactory) {
 
         $scope.sendPost = function() {
 
@@ -27,4 +26,4 @@ angular.module('AlgoWeb')
 
             });
         }
-    });
+    }]);

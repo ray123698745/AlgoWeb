@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('AlgoWeb')
-    .controller('resultCtrl', function ($scope, $http, $location, dataFactory) {
+app.controller('resultCtrl', ['$scope', '$http', '$location', 'dataFactory', function ($scope, $http, $location, dataFactory) {
+
+    $scope.result = dataFactory.get();
         
-        $scope.result = dataFactory.get();
-        
-    });
+}]);

@@ -7,101 +7,501 @@
 
 
 
-
-<div class="container" >
+<div class="container">
 
     <div class="page-header">
-    <h1>Query<small></small></h1></div>
-
-
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-
-            <div class="form_container">
-                <form role="form" ng-submit="sendPost()">
-
-                    <div class="form-group">
-                        <label for="location">Location:</label>
-                        <input ng-model="location" type="text" class="form-control" id="location" placeholder="Location">
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="weather">Weather:</label>
-                        <select ng-model="weather" class="form-control" id="weather">
-                            <option></option>
-                            <option>Sunny</option>
-                            <option>Rainy</option>
-                            <option>Cloudy</option>
-                            <option>Snow</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="theme">Theme:</label>
-                        <select ng-model="theme" class="form-control" id="theme">
-                            <option></option>
-                            <option>Urban</option>
-                            <option>Country</option>
-                            <option>forest</option>
-                            <option>Desert</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="object">Objects (hold shift to select more than one):</label>
-                        <select ng-model="object" multiple class="form-control" id="object">
-                            <option>Pedestrian</option>
-                            <option>Vehicle</option>
-                            <option>Zombie</option>
-                            <option>Truck</option>
-                            <option>Dog</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="annotated">Annotated:</label>
-                        <div id="annotated">
-                            <div class="radio-inline">
-                                <label><input type="radio" name="annotated">Yes</label>
-                            </div>
-                            <div class="radio-inline">
-                                <label><input type="radio" name="annotated">No</label>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group ">
-                        <label for="from">From:</label>
-                        <input class="form-control" id="from" placeholder="MM/DD/YYYY" type="text"/>
-                    </div>
-
-                    <div class="form-group ">
-                        <label for="to">To:</label>
-                        <input class="form-control" id="to" placeholder="MM/DD/YYYY" type="text"/>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="button_wrapper">
-                            <button class="btn btn-default" name="submit" type="submit">Submit</button>
-                        </div>
-                    </div>
-
-
-                </form>
-            </div>
-        </div>
-        <div class="col-md-3"></div>
+    <h1>Query<small></small></h1>
     </div>
 
 
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <form role="form" ng-submit="sendPost()">
+
+                <!--GENERAL-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="text-muted">GENERAL </h3>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Sequence ID</label>
+                                        <input type="text" class="form-control" placeholder="57578e6d225f00da3730dc70" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="control-label">Has YUV</label>
+                                            </div>
+                                        </div>
+                                        <span><label class="control-label radio-inline"><input type="radio" name="yuv" />Yes</label></span>
+                                        <span><label class="control-label radio-inline"><input type="radio" name="yuv" />No</label></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Capture Date</label>
+                                        <div class="row">
+                                            <div class="col-md-2"><label class="control-label">From:</label></div>
+                                            <div class="col-md-4"><input type="date" class="form-control" placeholder="MM/DD/YYYY" /></div>
+                                            <div class="col-md-2"><label class="control-label">To:</label></div>
+                                            <div class="col-md-4"><input type="date" class="form-control" placeholder="MM/DD/YYYY" /></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Average Speed</label>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label">From: </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label">To: </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">Location </label>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <label class="control-label">Country </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control">
+                                                    <option disabled selected value> -- select a country -- </option>
+                                                    <option value="12">This is item 1</option>
+                                                    <option value="13">This is item 2</option>
+                                                    <option value="14">This is item 3</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="control-label">State </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control">
+                                                    <option disabled selected value> -- select a state -- </option>
+                                                    <option value="12">This is item 1</option>
+                                                    <option value="13">This is item 2</option>
+                                                    <option value="14">This is item 3</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="control-label">City </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control">
+                                                    <option disabled selected value> -- select a city -- </option>
+                                                    <option value="12">This is item 1</option>
+                                                    <option value="13">This is item 2</option>
+                                                    <option value="14">This is item 3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--KEYWORDS & ANNOTATION-->
+                <div class="row">
+
+                    <!--KEYWORDS-->
+                    <div class="col-md-6">
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="text-muted">KEYWORDS </h3></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+
+
+                                    <div class="panel-group" id="accordion">
+
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Weather</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse1" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Sunny</label></span>
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Rain</label></span>
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Cloudy</label></span>
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Snow</label></span>
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Hail</label></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Special Condition</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse2" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Construction</label></span>
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Accident</label></span>
+                                                    <span><label class="control-label checkbox-inline"><input type="checkbox" />Pot hole</label></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Light condition</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse3" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <select class="form-control" multiple>
+                                                        <option value="12">Bright</option>
+                                                        <option value="13">Indoor</option>
+                                                        <option value="14">Shadow</option>
+                                                        <option value="14">Night with street light</option>
+                                                        <option value="14">Night without street light</option>
+                                                        <option value="14">Dusk</option>
+                                                        <option value="14">Dawn</option>
+                                                        <option value="14">Backlight</option>
+                                                        <option value="14">Tunnel</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Road Type</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse4" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <select class="form-control" multiple>
+                                                        <option value="12">Urban</option>
+                                                        <option value="13">Suburban</option>
+                                                        <option value="14">Rural</option>
+                                                        <option value="14">Highway</option>
+                                                        <option value="14">Parking lot</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">Lane Mark Type</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse5" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <select class="form-control" multiple>
+                                                        <option value="12">Full lane markings</option>
+                                                        <option value="13">Center lane only</option>
+                                                        <option value="14">No lane marking</option>
+                                                        <option value="14">Special lane marking</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <!--<div class="form-group">-->
+
+
+                                        <!--<div class="row">-->
+                                            <!--<div class="col-md-12">-->
+                                            <!--<label class="control-label">Weather:</label>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Sunny</label></span>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Rain</label></span>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Cloudy</label></span>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Snow</label></span>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Hail</label></span>-->
+
+
+                                    <!--</div>-->
+
+                                    <!--<div class="form-group">-->
+                                        <!--<div class="row">-->
+                                            <!--<div class="col-md-12">-->
+                                                <!--<label class="control-label">Special Condition:</label>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Construction</label></span>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Accident</label></span>-->
+                                        <!--<span><label class="control-label checkbox-inline"><input type="checkbox" />Pot hole</label></span>-->
+                                    <!--</div>-->
+
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="control-label">Light condition</label>-->
+                                        <!--<select class="form-control" multiple>-->
+                                            <!--<option value="12">Bright</option>-->
+                                            <!--<option value="13">Indoor</option>-->
+                                            <!--<option value="14">Shadow</option>-->
+                                            <!--<option value="14">Night with street light</option>-->
+                                            <!--<option value="14">Night without street light</option>-->
+                                            <!--<option value="14">Dusk</option>-->
+                                            <!--<option value="14">Dawn</option>-->
+                                            <!--<option value="14">Backlight</option>-->
+                                            <!--<option value="14">Tunnel</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="control-label">Road Type</label>-->
+                                        <!--<select class="form-control" multiple>-->
+                                            <!--<option value="12">Urban</option>-->
+                                            <!--<option value="13">Suburban</option>-->
+                                            <!--<option value="14">Rural</option>-->
+                                            <!--<option value="14">Highway</option>-->
+                                            <!--<option value="14">Parking lot</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="control-label">Lane Mark Type</label>-->
+                                        <!--<select class="form-control" multiple>-->
+                                            <!--<option value="12">Full lane markings</option>-->
+                                            <!--<option value="13">Center lane only</option>-->
+                                            <!--<option value="14">No lane marking</option>-->
+                                            <!--<option value="14">Special lane marking</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!--ANNOTATION-->
+                    <div class="col-md-6">
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="text-muted">ANNOTATION </h3></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">Annotation Frame Rate</label>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label">From: </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label">To: </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">Objects </label>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label">Class: </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-control">
+                                                    <option disabled selected value>Select a Class</option>
+                                                    <option value="12">Human</option>
+                                                    <option value="13">This is item 2</option>
+                                                    <option value="14">This is item 3</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label">Occurrence: </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--SUBMIT-->
+                <div class="row">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-2">
+                        <div class="button_wrapper">
+                            <button class="btn btn-info btn-block" name="submit" type="submit">Submit</button>
+                        </div>
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+
+            </form>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
 </div>
+
+
+
+
+<!--<div class="container" >-->
+
+    <!--<div class="page-header">-->
+    <!--<h1>Query<small></small></h1></div>-->
+
+
+    <!--<div class="row">-->
+        <!--<div class="col-md-3"></div>-->
+        <!--<div class="col-md-6">-->
+
+            <!--<div class="form_container">-->
+                <!--<form role="form" ng-submit="sendPost()">-->
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="location">Location:</label>-->
+                        <!--<input ng-model="location" type="text" class="form-control" id="location" placeholder="Location">-->
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="weather">Weather:</label>-->
+                        <!--<select ng-model="weather" class="form-control" id="weather">-->
+                            <!--<option></option>-->
+                            <!--<option>Sunny</option>-->
+                            <!--<option>Rainy</option>-->
+                            <!--<option>Cloudy</option>-->
+                            <!--<option>Snow</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="theme">Theme:</label>-->
+                        <!--<select ng-model="theme" class="form-control" id="theme">-->
+                            <!--<option></option>-->
+                            <!--<option>Urban</option>-->
+                            <!--<option>Country</option>-->
+                            <!--<option>forest</option>-->
+                            <!--<option>Desert</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="object">Objects (hold shift to select more than one):</label>-->
+                        <!--<select ng-model="object" multiple class="form-control" id="object">-->
+                            <!--<option>Pedestrian</option>-->
+                            <!--<option>Vehicle</option>-->
+                            <!--<option>Zombie</option>-->
+                            <!--<option>Truck</option>-->
+                            <!--<option>Dog</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="annotated">Annotated:</label>-->
+                        <!--<div id="annotated">-->
+                            <!--<div class="radio-inline">-->
+                                <!--<label><input type="radio" name="annotated">Yes</label>-->
+                            <!--</div>-->
+                            <!--<div class="radio-inline">-->
+                                <!--<label><input type="radio" name="annotated">No</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group ">-->
+                        <!--<label for="from">From:</label>-->
+                        <!--<input class="form-control" id="from" placeholder="MM/DD/YYYY" type="text"/>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group ">-->
+                        <!--<label for="to">To:</label>-->
+                        <!--<input class="form-control" id="to" placeholder="MM/DD/YYYY" type="text"/>-->
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group">-->
+                        <!--<div class="button_wrapper">-->
+                            <!--<button class="btn btn-default" name="submit" type="submit">Submit</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-3"></div>-->
+    <!--</div>-->
+
+
+<!--</div>-->
 
 
 
