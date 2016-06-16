@@ -8,6 +8,17 @@
     text-align: center;
 }
 
+.right_button_wrapper {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: right;
+}
+
 .vcenter {
     vertical-align: middle;
+}
+
+.title_label {
+    color: white;
+    font-size: large;
 }

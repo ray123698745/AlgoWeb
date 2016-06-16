@@ -8,11 +8,11 @@
 <!--result: {{result}}-->
 
 <div class="container-fluid">
-    <!--<div class="page-header">-->
-        <!--<h1>Query Result <small> </small></h1></div>-->
-    <!--<h1>{{result[0]._id}}</h1>-->
+    <div class="page-header">
+        <h1>{{result._id}}</h1>
+    </div>
     <div class="row">
-        <div class="col-lg-9 col-md-9">
+        <div class="col-md-10 col-md-offset-1">
             <div class="row">
                 <div class="col-md-6">
                     <div class="embed-responsive embed-responsive-16by9">
@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <input class="form-control" type="text" value={{result[0].sequence_root_path}}>
+                                <input class="form-control" type="text" onClick="this.select();" value={{showFilePath(result.file_location)}}>
                             </div>
 
                             <div class="col-md-2">
@@ -88,12 +88,10 @@
                             <div class="col-md-6">
                                 <div class="well" style="background-color:#272b30">
                                     <ul style="list-style-type:none">
-                                        <li>Sequence ID: {{result[0]._id}}</li>
-                                        <li>Location: {{result[0].location}}</li>
-                                        <li>Weather: {{result[0].weather}}</li>
-                                        <li>Theme :{{result[0].theme}}</li>
-                                        <li>Date: {{result[0].date}}</li>
-                                        <li>Upload By: {{result[0].uploader}}</li>
+                                        <li>Captured Time: {{result.capture_time}}</li>
+                                        <li>Location: {{result.location.city + ", " + result.location.state + ", " + result.location.country}}</li>
+                                        <li>Average Speed: {{result.avg_speed}}</li>
+                                        <li>Usage: {{result.usage}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -116,76 +114,76 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-md-3">
-            <div class="well">
-                <div class="row">
-                    <div class="col-md-6"><h3>7 Results </h3></div>
-                    <div class="col-md-6"><button class="btn btn-default btn-block" type="button">Refine Search</button></div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg"></a>
-                    </div>
-                    <div class="media-body">
-                        <h4>Sequence ID</h4>
-                        <p>Some sequence info. </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="col-lg-3 col-md-3">-->
+            <!--<div class="well">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-6"><h3>7 Results </h3></div>-->
+                    <!--<div class="col-md-6"><button class="btn btn-default btn-block" type="button">Refine Search</button></div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4>Sequence ID</h4>-->
+                        <!--<p>Some sequence info. </p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </div>

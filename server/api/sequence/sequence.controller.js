@@ -27,11 +27,9 @@ module.exports = {
 
         var query = req.body;
 
-        console.log(query);
-        log.debug("Result function");
+        log.debug("Query object: ", query);
 
-
-        Sequence.find(query, function(err, sequence) {
+        Sequence.find(query, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) {
                 log.debug("Result error: ", err);
                 throw err;
@@ -71,7 +69,7 @@ module.exports = {
             } else {
                 log.debug('Saved : ', data );
                 res.status(200);
-                res.send({res: 'ok', _id: data._id, origin_path: req.body.origin_path});
+                res.send({res: 'ok', _id: data._id});
             }
         });
 

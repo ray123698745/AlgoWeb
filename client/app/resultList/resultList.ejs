@@ -1,0 +1,87 @@
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>{{results.length}} Results<small></small></h1>
+        <!--<a href="http://localhost/video/game.mp4">click me!</a>-->
+    </div>
+
+    <div class="row" ng-repeat="result in results">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <div class="media">
+                    <div class="media-left">
+                        <a><img src="assets/img/thumb.jpg" class="img-rounded media-object" /></a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading"><strong>{{result._id}}</strong> </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>{{result.capture_time}}</h5>
+
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label>Path:</label>
+                                        <input type="text" class="form-control input-sm" onClick="this.select();" value="{{showFilePath(result.file_location)}}">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6" uib-popover="{{showAllKeywords(result.keywords)}}" popover-trigger="mouseenter" popover-placement="top" >
+                            <!--<div class="col-md-6" uib-popover-html="htmlPopover" popover-trigger="mouseenter" popover-placement="top" >-->
+
+                                <div class="well light_well">
+                                    <h5 class="keyword_h5">Keywords: </h5>
+                                    <span>{{show3Keywords(result.keywords)}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block" type="button" ng-click="preview()">Preview</button>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <button class="btn btn-default" type="button" ng-click="detail(result)">Detail...</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <!--<div class="modal-header">-->
+        <!--<h3 class="modal-title">Preview</h3>-->
+    <!--</div>-->
+    <div class="modal-body">
+        <!--<ul>-->
+            <!--<li ng-repeat="item in items">-->
+                <!--<a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+        <!--Selected: <b>{{ selected.item }}</b>-->
+
+        <div class="center_video">
+            <video width="640" height="480" controls >
+                <source src="assets/video/sample.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+
+    </div>
+
+    <!--<div class="modal-footer">-->
+    <!--<div class="modal-footer">-->
+        <!--<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>-->
+        <!--<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>-->
+    <!--</div>-->
+</script>

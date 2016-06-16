@@ -1,0 +1,18 @@
+h5.keyword_h5{
+    margin-top: 3px;
+}
+
+div.well.light_well{
+    background-color: #272b30;
+    padding-top: 5px;
+    padding-bottom: 14px;
+}
+
+.form-inline .form-group input {
+    width:200px;
+}
+
+.center_video {
+    width: 75%;
+    margin: 0 auto;
+}

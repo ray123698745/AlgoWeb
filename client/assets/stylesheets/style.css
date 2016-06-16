@@ -1,12 +1,18 @@
 body {
-  /*padding: 50px;*/
+  /*padding-top: 50px;*/
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
 }
 
 a {
   /*color: #00B7FF;*/
 }
 
+/*.affix {*/
+    /*top: 0;*/
+    /*width: 100%;*/
+    /*position: fixed;*/
+/*}*/
 
 .jumbotron {
     background-color: #222224;
