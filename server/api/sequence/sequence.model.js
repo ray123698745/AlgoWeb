@@ -8,9 +8,10 @@ var Schema = mongoose.Schema;
 var location = new Schema({country: String, state: String, city: String},{_id : false });
 var gps = new Schema({x: Number, y: Number},{_id : false });
 var file_location = new Schema({site: String, root_path: String},{_id : false });
-var yuv = new Schema({yuv_id: String, desc: String},{_id : false });
+var yuv = new Schema({version: String, desc: String},{_id : false });
 var objects = new Schema({class: String, occurrence: Number},{_id : false });
-var annotation = new Schema({annotation_frame_rate: Number, objects: [objects]},{_id : false });
+var annotation = new Schema({annotation_density: Number, unique_id: Number, objects: [objects]},{_id : false });
+var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: annotation},{_id : false });
 
 
 var sequenceSchema = new Schema({
@@ -21,8 +22,7 @@ var sequenceSchema = new Schema({
     capture_time: String,
     usage: String,
     file_location: [file_location],
-    yuv: [yuv],
-    annotation: annotation
+    cameras:[cameras]
 });
 
 

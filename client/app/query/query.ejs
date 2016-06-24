@@ -33,10 +33,27 @@
                                         <div class="form-group">
                                             <label class="control-label title_label">Capture Date</label>
                                             <div class="row">
-                                                <div class="col-md-2"><label class="control-label">From:</label></div>
-                                                <div class="col-md-4"><input type="text" ng-model="from_date" class="form-control" placeholder="YYYY-MM-DD" /></div>
-                                                <div class="col-md-2"><label class="control-label">To:</label></div>
-                                                <div class="col-md-4"><input type="text" ng-model="to_date" class="form-control" placeholder="YYYY-MM-DD" /></div>
+                                                <div class="col-md-1"><label class="control-label">From:</label></div>
+                                                <div class="col-md-5">
+                                                    <!--<input type="text" ng-model="from_date" class="form-control" placeholder="YYYY-MM-DD" />-->
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="YYYY-MM-DD" class="form-control" uib-datepicker-popup ng-model="from_date" is-open="fromDatePopup.opened" datepicker-options="fromDateOptions" ng-required="true" close-text="Close" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default" ng-click="openFromDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-1"><label class="control-label">To:</label></div>
+                                                <div class="col-md-5">
+                                                    <!--<input type="text" ng-model="to_date" class="form-control" placeholder="YYYY-MM-DD" />-->
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="YYYY-MM-DD" class="form-control" uib-datepicker-popup ng-model="to_date" is-open="toDatePopup.opened" datepicker-options="toDateOptions" ng-required="true" close-text="Close" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default" ng-click="openToDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -91,7 +108,7 @@
                                             <div class="col-md-3">
                                                 <select class="form-control" ng-model="country">
                                                     <option disabled selected value> -- select a country -- </option>
-                                                    <option value="U.S.">United States</option>
+                                                    <option value="United States">United States</option>
                                                     <option value="Italy">Italy</option>
                                                     <option value="Taiwan">Taiwan</option>
                                                 </select>
@@ -113,7 +130,7 @@
                                             <div class="col-md-3">
                                                 <select class="form-control" ng-model="city">
                                                     <option disabled selected value> -- select a city -- </option>
-                                                    <option value="Saragoga">Saragoga</option>
+                                                    <option value="Saratoga">Saratoga</option>
                                                     <option value="Santa Clara">Santa Clara</option>
                                                     <option value="14">City 3</option>
                                                 </select>
@@ -144,121 +161,31 @@
                             <div class="row">
                                 <div class="col-md-12">
 
+                                    <uib-accordion close-others="true">
 
-                                    <div class="panel-group" id="Keywords">
+                                        <uib-accordion-group ng-repeat="(category, keywords) in keywordsObj" is-open="status.open">
+                                            <uib-accordion-heading>
+                                                {{category}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                                            </uib-accordion-heading>
+                                            <span ng-repeat="word in keywords" ><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection(word)" ng-checked="selectedKeywords.indexOf(word) > -1" />{{word}}</label></span>
+                                        </uib-accordion-group>
 
-                                        <div class="panel panel-default" ng-repeat="(category, keywords) in keywordsObj">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#Keywords" href="#{{category}}">{{category}}</a>
-                                                </h4>
-                                            </div>
-                                            <div id="{{category}}" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Sunny')" ng-checked="keywords.indexOf('Sunny') > -1" />Sunny</label></span>-->
-                                                    <span ng-repeat="word in keywords" ><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection(word)" ng-checked="selectedKeywords.indexOf(word) > -1" />{{word}}</label></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </uib-accordion>
 
-
-                                        <!--<div class="panel panel-default">-->
+                                    <!--<div class="panel-group" id="Keywords">-->
+                                        <!--<div class="panel panel-default" ng-repeat="(category, keywords) in keywordsObj">-->
                                             <!--<div class="panel-heading">-->
                                                 <!--<h4 class="panel-title">-->
-                                                    <!--<a data-toggle="collapse" data-parent="#Keywords" href="#Weather">Weather</a>-->
+                                                    <!--<a data-toggle="collapse" data-parent="#Keywords" href="#{{category}}">{{category}}</a>-->
                                                 <!--</h4>-->
                                             <!--</div>-->
-                                            <!--<div id="Weather" class="panel-collapse collapse">-->
+                                            <!--<div id="{{category}}" class="panel-collapse collapse">-->
                                                 <!--<div class="panel-body">-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Sunny')" ng-checked="keywords.indexOf('Sunny') > -1" />Sunny</label></span>-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Rain')" ng-checked="keywords.indexOf('Rain') > -1" />Rain</label></span>-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Cloudy')" ng-checked="keywords.indexOf('Cloudy') > -1" />Cloudy</label></span>-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Snow')" ng-checked="keywords.indexOf('Snow') > -1" />Snow</label></span>-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Hail')" ng-checked="keywords.indexOf('Hail') > -1" />Hail</label></span>-->
+                                                    <!--<span ng-repeat="word in keywords" ><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection(word)" ng-checked="selectedKeywords.indexOf(word) > -1" />{{word}}</label></span>-->
                                                 <!--</div>-->
                                             <!--</div>-->
                                         <!--</div>-->
-
-
-                                        <!--<div class="panel panel-default">-->
-                                            <!--<div class="panel-heading">-->
-                                                <!--<h4 class="panel-title">-->
-                                                    <!--<a data-toggle="collapse" data-parent="#Keywords" href="#Special">Special Condition</a>-->
-                                                <!--</h4>-->
-                                            <!--</div>-->
-                                            <!--<div id="Special" class="panel-collapse collapse">-->
-                                                <!--<div class="panel-body">-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Construction')" ng-checked="keywords.indexOf('Construction') > -1" />Construction</label></span>-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Accident')" ng-checked="keywords.indexOf('Accident') > -1" />Accident</label></span>-->
-                                                    <!--<span><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection('Pot hole')" ng-checked="keywords.indexOf('Pot hole') > -1" />Pot hole</label></span>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-
-                                        <!--<div class="panel panel-default">-->
-                                            <!--<div class="panel-heading">-->
-                                                <!--<h4 class="panel-title">-->
-                                                    <!--<a data-toggle="collapse" data-parent="#Keywords" href="#Light">Light condition</a>-->
-                                                <!--</h4>-->
-                                            <!--</div>-->
-                                            <!--<div id="Light" class="panel-collapse collapse">-->
-                                                <!--<div class="panel-body">-->
-                                                    <!--<select class="form-control" multiple>-->
-                                                        <!--<option value="12">Bright</option>-->
-                                                        <!--<option value="13">Indoor</option>-->
-                                                        <!--<option value="14">Shadow</option>-->
-                                                        <!--<option value="14">Night with street light</option>-->
-                                                        <!--<option value="14">Night without street light</option>-->
-                                                        <!--<option value="14">Dusk</option>-->
-                                                        <!--<option value="14">Dawn</option>-->
-                                                        <!--<option value="14">Backlight</option>-->
-                                                        <!--<option value="14">Tunnel</option>-->
-                                                    <!--</select>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-                                        <!--<div class="panel panel-default">-->
-                                            <!--<div class="panel-heading">-->
-                                                <!--<h4 class="panel-title">-->
-                                                    <!--<a data-toggle="collapse" data-parent="#Keywords" href="#Road">Road Type</a>-->
-                                                <!--</h4>-->
-                                            <!--</div>-->
-                                            <!--<div id="Road" class="panel-collapse collapse">-->
-                                                <!--<div class="panel-body">-->
-                                                    <!--<select class="form-control" multiple>-->
-                                                        <!--<option value="12">Urban</option>-->
-                                                        <!--<option value="13">Suburban</option>-->
-                                                        <!--<option value="14">Rural</option>-->
-                                                        <!--<option value="14">Highway</option>-->
-                                                        <!--<option value="14">Parking lot</option>-->
-                                                    <!--</select>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-
-                                        <!--<div class="panel panel-default">-->
-                                            <!--<div class="panel-heading">-->
-                                                <!--<h4 class="panel-title">-->
-                                                    <!--<a data-toggle="collapse" data-parent="#Keywords" href="#Lane">Lane Mark Type</a>-->
-                                                <!--</h4>-->
-                                            <!--</div>-->
-                                            <!--<div id="Lane" class="panel-collapse collapse">-->
-                                                <!--<div class="panel-body">-->
-                                                    <!--<select class="form-control" multiple>-->
-                                                        <!--<option value="12">Full lane markings</option>-->
-                                                        <!--<option value="13">Center lane only</option>-->
-                                                        <!--<option value="14">No lane marking</option>-->
-                                                        <!--<option value="14">Special lane marking</option>-->
-                                                    <!--</select>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-
-                                    </div>
+                                    <!--</div>-->
 
                                 </div>
                             </div>
@@ -319,6 +246,9 @@
                                                 <input type="text" class="form-control" />
                                             </div>
 
+                                        </div>
+                                        <div class="right_button_wrapper" style="padding-bottom: 10px;">
+                                            <button class="btn btn-default" type="button" ng-click="">Add</button>
                                         </div>
                                     </div>
 

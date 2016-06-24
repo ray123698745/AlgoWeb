@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('AlgoWeb', ['ui.router', 'ngAnimate', 'ui.bootstrap']);
+var app = angular.module('AlgoWeb', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'angularUtils.directives.dirPagination']);
 
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function ($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -23,7 +23,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
             controller: 'resultListCtrl'
         })
         .state('result', {
-            url: "/result",
+            url: "/result/:camera",
             templateUrl: "/app/result/result.ejs",
             controller: 'resultCtrl'
         });
@@ -39,7 +39,8 @@ app.service('dataService', function () {
         queryObj: {},
         queryResult: {},
         selectedSeq:{},
-        site: "U.S.",    // U.S. or Parma
+        site: "us",    // us or it
+        fileServerAddr: "http://127.0.0.1"
     };
 
     this.keywords = {

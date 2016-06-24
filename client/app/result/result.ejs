@@ -1,36 +1,114 @@
 
-<!--<div class="jumbotron text-center">-->
-    <!--<h1>Result</h1>-->
-    <!--&lt;!&ndash;<p>Development Tool Kit.</p>&ndash;&gt;-->
-<!--</div>-->
-
-
-<!--result: {{result}}-->
 
 <div class="container-fluid">
+
     <div class="page-header">
-        <h1>{{result._id}}</h1>
+        <div class="row">
+            <div class="col-md-5">
+                <h1>{{result.capture_time + ' ' + result.location.country}}</h1>
+            </div>
+            <div class="col-md-5 col-md-offset-1 right_button_wrapper_low">
+                <label class="control-label title_label">Switch Camera:&nbsp;&nbsp; </label>
+                <div class="btn-group" uib-dropdown>
+                    <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+                        {{result.cameras[cameraIdx].name}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem" ng-repeat="camera in result.cameras"><a ng-click="switchCamera(result.cameras.indexOf(camera))">{{camera.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="nav nav-pills nav-justified"  ng-show="isStereo">
+                    <li ng-class="{active: isLeft}"><a ng-click="switchLR(true)">Left Camera</a></li>
+                    <li ng-class="{active: isRight}"><a ng-click="switchLR(false)">Right Camera</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                <ul class="nav nav-pills nav-justified">
+                    <li ng-class="{active: isTag}"><a ng-click="switchMap(false)">Mark Tags</a></li>
+                    <li ng-class="{active: isMap}"><a ng-click="switchMap(true)">Map View</a></li>
+                </ul>
+            </div>
+        </div>
+
+                </div>
+            </div>
+
     </div>
+
+
+
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-8" >
                     <div class="embed-responsive embed-responsive-16by9">
-                        <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/X0qZXyWwEC8"></iframe>-->
-                        <iframe class="embed-responsive-item" src="assets/video/sample.mp4"></iframe>
+                    <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="embed-responsive embed-responsive-16by9">
+                <div class="col-md-4">
+
+                    <iframe ng-if="isMap" height="390" width="100%" src="https://www.google.com/maps/embed/v1/place?q=Ambarella,+Jay+Street,+Santa+Clara,+CA,+United+States&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
 
 
-                        <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed/v1/place?q=Ambarella,+Jay+Street,+Santa+Clara,+CA,+United+States&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
+                    <div ng-if="isTag">
+                        <uib-accordion close-others="true">
+                            <uib-accordion-group ng-repeat="(category, keywords) in keywordsObj" is-open="status.open">
+                                <uib-accordion-heading>
+                                    {{category}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                                </uib-accordion-heading>
+                                <span ng-repeat="word in keywords" ><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection(word)" ng-checked="selectedKeywords.indexOf(word) > -1" />{{word}}</label></span>
+                            </uib-accordion-group>
+                        </uib-accordion>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <div class="button_wrapper" style="padding-top: 7px;">
+                                    <button class="btn btn-default btn-block" type="button" ng-click="submitTag()">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+
                 </div>
             </div>
+
+
+
             <div class="row">
-                <div class="col-lg-12 col-lg-offset-0 col-md-12 download-col">
+                <div class="col-md-12 download-col">
                     <div class="well">
+
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-4">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info " >&nbsp;&nbsp;Raw Encode </button>
+                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">ituner 1</a></li>
+                                        <li><a href="#">ituner 2</a></li>
+                                        <li><a href="#">ituner 3</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-info btn-block" type="button">Annotate Request</button>
+                            </div>
+                        </div>
+
                         <h3>Download </h3>
                         <div class="row">
                             <div class="col-md-1">
@@ -38,38 +116,24 @@
                             </div>
 
                             <div class="col-md-3">
-                                <input class="form-control" type="text" onClick="this.select();" value={{showFilePath(result.file_location)}}>
+                                <input class="form-control" type="text" onClick="this.select();" value="{{filePath()}}">
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-default btn-block" type="button">Metadata </button>
+                                <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
+                                <a href="http://127.0.0.1/5769ed45aa8325a5762fd5f3/sensor.txt" target="_self" class="btn btn-default btn-block" role="button" role="button" ng-click="download('sensor')">Sensor</a>
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-default btn-block" type="button">Sensor </button>
+                                <button class="btn btn-default btn-block disabled" type="button">YUV</button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-default btn-block disabled" type="button">Depth Image</button>
                             </div>
 
                             <div class="col-md-2">
                                 <button class="btn btn-default btn-block disabled" type="button">Annotation </button>
-                            </div>
-
-                            <div class="col-md-2">
-                                <!--<button class="btn btn-default btn-block" type="button">Toner </button>-->
-
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default disabled">iTuner</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Toner 1</a></li>
-                                        <li><a href="#">Toner 2</a></li>
-                                        <li><a href="#">Toner 3</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
-                                    </ul>
-                                </div>
                             </div>
                         </div>
 
@@ -77,19 +141,23 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="well">
                         <div class="row">
                             <div class="col-md-11"><h3>Sequence Info</h3></div>
-                            <div class="col-md-1"><button class="btn btn-default btn-block" type="button">Edit </button></div>
+                            <!--<div class="col-md-1"><button class="btn btn-default btn-block" type="button">Edit </button></div>-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="well" style="background-color:#272b30">
+                                    <label class="control-label title_label">General: </label>
                                     <ul style="list-style-type:none">
-                                        <li>Captured Time: {{result.capture_time}}</li>
+                                        <li>Sequence ID: {{result._id}}</li>
                                         <li>Location: {{result.location.city + ", " + result.location.state + ", " + result.location.country}}</li>
+                                        <li>GPS: </li>
                                         <li>Average Speed: {{result.avg_speed}}</li>
                                         <li>Usage: {{result.usage}}</li>
                                     </ul>
@@ -97,93 +165,55 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="well" style="background-color:#272b30">
+                                    <label class="control-label title_label">Keywords: </label>
                                     <ul style="list-style-type:none">
-                                        <li>Light Condition: </li>
-                                        <li>GPS: </li>
-                                        <li>Road Type: </li>
-                                        <li>Average Speed: </li>
-                                        <li>Land Marking type: </li>
+                                        <li>Weather: </li>
                                         <li>Special Condition: </li>
+                                        <li>Light Condition: </li>
+                                        <li>Road Type: </li>
+                                        <li>Land Marking type: </li>
                                     </ul>
                                 </div>
                             </div>
-                            <!--{{result}}-->
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="well" style="background-color:#272b30">
+                                    <label class="control-label title_label">Annotation: </label>
+                                    <ul style="list-style-type:none">
+                                        <li>Annotation density: {{result.cameras[cameraIdx].annotation.annotation_density}}</li>
+                                        <li>Unique IDs: {{result.cameras[cameraIdx].annotation.unique_id}}</li>
+                                        <li>Objects: </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="well" style="background-color:#272b30">
+                                    <label class="control-label title_label">Others: </label>
+                                    <ul style="list-style-type:none">
+                                        <!--<li>Weather: </li>-->
+                                        <!--<li>Special Condition: </li>-->
+                                        <!--<li>Light Condition: </li>-->
+                                        <!--<li>Road Type: </li>-->
+                                        <!--<li>Land Marking type: </li>-->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-2 col-md-offset-5">
+                <div class="button_wrapper" style="padding-top: 7px;">
+                    <button class="btn btn-default btn-block" type="button" ng-click="back()">Back</button>
+                </div>
+            </div>
+
         </div>
 
-        <!--<div class="col-lg-3 col-md-3">-->
-            <!--<div class="well">-->
-                <!--<div class="row">-->
-                    <!--<div class="col-md-6"><h3>7 Results </h3></div>-->
-                    <!--<div class="col-md-6"><button class="btn btn-default btn-block" type="button">Refine Search</button></div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="media">-->
-                    <!--<div class="media-left">-->
-                        <!--<a><img src="assets/img/thumb.jpg"></a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4>Sequence ID</h4>-->
-                        <!--<p>Some sequence info. </p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+
     </div>
 </div>

@@ -19,7 +19,7 @@
     <body>
 
     <!--navibar-->
-    <nav class="navbar">
+    <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">AlgoWeb</a>
@@ -27,16 +27,14 @@
             <ul class="nav navbar-nav">
                 <li><a ui-sref="home">Home</a></li>
                 <li><a ui-sref="query">Query</a></li>
-                <li><a ui-sref="yuv">Import YUV</a></li>
-                <li><a ui-sref="yuv">Import Annotation</a></li>
-                <li><a ui-sref="benchmark">Benchmark</a></li>
+                <li><a ui-sref="home">Import YUV</a></li>
+                <li><a ui-sref="home">Import Annotation</a></li>
+                <li><a ui-sref="home">Benchmark</a></li>
                 <!--<li><a ui-sref="Annotation">Annotation</a></li>-->
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <!--<li><a href="/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
-                <li><a href="/">Login</a></li>
-
+                <li><a href="/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
         </div>
     </nav>
@@ -72,6 +70,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="/app/app.js"></script>
     <script src="/assets/js/Script.js"></script>
+    <script src="/assets/js/dirPagination.js"></script>
     <script src="/app/home/home.js"></script>
     <script src="/app/query/query.js"></script>
     <script src="/app/result/result.js"></script>

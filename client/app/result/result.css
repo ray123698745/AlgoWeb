@@ -11,3 +11,27 @@ span.label.label-primary{
     margin-right:10px;
 }
 
+.right_button_wrapper_low {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    text-align: right;
+}
+
+
+.body {
+    /*display: table;*/
+}
+
+.left-side {
+    background-color: blue;
+    /*float: none;*/
+    /*display: table-cell;*/
+    /*border: 1px solid;*/
+}
+
+.right-side {
+    background-color: red;
+    /*float: none;*/
+    /*display: table-cell;*/
+    /*border: 1px solid;*/
+}

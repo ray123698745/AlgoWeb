@@ -3,11 +3,11 @@
  */
 'use strict';
 
-app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService) {
+app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', '$anchorScroll', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService, $anchorScroll) {
 
     // $scope.items = ['item1', 'item2', 'item3'];
 
-
+    $scope.sortBy = "Date";
     var query = dataService.data.queryObj;
 
     $http.post("/api/sequence/query", JSON.stringify(query))
@@ -54,6 +54,10 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
         }
     }
 
+    $scope.selectSortBy = function (sortBy) {
+        $scope.sortBy = sortBy;
+    }
+
     $scope.preview = function () {
 
         var modalInstance = $uibModal.open({
@@ -76,10 +80,18 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
     };
 
-    $scope.detail = function (selectedSeq) {
+    $scope.detail = function (selectedSeq, camera) {
         dataService.data.selectedSeq = selectedSeq;
-        $state.go('result');
+        $state.go('result', {camera: camera});
     };
+    
+    $scope.linkToTop = function () {
+        $anchorScroll('top');
+    }
+
+    $scope.back = function () {
+        $state.go('query');
+    }
 
 }]);
 

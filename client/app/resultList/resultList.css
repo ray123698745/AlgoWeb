@@ -16,3 +16,8 @@ div.well.light_well{
     width: 75%;
     margin: 0 auto;
 }
+
+/*dropdpwn on hover*/
+/*.btn-group:hover>.dropdown-menu {*/
+    /*display: block;*/
+/*}*/

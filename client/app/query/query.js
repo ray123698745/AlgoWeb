@@ -16,6 +16,34 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             $scope.selectedKeywords.push(keyword);
     }
 
+    $scope.fromDateOptions = {
+        formatYear: 'yy',
+        maxDate: new Date($scope.to_date)
+        // minDate: new Date(),
+        // startingDay: 1
+    };
+
+    $scope.openFromDate = function() {
+        $scope.fromDatePopup.opened = true;
+    };
+    $scope.fromDatePopup = {
+        opened: false
+    };
+
+    $scope.toDateOptions = {
+        formatYear: 'yy'
+        // maxDate: new Date(2020, 5, 22),
+        // minDate: new Date(),
+        // startingDay: 1
+    };
+
+    $scope.openToDate = function() {
+        $scope.toDatePopup.opened = true;
+    };
+    $scope.toDatePopup = {
+        opened: false
+    };
+
 
     $scope.sendPost = function() {
 

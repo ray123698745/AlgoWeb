@@ -53,8 +53,7 @@ module.exports = {
             capture_time: req.body.capture_time,
             usage: req.body.usage,
             file_location: req.body.file_location,
-            yuv: req.body.yuv,
-            annotation: req.body.annotation
+            cameras: req.body.cameras
         };
 
         log.debug('data: ', data);
