@@ -72,6 +72,31 @@ module.exports = {
             }
         });
 
+    },
+
+    update: function(req, res) {
+
+        log.debug('keywords: ', req.body);
+
+        var data = {
+            condition: req.body.condition,
+            update: req.body.update,
+            options: req.body.options,
+        };
+
+        log.debug('data: ', data);
+
+
+        Sequence.update(data.condition, data.update, data.options, function(err, numAffected) {
+            if (err) {
+                log.debug("Result error: ", err);
+                throw err;
+            } else{
+                log.debug("numAffected: ", numAffected);
+                res.send(numAffected);
+            }
+        });
+
     }
 
 

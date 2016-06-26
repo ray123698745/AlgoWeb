@@ -45,10 +45,10 @@ app.service('dataService', function () {
 
     this.keywords = {
         "Weather": ["Sunny", "Rain", "Cloudy", "Snow", "Hail"],
-        "Special_Condition": ["Construction", "Accident", "Pot_hole"],
         "Light_Condition": ["Bright", "Indoor", "Shadow", "Night_with_street_light",  "Night_without_street_light", "Dusk", "Dawn", "Backlight", "Tunnel"],
         "Road_Type": ["Urban", "Suburban", "Rural", "Highway", "Parking_lot"],
-        "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"]
+        "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"],
+        "Special_Condition": ["Construction", "Accident", "Pot_hole"]
     }
 
 

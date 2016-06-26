@@ -75,7 +75,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
 
@@ -91,8 +90,8 @@
                         <div class="row">
                             <div class="col-md-2 col-md-offset-4">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-info " >&nbsp;&nbsp;Raw Encode </button>
-                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;Raw Encode </button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
@@ -105,7 +104,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-info btn-block" type="button">Annotate Request</button>
+                                <button class="btn btn-primary btn-block" type="button">Annotate Request</button>
                             </div>
                         </div>
 
@@ -155,11 +154,11 @@
                                 <div class="well" style="background-color:#272b30">
                                     <label class="control-label title_label">General: </label>
                                     <ul style="list-style-type:none">
-                                        <li>Sequence ID: {{result._id}}</li>
-                                        <li>Location: {{result.location.city + ", " + result.location.state + ", " + result.location.country}}</li>
-                                        <li>GPS: </li>
-                                        <li>Average Speed: {{result.avg_speed}}</li>
-                                        <li>Usage: {{result.usage}}</li>
+                                        <li><div class="title_li">Sequence ID: </div>{{result._id}}</li>
+                                        <li><div class="title_li">Location: </div>{{result.location.city + ", " + result.location.state + ", " + result.location.country}}</li>
+                                        <li><div class="title_li">GPS: </div></li>
+                                        <li><div class="title_li">Average Speed: </div>{{result.avg_speed}}</li>
+                                        <li><div class="title_li">Usage: </div>{{result.usage}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -167,11 +166,7 @@
                                 <div class="well" style="background-color:#272b30">
                                     <label class="control-label title_label">Keywords: </label>
                                     <ul style="list-style-type:none">
-                                        <li>Weather: </li>
-                                        <li>Special Condition: </li>
-                                        <li>Light Condition: </li>
-                                        <li>Road Type: </li>
-                                        <li>Land Marking type: </li>
+                                        <li ng-repeat="(category, keywords) in keywordsObj"><div class="title_li">{{category}}: </div>{{sortKeywords(keywords)}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -182,9 +177,9 @@
                                 <div class="well" style="background-color:#272b30">
                                     <label class="control-label title_label">Annotation: </label>
                                     <ul style="list-style-type:none">
-                                        <li>Annotation density: {{result.cameras[cameraIdx].annotation.annotation_density}}</li>
-                                        <li>Unique IDs: {{result.cameras[cameraIdx].annotation.unique_id}}</li>
-                                        <li>Objects: </li>
+                                        <li><div class="title_li">Annotation density: </div></li>
+                                        <li><div class="title_li">Unique IDs: </div>{{result.cameras[cameraIdx].annotation.unique_id}}</li>
+                                        <li><div class="title_li">Objects: </div></li>
                                     </ul>
                                 </div>
                             </div>

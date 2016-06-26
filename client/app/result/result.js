@@ -9,13 +9,13 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     $scope.isStereo = $scope.result.cameras[$scope.cameraIdx].is_stereo;
     $scope.isMap = false;
     $scope.isTag = true;
-    $scope.selectedKeywords = [];
+    $scope.selectedKeywords = $scope.result.keywords;
+    $scope.isLeft = true;
+    $scope.isRight = false;
 
 
-    if ($scope.isStereo){
-        $scope.isLeft = true;
-        $scope.isRight = false;
-    }
+
+
 
     $scope.switchCamera = function (camera) {
         $state.go('result', {camera: camera});
@@ -64,7 +64,25 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     }
 
     $scope.submitTag = function () {
-        console.log($scope.selectedKeywords);
+
+        if (confirm("Keywords:\n" + $scope.selectedKeywords) == true) {
+
+            var query = {
+                condition: {_id: $scope.result._id},
+                update: {$set: {"keywords": $scope.selectedKeywords}},
+                options: {multi: false}
+            }
+
+            //update database
+            $http.post("/api/sequence/update", JSON.stringify(query))
+                .success(function(databaseResult) {
+                    alert(databaseResult.nModified + " record updated!");
+                })
+                .error(function (data, status, header, config) {
+                    $scope.results = "failed!";
+                });
+
+        }
     }
 
     $scope.filePath = function () {
@@ -76,6 +94,22 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         if (file === 'sensor'){
             $sce.trustAsResourceUrl(dataService.data.fileServerAddr + "/" + $scope.result._id + "/sensor.txt");
         }
+    }
+
+    $scope.sortKeywords = function (allKeywords) {
+
+        var sortedKey = "";
+
+        $scope.selectedKeywords.forEach(function (keyword) {
+            allKeywords.forEach(function (allWord) {
+
+                if (keyword === allWord){
+                    sortedKey = sortedKey + ", " + keyword;
+                }
+            })
+        });
+
+        return sortedKey.substring(1);
     }
 
         

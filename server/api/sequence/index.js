@@ -11,6 +11,7 @@ router.get('/findByID/:id', controller.findByID);
 router.get('/seed', seed);
 
 router.post('/query', controller.result);
+router.post('/update', controller.update);
 router.put('/insert', controller.insert);
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);
