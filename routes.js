@@ -15,27 +15,21 @@ module.exports = function(app) {
     // Insert routes below
     app.use('/api/sequence', require('./server/api/sequence'));
     app.use('/api/script', require('./server/api/script'));
-
-
-
-
+    app.use('/api/command', require('./server/api/command'));
 
 
     app.route('/*')
         .get(function(req, res) {
             res.render(path.join(__dirname, '/client/index.ejs'));
-            // res.sendFile(path.join(__dirname, 'index.html'));
         });
 
 
-    
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
         var err = new Error('Not Found');
         err.status = 404;
         next(err);
     });
-
 
 
     // error handlers

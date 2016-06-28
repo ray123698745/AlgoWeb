@@ -79,10 +79,28 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
                     alert(databaseResult.nModified + " record updated!");
                 })
                 .error(function (data, status, header, config) {
-                    $scope.results = "failed!";
+                    console.log("submitTag Failed!");
                 });
 
         }
+    }
+
+    $scope.encode = function () {
+
+        var encodeParam = {
+            path: $scope.filePath(),
+            ituner: "tuner1",
+            isStereo: $scope.isStereo
+        }
+
+        $http.post("/api/command/encode/", JSON.stringify(encodeParam))
+            .success(function(data) {
+                alert("path: " + data.path);
+            })
+            .error(function (data, status, header, config) {
+                console.log("Encode Failed!");
+            });
+
     }
 
     $scope.filePath = function () {
