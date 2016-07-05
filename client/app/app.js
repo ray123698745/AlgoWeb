@@ -13,12 +13,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
             templateUrl: "/app/home/home.ejs"
         })
         .state('query', {
-            url: "/",
+            url: "/query",
             templateUrl: "/app/query/query.ejs",
             controller: 'queryCtrl'
         })
         .state('resultList', {
-            url: "/resultList",
+            url: "/",
             templateUrl: "/app/resultList/resultList.ejs",
             controller: 'resultListCtrl'
         })
