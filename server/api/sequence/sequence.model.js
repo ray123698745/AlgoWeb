@@ -20,6 +20,7 @@ var sequenceSchema = new Schema({
     gps: gps,
     avg_speed: Number,
     capture_time: String,
+    frame_number: Number,
     usage: String,
     file_location: [file_location],
     cameras:[cameras]

@@ -5,8 +5,6 @@
 
 app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', '$anchorScroll', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService, $anchorScroll) {
 
-    // $scope.items = ['item1', 'item2', 'item3'];
-
     $scope.sortBy = "Date";
     var query = dataService.data.queryObj;
 
@@ -21,6 +19,10 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
         });
+
+    $scope.thumbSrc = function (result) {
+        return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/thumb.jpg");
+    }
 
 
     $scope.showFilePath = function (siteArray) {
@@ -58,7 +60,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
         $scope.sortBy = sortBy;
     }
 
-    $scope.preview = function () {
+    $scope.preview = function (result) {
 
         var modalInstance = $uibModal.open({
             animation: true,
@@ -66,9 +68,9 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             controller: 'ModalInstanceCtrl',
             size: 'lg',
             resolve: {
-                // items: function () {
-                //     return $scope.items;
-                // }
+                result: function () {
+                    return result;
+                }
             }
         });
 
@@ -84,7 +86,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
         dataService.data.selectedSeq = selectedSeq;
         $state.go('result', {camera: camera});
     };
-    
+
     $scope.linkToTop = function () {
         $anchorScroll('top');
     }
@@ -98,12 +100,15 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
 
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
 
-    // $scope.items = items;
-    // $scope.selected = {
-    //     item: $scope.items[0]
-    // };
+
+    $scope.previewSrc = function () {
+
+        // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
+
+        return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
+    }
 
     $scope.ok = function () {
         $uibModalInstance.close();

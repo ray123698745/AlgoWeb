@@ -2,48 +2,111 @@
  * Created by rayfang on 6/27/16.
  */
 var kue = require('kue');
+//var telnet = require('telnet-client');
 var queue = kue.createQueue();
+//var connection = new telnet();
 var spawn = require('child_process').spawn;
 
+const EVKNUM = 3;
+
+/*
+var params = {
+    host: '192.168.240.' + ip
+    //port: 23,
+    //shellPrompt: '/ # ',
+    //timeout: 1500,
+    // removeEcho: 4
+};
+
+var cmd = './raw_encode.sh /mnt/supercam/vol1/SuperCam-2016-06-08-07:28:54/Front_Stereo/L/decompressed_raw /mnt/supercam/vol1/SuperCam-2016-06-08-07:28:54/Front_Stereo/L/yuv/temp 1 10';
+
+connection.on('ready', function(prompt) {
+    connection.exec(cmd, function(err, response) {
+        console.log(response);
+        if(err)
+            console.log(response);
+    });
+});
+
+connection.on('timeout', function() {
+    console.log('socket timeout!')
+    connection.end();
+});
+
+connection.on('close', function() {
+    console.log('connection closed');
+});
+
+connection.connect(params);
+*/
 
 queue.process('encode', function (job, done){
 
 
     console.log('Processing encode');
+    console.log('input: ' + job.data.inputPath);
+    console.log('output: ' + job.data.outputPath);
+    console.log('frameNum: ' + job.data.frameNum);
+    console.log('ituner: ' + job.data.ituner);
 
+    //var frameNum = job.data.frameNum;
+    var frameNum = 50;
+
+    var inputPath = job.data.inputPath;
+    var outputPath = job.data.outputPath;
+    var ituner = job.data.ituner;
 
 
     // add raw_encode script loop and distribute frames
 
+    var divideFrame = parseInt(frameNum / EVKNUM);
+    var startFrame = 0;
+    var doneCount = 0;
 
-    var child = spawn('ls',
-        ['-al', '/var/log/system.log']);
+    for (var i = 0; i < EVKNUM; i++){
 
+        ip = 9 + (EVKNUM - i);
 
-    child.stdout.on('data',
-        function (data) {
-            console.log('stdout: ' + data);
-        }
-    );
+        if (i === EVKNUM-1)
+            divideFrame = divideFrame + (frameNum % EVKNUM);
 
-    child.stderr.on('data',
-        function (data) {
-            console.log('stderr: ' + data);
-        }
-    );
+        console.log('command: ' + './raw_encode.sh /mnt/supercam' + inputPath + ' /mnt/supercam' + outputPath + " " + startFrame + " " + divideFrame + ' 192.168.240.' + ip);
 
 
-    child.on('exit', function (exitCode) {
-        console.log("Child exited with code: " + exitCode);
+        var child = spawn('ruby',
+                ['telnet.rb', './raw_encode.sh /mnt/supercam' + inputPath + ' /mnt/supercam' + outputPath + " " + startFrame + " " + divideFrame, '192.168.240.' + ip]);
 
-        if (exitCode === 0){
+        child.stdout.on('data',
+            function (data) {
+                console.log('stdout: ' + data);
+            }
+        );
 
-            console.log("Done encode");
-            done(null, 'encode_done');
-            
-        }
+        child.stderr.on('data',
+            function (data) {
+                console.log('stderr: ' + data);
+            }
+        );
 
-    });
+
+        child.on('exit', function (exitCode) {
+            console.log("Child exited with code: " + exitCode);
+
+            if (exitCode === 0){
+
+                console.log("Done encode");
+                doneCount++;
+
+                if (doneCount == EVKNUM)
+                    done(null, 'encode_done');
+
+            }
+
+        });
+
+
+        startFrame = startFrame + divideFrame;
+    }
 
 });
 

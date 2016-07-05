@@ -29,7 +29,7 @@
             <div class="well">
                 <div class="media">
                     <div class="media-left">
-                        <a><img src="assets/img/thumb.jpg" class="img-rounded media-object" /></a>
+                        <a><img ng-src="{{thumbSrc(result)}}" class="img-rounded media-object" /></a>
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading"><strong>{{result.capture_time + ' ' + result.location.country}}</strong> </h4>
@@ -61,7 +61,7 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-2"></div>
                     <div class="col-md-4">
-                        <button class="btn btn-default btn-block" type="button" ng-click="preview()">Preview</button>
+                        <button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-2">
@@ -109,10 +109,9 @@
         <!--Selected: <b>{{ selected.item }}</b>-->
 
         <div class="center_video">
-            <video width="640" height="480" controls >
-                <source src="assets/video/sample.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <div class="embed-responsive embed-responsive-16by9">
+                <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
+            </div>
         </div>
 
 

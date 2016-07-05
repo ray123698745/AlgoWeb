@@ -9,11 +9,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
 
     $stateProvider
         .state('home', {
-            url: "/",
+            url: "/home", // change back to root when home page are done
             templateUrl: "/app/home/home.ejs"
         })
         .state('query', {
-            url: "/query",
+            url: "/",
             templateUrl: "/app/query/query.ejs",
             controller: 'queryCtrl'
         })
@@ -40,7 +40,7 @@ app.service('dataService', function () {
         queryResult: {},
         selectedSeq:{},
         site: "us",    // us or it
-        fileServerAddr: "http://127.0.0.1"
+        fileServerAddr: "http://10.1.3.32:8080"
     };
 
     this.keywords = {

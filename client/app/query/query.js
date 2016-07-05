@@ -64,10 +64,10 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             queryObj.avg_speed = {"$gte": $scope.from_speed, "$lte": $scope.to_speed};
 
 
-        if ($scope.yuv == "Yes")
-            queryObj.yuv = { $exists: true, $ne: [] };
-        if ($scope.yuv == "No")
-            queryObj.yuv = { $exists: false }; // should unset the array after remove the last element
+        // if ($scope.yuv == "Yes")
+        //     queryObj.yuv = { $exists: true, $ne: [] };
+        // if ($scope.yuv == "No")
+        //     queryObj.yuv = { $exists: false }; // should unset the array after remove the last element
 
 
         // console.log($scope.selectedKeywords);

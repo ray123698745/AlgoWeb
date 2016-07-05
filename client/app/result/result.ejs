@@ -90,8 +90,8 @@
                         <div class="row">
                             <div class="col-md-2 col-md-offset-4">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary" ng-click="encode()" >&nbsp;&nbsp;&nbsp;Raw Encode </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary disabled" ng-click="encode()" >&nbsp;&nbsp;&nbsp;Raw Encode </button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
@@ -104,27 +104,37 @@
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-primary btn-block" type="button">Annotate Request</button>
+                                <button class="btn btn-primary btn-block disabled" type="button">Annotate Request</button>
                             </div>
                         </div>
 
                         <h3>Download </h3>
                         <div class="row">
-                            <div class="col-md-1">
-                                <label>File Path: </label>
-                            </div>
+                            <!--<div class="col-md-1">-->
+                                <!--<label>File Path: </label>-->
+                            <!--</div>-->
 
-                            <div class="col-md-3">
-                                <input class="form-control" type="text" onClick="this.select();" value="{{filePath()}}">
+                            <!--<div class="col-md-2">-->
+                                <!--<input class="form-control" type="text" onClick="this.select();" value="{{filePath()}}">-->
+                            <!--</div>-->
+
+                            <div class="col-md-2">
+                                <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
+                                <a download ng-href="{{download('h264')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H.264</a>
                             </div>
 
                             <div class="col-md-2">
                                 <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
-                                <a href="http://127.0.0.1/5769ed45aa8325a5762fd5f3/sensor.txt" target="_self" class="btn btn-default btn-block" role="button" role="button" ng-click="download('sensor')">Sensor</a>
+                                <a download ng-href="{{download('car_sensor')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >Car Sensor</a>
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-default btn-block disabled" type="button">YUV</button>
+                                <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
+                                <a download ng-href="{{download('camera_sensor')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >Camera Sensor</a>
+                            </div>
+
+                            <div class="col-md-2">
+                                <a download ng-href="{{download('yuv')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >YUV</a>
                             </div>
 
                             <div class="col-md-2">
@@ -156,7 +166,7 @@
                                     <ul style="list-style-type:none">
                                         <li><div class="title_li">Sequence ID: </div>{{result._id}}</li>
                                         <li><div class="title_li">Location: </div>{{result.location.city + ", " + result.location.state + ", " + result.location.country}}</li>
-                                        <li><div class="title_li">GPS: </div></li>
+                                        <li><div class="title_li">GPS: </div>X: {{result.gps.x}}, Y: {{result.gps.y}}</li>
                                         <li><div class="title_li">Average Speed: </div>{{result.avg_speed}}</li>
                                         <li><div class="title_li">Usage: </div>{{result.usage}}</li>
                                     </ul>

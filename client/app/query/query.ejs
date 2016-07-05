@@ -37,7 +37,7 @@
                                                 <div class="col-md-5">
                                                     <!--<input type="text" ng-model="from_date" class="form-control" placeholder="YYYY-MM-DD" />-->
                                                     <div class="input-group">
-                                                        <input type="text" placeholder="YYYY-MM-DD" class="form-control" uib-datepicker-popup ng-model="from_date" is-open="fromDatePopup.opened" datepicker-options="fromDateOptions" ng-required="true" close-text="Close" />
+                                                        <input type="text" placeholder="YYYY-MM-DD" class="form-control" uib-datepicker-popup ng-model="from_date" is-open="fromDatePopup.opened" datepicker-options="fromDateOptions" ng-required="false" close-text="Close" />
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-default" ng-click="openFromDate()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                         </span>
@@ -48,7 +48,7 @@
                                                 <div class="col-md-5">
                                                     <!--<input type="text" ng-model="to_date" class="form-control" placeholder="YYYY-MM-DD" />-->
                                                     <div class="input-group">
-                                                        <input type="text" placeholder="YYYY-MM-DD" class="form-control" uib-datepicker-popup ng-model="to_date" is-open="toDatePopup.opened" datepicker-options="toDateOptions" ng-required="true" close-text="Close" />
+                                                        <input type="text" placeholder="YYYY-MM-DD" class="form-control" uib-datepicker-popup ng-model="to_date" is-open="toDatePopup.opened" datepicker-options="toDateOptions" ng-required="false" close-text="Close" />
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-default" ng-click="openToDate()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                         </span>
@@ -80,16 +80,16 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label class="control-label title_label">Have YUV</label>
-                                                </div>
-                                            </div>
-                                            <br/>
-                                            <span><label class="control-label radio-inline"><input type="radio" name="yuv" value="Yes" ng-model="yuv" />Yes</label></span>
-                                            <span><label class="control-label radio-inline"><input type="radio" name="yuv" value="No" ng-model="yuv" />No</label></span>
-                                        </div>
+                                        <!--<div class="form-group">-->
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-md-12">-->
+                                                    <!--<label class="control-label title_label">Have YUV</label>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<br/>-->
+                                            <!--<span><label class="control-label radio-inline"><input type="radio" name="yuv" value="Yes" ng-model="yuv" />Yes</label></span>-->
+                                            <!--<span><label class="control-label radio-inline"><input type="radio" name="yuv" value="No" ng-model="yuv" />No</label></span>-->
+                                        <!--</div>-->
 
                                     </div>
                                 </div>
@@ -119,9 +119,8 @@
                                             <div class="col-md-3">
                                                 <select class="form-control" ng-model="state">
                                                     <option disabled selected value> -- select a state -- </option>
-                                                    <option value="CA">California</option>
-                                                    <option value="13">State 2</option>
-                                                    <option value="14">State 3</option>
+                                                    <option value="California">California</option>
+                                                    <option value="Emilia-Romagna">Emilia-Romagna</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-1">
@@ -132,7 +131,7 @@
                                                     <option disabled selected value> -- select a city -- </option>
                                                     <option value="Saratoga">Saratoga</option>
                                                     <option value="Santa Clara">Santa Clara</option>
-                                                    <option value="14">City 3</option>
+                                                    <option value="Parma">Parma</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -25,6 +25,10 @@ queue.process('update_db', function (job, done){
     //     }
     // });
 
+
+
+    // move to version folder
+
     done(null, 'update_db_done');
 
 });
@@ -37,27 +41,33 @@ module.exports = {
         log.debug('path: ' + req.body.path);
         log.debug('ituner: ' + req.body.ituner);
         log.debug('is stereo: ' + req.body.isStereo);
+        log.debug('frameNum: ' + req.body.frameNum);
+
 
 
 
         if (req.body.isStereo) {
 
-            log.debug('add job1');
+            log.debug('Add encode job left');
 
             var encodeLeft = queue.create('encode', {
-                path: req.body.path,
+                inputPath: req.body.path + "/L/decompressed_raw",
+                outputPath: req.body.path + "/L/yuv/temp",
+                frameNum: req.body.frameNum,
                 ituner: req.body.ituner
             });
             encodeLeft.save();
 
-            log.debug('add job2');
+            // log.debug('Add encode job right');
 
+            // var encodeLeft = queue.create('encode', {
+            //     inputPath: req.body.path + "/R/decompressed_raw",
+            //     outputPath: req.body.path + "/R/yuv/temp",
+            //     frameNum: req.body.frameNum,
+            //     ituner: req.body.ituner
+            // });
+            // encodeLeft.save();
 
-            var encodeRight = queue.create('encode', {
-                path: req.body.path,
-                ituner: req.body.ituner
-            });
-            encodeRight.save();
 
         } else {
 
