@@ -22,26 +22,28 @@
 
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-        <div class="row">
-            <div class="col-md-8">
-                <ul class="nav nav-pills nav-justified"  ng-show="isStereo">
-                    <li ng-class="{active: isLeft}"><a ng-click="switchLR(true)">Left Camera</a></li>
-                    <li ng-class="{active: isRight}"><a ng-click="switchLR(false)">Right Camera</a></li>
-                </ul>
-            </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <ul class="nav nav-pills nav-justified"  ng-show="isStereo">
+                            <li ng-class="{active: isLeft}"><a ng-click="switchLR()">Left Camera</a></li>
+                            <li ng-class="{active: isRight}"><a ng-click="switchLR()">Right Camera</a></li>
+                        </ul>
+                    </div>
 
-            <div class="col-md-4">
-                <ul class="nav nav-pills nav-justified">
-                    <li ng-class="{active: isTag}"><a ng-click="switchMap(false)">Mark Tags</a></li>
-                    <li ng-class="{active: isMap}"><a ng-click="switchMap(true)">Map View</a></li>
-                </ul>
+                    <div class="col-md-4">
+                        <ul class="nav nav-pills nav-justified">
+                            <li ng-class="{active: isTag}"><a ng-click="switchFuncView('mark')">Mark Tags</a></li>
+                            <!--<li ng-class="{active: isAnnotate}"><a ng-click="switchFuncView('annotate')">Annotate Request</a></li>-->
+                            <li ng-class="{active: isMap}"><a ng-click="switchFuncView('map')">Map View</a></li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-                </div>
-            </div>
-
     </div>
+
 
 
 
@@ -55,8 +57,22 @@
                 </div>
                 <div class="col-md-4">
 
-                    <iframe ng-if="isMap" height="390" width="100%" src="https://www.google.com/maps/embed/v1/place?q=Ambarella,+Jay+Street,+Santa+Clara,+CA,+United+States&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
+                    <div ng-if="isAnnotate">
 
+                        <div class="row">
+                            <div class="col-md-4">
+                                <uib-timepicker ng-model="mytime" hour-step="0" show-seconds="true" show-spinners="false" show-meridian="false" template-url="/timepicker.html"></uib-timepicker>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <div class="button_wrapper" style="padding-top: 7px;">
+                                    <button class="btn btn-default btn-block" type="button" ng-click="submitTag()">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div ng-if="isTag">
                         <uib-accordion close-others="true">
@@ -77,6 +93,7 @@
                         </div>
                     </div>
 
+                    <iframe ng-if="isMap" height="390" width="100%" src="https://www.google.com/maps/embed/v1/place?q=Ambarella,+Jay+Street,+Santa+Clara,+CA,+United+States&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
 
                 </div>
             </div>

@@ -66,6 +66,18 @@ app.service('utilService', ['dataService', function (dataService) {
         }
     }
 
+    this.getPrefix = function (capTime) {
+
+        var prefix = capTime;
+        prefix = prefix.substring(2);
+        prefix = prefix.replace(/-/g, "");
+        prefix = prefix.replace(/:/g, "-");
+        prefix = prefix.slice(0, 6) + "-" + prefix.slice(6);
+
+        // console.log("Prefix: " + prefix);
+        return prefix;
+    }
+
     // var self = this;
     //
     // this.someFuncion = function () {

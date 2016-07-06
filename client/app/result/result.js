@@ -9,6 +9,7 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     $scope.isStereo = $scope.result.cameras[$scope.cameraIdx].is_stereo;
     $scope.isMap = false;
     $scope.isTag = true;
+    $scope.isAnnotate = false;
     $scope.selectedKeywords = $scope.result.keywords;
     $scope.isLeft = true;
     $scope.isRight = false;
@@ -21,23 +22,24 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         $state.go('result', {camera: camera});
     }
 
-    $scope.switchLR = function (isLeft) {
-        if(isLeft){
-            $scope.isLeft = true;
-            $scope.isRight = false;
-        } else {
-            $scope.isLeft = false;
-            $scope.isRight = true;
-        }
+    $scope.switchLR = function () {
+        $scope.isLeft = !$scope.isLeft;
+        $scope.isRight = !$scope.isRight;
     }
 
-    $scope.switchMap = function (isMap) {
-        if(isMap){
+    $scope.switchFuncView = function (view) {
+        if(view === 'map'){
             $scope.isMap = true;
             $scope.isTag = false;
-        } else {
+            $scope.isAnnotate = false;
+        } else if (view === 'mark') {
             $scope.isMap = false;
             $scope.isTag = true;
+            $scope.isAnnotate = false;
+        } else {
+            $scope.isMap = false;
+            $scope.isTag = false;
+            $scope.isAnnotate = true;
         }
     }
 
@@ -45,11 +47,11 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
         if ($scope.isStereo){
             if ($scope.isLeft)
-                return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + $scope.filePath() + "/L/h264.mp4");
+                return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + $scope.filePath() + "/L/"+ utilService.getPrefix($scope.result.capture_time) +"_h264_L.mp4");
             else
-                return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + $scope.filePath() + "/R/h264.mp4");
+                return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + $scope.filePath() + "/R/"+ utilService.getPrefix($scope.result.capture_time) +"_h264_R.mp4");
         } else {
-            return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + $scope.filePath() + "/h264.mp4");
+            return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + $scope.filePath() + "/"+ utilService.getPrefix($scope.result.capture_time) +"_h264.mp4");
         }
     }
 
@@ -114,27 +116,27 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         if (file === 'h264'){
             if ($scope.isStereo){
                 if ($scope.isLeft)
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/h264.mp4";
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/"+ utilService.getPrefix($scope.result.capture_time) +"_h264_L.mp4";
                 else
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/h264.mp4";
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/"+ utilService.getPrefix($scope.result.capture_time) +"_h264_R.mp4";
             } else {
-                return dataService.data.fileServerAddr  + $scope.filePath() + "/h264.mp4";
+                return dataService.data.fileServerAddr  + $scope.filePath() + "/"+ utilService.getPrefix($scope.result.capture_time) +"_h264.mp4";
             }
 
         }
 
         if (file === 'car_sensor'){
-            return dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.result.file_location) + "/Sensor.tar";
+            return dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.result.file_location) + "/" + utilService.getPrefix($scope.result.capture_time) + "_Sensor.tar";
         }
 
         if (file === 'camera_sensor'){
             if ($scope.isStereo){
                 if ($scope.isLeft)
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/meta.txt";
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/" + utilService.getPrefix($scope.result.capture_time) + "_meta_L.txt";
                 else
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/meta.txt";
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/" + utilService.getPrefix($scope.result.capture_time) + "_meta_R.txt";
             } else {
-                return dataService.data.fileServerAddr  + $scope.filePath() + "/meta.txt";
+                return dataService.data.fileServerAddr  + $scope.filePath() + "/" + utilService.getPrefix($scope.result.capture_time) + "_meta.txt";
             }
 
         }
@@ -143,11 +145,11 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
             if ($scope.isStereo){
                 if ($scope.isLeft)
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/yuv/v1.tar";
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/yuv/" + utilService.getPrefix($scope.result.capture_time) + "_v1_L.tar";
                 else
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/yuv/v1.tar";
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/yuv/" + utilService.getPrefix($scope.result.capture_time) + "_v1_R.tar";
             } else {
-                return dataService.data.fileServerAddr  + $scope.filePath() + "/yuv/v1.tar";
+                return dataService.data.fileServerAddr  + $scope.filePath() + "/yuv/" + utilService.getPrefix($scope.result.capture_time) + "_v1.tar";
             }
         }
     }
