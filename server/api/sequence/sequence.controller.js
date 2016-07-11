@@ -1,13 +1,15 @@
 'use strict';
 
-var Sequence = require('./sequence.model.js');
+var Sequence = require('./sequence.model.js').sequence;
+var unfilteredSequence = require('./sequence.model.js').unfilteredsequence;
+
 var log = require('log4js').getLogger('db');
 
 
 module.exports = {
 
     index: function(req, res) {
-        
+
         Sequence.find({}, function(err, sequence) {
             if (err) throw err;
 
@@ -51,6 +53,7 @@ module.exports = {
             gps: req.body.gps,
             avg_speed: req.body.avg_speed,
             capture_time: req.body.capture_time,
+            frame_number: req.body.frame_number,
             usage: req.body.usage,
             file_location: req.body.file_location,
             cameras: req.body.cameras
@@ -64,6 +67,37 @@ module.exports = {
         newSequence.save(function (err, data) {
             if (err) {
                 log.debug("Insert failed: ", err);
+                // rollback
+            } else {
+                log.debug('Saved : ', data );
+                res.status(200);
+                res.send({res: 'ok', _id: data._id});
+            }
+        });
+
+    },
+
+    insertUnfiltered: function(req, res) {
+
+        log.debug('insertUnfiltered: ', req.body);
+
+        var data = {
+            title: req.body.title,
+            capture_time: req.body.capture_time,
+            frame_number: req.body.frame_number,
+            file_location: req.body.file_location,
+            cameras: req.body.cameras
+        };
+
+
+        log.debug('data: ', data);
+
+
+        var newUnfilteredSequence = new unfilteredSequence(data);
+
+        newUnfilteredSequence.save(function (err, data) {
+            if (err) {
+                log.debug("insertUnfiltered failed: ", err);
                 // rollback
             } else {
                 log.debug('Saved : ', data );
@@ -180,5 +214,5 @@ module.exports = {
     //     })
     //
     // });
-    
+
 // }

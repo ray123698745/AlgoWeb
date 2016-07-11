@@ -27,14 +27,32 @@ var sequenceSchema = new Schema({
 });
 
 
+
+var annotate_request = new Schema({category: String, fpd: Number, priority: Number},{_id : false });
+var unfiltered_cameras = new Schema({name: String, is_stereo: Boolean, annotate_request: [annotate_request]},{_id : false });
+
+
+var unfilteredSequenceSchema = new Schema({
+    title: String,
+    capture_time: String,
+    frame_number: Number,
+    file_location: [file_location],
+    cameras:[unfiltered_cameras]
+});
+
+
 // Add methods
 // sequenceSchema.method.calSomething = function () {
 //
 // }
 
 var Sequence = mongoose.model('Sequence', sequenceSchema);
+var unfilteredSequence = mongoose.model('unfilteredSequence', unfilteredSequenceSchema);
 
-module.exports = Sequence;
+module.exports = {
+    sequence: Sequence,
+    unfilteredsequence: unfilteredSequence
+}
 
 
 

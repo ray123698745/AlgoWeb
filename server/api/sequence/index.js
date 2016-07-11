@@ -13,6 +13,8 @@ router.get('/seed', seed);
 router.post('/query', controller.result);
 router.post('/update', controller.update);
 router.put('/insert', controller.insert);
+router.put('/insertUnfiltered', controller.insertUnfiltered);
+
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);
 

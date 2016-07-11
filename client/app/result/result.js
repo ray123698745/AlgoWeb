@@ -2,7 +2,6 @@
 
 app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce', 'dataService', 'utilService', function ($scope, $http, $state, $stateParams, $sce, dataService, utilService) {
 
-    // pass only the selected queryResult object
     $scope.result = dataService.data.selectedSeq;
     $scope.keywordsObj = dataService.keywords;
     $scope.cameraIdx = $stateParams.camera;
@@ -13,7 +12,19 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     $scope.selectedKeywords = $scope.result.keywords;
     $scope.isLeft = true;
     $scope.isRight = false;
-
+    $scope.timeCrops = [{
+        annotate_from: new Date('2012-04-23T00:00:00'),
+        annotate_to: new Date('2012-04-23T00:00:00'),
+        annotate_fps: null,
+        annotate_note: null,
+        annotate_category: null
+    }];
+    $scope.parent = {
+        annotate_from: new Date('2012-04-23T00:00:00'),
+        annotate_to: new Date('2012-04-23T00:00:00')
+    };
+    $scope.annotate_fps = 30;
+    $scope.annotate_note = "";
 
 
 
@@ -85,6 +96,47 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
                 });
 
         }
+    }
+
+    $scope.addTimeCrop = function () {
+
+        $scope.timeCrops.push({
+            annotate_from: new Date('2012-04-23T00:00:00'),
+            annotate_to: new Date('2012-04-23T00:00:00'),
+            annotate_fps: null,
+            annotate_note: null,
+            annotate_category: null
+        });
+
+    }
+
+    $scope.deleteTimeCrop = function () {
+
+        $scope.timeCrops.pop();
+    }
+
+
+    $scope.submitAnnotate = function () {
+
+
+        // console.log($scope.parent.annotate_from.toString().substring(19, 24));
+        // console.log($scope.parent.annotate_to.toString().substring(19, 24));
+        // console.log($scope.parent.annotate_fps);
+        // console.log($scope.parent.annotate_note);
+
+        console.log($scope.timeCrops);
+
+
+        //update database
+        // $http.post("/api/sequence/update", JSON.stringify(query))
+        //     .success(function(databaseResult) {
+        //         alert(databaseResult.nModified + " record updated!");
+        //     })
+        //     .error(function (data, status, header, config) {
+        //         console.log("submitTag Failed!");
+        //     });
+
+
     }
 
     $scope.encode = function () {

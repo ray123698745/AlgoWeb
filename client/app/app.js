@@ -26,6 +26,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
             url: "/result/:camera",
             templateUrl: "/app/result/result.ejs",
             controller: 'resultCtrl'
+        })
+        .state('filter', {
+            url: "/filter",
+            templateUrl: "/app/result/result.ejs",
+            controller: 'resultCtrl'
         });
 
     $locationProvider.html5Mode(true);
