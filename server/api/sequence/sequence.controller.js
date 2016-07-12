@@ -16,6 +16,7 @@ module.exports = {
             res.send(sequence);
         });
     },
+
     findByID: function(req, res) {
 
         Sequence.find({ _id: req.params.id }, function(err, sequence) {
@@ -77,6 +78,31 @@ module.exports = {
 
     },
 
+    update: function(req, res) {
+
+        log.debug('keywords: ', req.body);
+
+        var data = {
+            condition: req.body.condition,
+            update: req.body.update,
+            options: req.body.options,
+        };
+
+        log.debug('data: ', data);
+
+
+        Sequence.update(data.condition, data.update, data.options, function(err, numAffected) {
+            if (err) {
+                log.debug("Result error: ", err);
+                throw err;
+            } else{
+                log.debug("numAffected: ", numAffected);
+                res.send(numAffected);
+            }
+        });
+
+    },
+
     insertUnfiltered: function(req, res) {
 
         log.debug('insertUnfiltered: ', req.body);
@@ -108,7 +134,16 @@ module.exports = {
 
     },
 
-    update: function(req, res) {
+    getAllUnfiltered: function(req, res) {
+
+        unfilteredSequence.find({}, null, {sort: {capture_time: -1}}, function(err, sequence) {
+            if (err) throw err;
+
+            res.send(sequence);
+        });
+    },
+
+    updateUnfiltered: function(req, res) {
 
         log.debug('keywords: ', req.body);
 
@@ -133,8 +168,7 @@ module.exports = {
 
     }
 
-
-}
+};
 
 // GET example:
 // http://example.com/api/users?id=4&token=sdfa3&geo=us

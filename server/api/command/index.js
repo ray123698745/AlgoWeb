@@ -8,7 +8,7 @@ var controller = require('./command.controller.js');
 
 var router = express.Router();
 
-console.log('command controller');
+// console.log('command controller');
 
 router.post('/encode', controller.encode);
 

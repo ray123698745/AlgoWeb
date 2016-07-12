@@ -29,8 +29,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
         })
         .state('filter', {
             url: "/filter",
-            templateUrl: "/app/result/result.ejs",
-            controller: 'resultCtrl'
+            templateUrl: "/app/filter/filter.ejs",
+            controller: 'filterCtrl'
+        })
+        .state('annotation', {
+            url: "/annotation",
+            templateUrl: "/app/annotation/annotation.ejs",
+            controller: 'annotationCtrl'
         });
 
     $locationProvider.html5Mode(true);

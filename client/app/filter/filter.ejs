@@ -1,0 +1,134 @@
+<a id="top"></a>
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>{{results.length}} New Sequences</h1>
+        <!--<a href="http://localhost/video/game.mp4">click me!</a>-->
+    </div>
+
+    <!--<div class="row">-->
+        <!--<div class="col-md-8 col-md-offset-2">-->
+            <!--<div style="text-align: right; padding-bottom: 20px;">-->
+                <!--<div class="btn-group" uib-dropdown>-->
+                    <!--<button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>-->
+                        <!--Sort By: {{sortBy}} <span class="caret"></span>-->
+                    <!--</button>-->
+                    <!--<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">-->
+                        <!--<li role="menuitem"><a ng-click="selectSortBy('Date')">Date</a></li>-->
+                        <!--<li role="menuitem"><a ng-click="selectSortBy('Annotation Density')">Annotation Density</a></li>-->
+                        <!--&lt;!&ndash;<li role="menuitem"><a ng-click="selectSortBy('Something else')">Something else</a></li>&ndash;&gt;-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <div class="media">
+                    <div class="media-left">
+                        <a><img ng-src="{{thumbSrc(result)}}" class="img-rounded media-object" /></a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading"><strong>{{result.title}}</strong> </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="col-md-12">
+                                    <button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <a download ng-href="{{download(result, 'left')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H.264 Left</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a download ng-href="{{download(result, 'right')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H.264 Right</a>
+                                </div>
+                                <!--<h5>ID: {{result._id}}</h5>-->
+
+                                <!--<div class="form-inline">-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label>Path:</label>-->
+                                        <!--<input type="text" class="form-control input-sm" onClick="this.select();" value="{{showFilePath(result.file_location)}}">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                            </div>
+                            <div class="col-md-6" >
+
+                                <!--<div class="well light_well">-->
+                                    <!--<h5 class="keyword_h5">Annotation Request: </h5>-->
+                                    <!--<span>{{show3Keywords(result.keywords)}}</span>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <!--<div class="col-md-4">-->
+                        <!--<button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>-->
+                    <!--</div>-->
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <!--<button class="btn btn-default" type="button" ng-click="detail(result)">Detail...</button>-->
+                        <!--<div class="btn-group" uib-dropdown>-->
+                            <!--<button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>-->
+                                <!--Detail... <span class="caret"></span>-->
+                            <!--</button>-->
+                            <!--<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">-->
+                                <!--<li role="menuitem" ng-repeat="camera in result.cameras"><a ng-click="detail(result, result.cameras.indexOf(camera))">{{camera.name}}</a></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
+    </div>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <div class="button_wrapper" style="padding-top: 7px;">
+                <button class="btn btn-default btn-block" type="button" ng-click="back()">Back</button>
+            </div>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <!--<div class="modal-header">-->
+    <!--<h3 class="modal-title">Preview</h3>-->
+    <!--</div>-->
+    <div class="modal-body">
+        <!--<ul>-->
+        <!--<li ng-repeat="item in items">-->
+        <!--<a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--Selected: <b>{{ selected.item }}</b>-->
+
+        <div class="center_video">
+            <div class="embed-responsive embed-responsive-16by9">
+                <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--<div class="modal-footer">-->
+    <!--<div class="modal-footer">-->
+    <!--<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>-->
+    <!--<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>-->
+    <!--</div>-->
+</script>
