@@ -12,7 +12,7 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         .success(function(databaseResult) {
             $scope.results = databaseResult;
 
-            console.log($scope.results);
+            // console.log($scope.results);
 
         })
         .error(function (data, status, header, config) {
@@ -76,7 +76,7 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'myModalContent.html',
-            controller: 'ModalInstanceCtrl',
+            controller: 'filterPreviewCtrl',
             size: 'lg',
             resolve: {
                 result: function () {
@@ -100,7 +100,23 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
     $scope.linkToTop = function () {
         $anchorScroll('top');
-    }
+    };
+
+    $scope.order = function (result) {
+
+
+
+        var totalPriority = 0;
+
+        result.cameras[0].annotate_request.forEach(function (request) {
+
+            totalPriority += request.priority;
+        });
+        console.log(totalPriority);
+
+        return totalPriority;
+
+    };
 
     // $scope.back = function () {
     //     $state.go('query');
@@ -111,7 +127,7 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
 
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
+app.controller('filterPreviewCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
 
 
     $scope.previewSrc = function () {

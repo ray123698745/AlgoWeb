@@ -49,8 +49,8 @@ queue.process('encode', function (job, done){
     console.log('frameNum: ' + job.data.frameNum);
     console.log('ituner: ' + job.data.ituner);
 
-    //var frameNum = job.data.frameNum;
-    var frameNum = 50;
+    var frameNum = job.data.frameNum;
+    // var frameNum = 50;
 
     var inputPath = job.data.inputPath;
     var outputPath = job.data.outputPath;
@@ -70,11 +70,11 @@ queue.process('encode', function (job, done){
         if (i === EVKNUM-1)
             divideFrame = divideFrame + (frameNum % EVKNUM);
 
-        console.log('command: ' + './raw_encode.sh /mnt/supercam' + inputPath + ' /mnt/supercam' + outputPath + " " + startFrame + " " + divideFrame + ' 192.168.240.' + ip);
+        console.log('command: ' + 'time ./raw_encode.sh /mnt/supercam' + inputPath + ' /mnt/supercam' + outputPath + " " + startFrame + " " + divideFrame + ' 192.168.240.' + ip);
 
 
         var child = spawn('ruby',
-                ['telnet.rb', './raw_encode.sh /mnt/supercam' + inputPath + ' /mnt/supercam' + outputPath + " " + startFrame + " " + divideFrame, '192.168.240.' + ip]);
+                ['telnet.rb', 'time ./raw_encode.sh /mnt/supercam' + inputPath + ' /mnt/supercam' + outputPath + " " + startFrame + " " + divideFrame, '192.168.240.' + ip]);
 
         child.stdout.on('data',
             function (data) {

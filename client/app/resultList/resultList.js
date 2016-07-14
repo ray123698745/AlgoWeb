@@ -106,7 +106,6 @@ app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $sce, r
     $scope.previewSrc = function () {
 
         // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
-
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/"+ utilService.getPrefix(result.capture_time) +"_h264_L.mp4");
     }
 

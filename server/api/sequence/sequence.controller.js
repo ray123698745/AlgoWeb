@@ -136,11 +136,38 @@ module.exports = {
 
     getAllUnfiltered: function(req, res) {
 
-        unfilteredSequence.find({}, null, {sort: {capture_time: -1}}, function(err, sequence) {
+        unfilteredSequence.find({$where: 'this.cameras[0].annotate_request.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) throw err;
 
             res.send(sequence);
         });
+
+        // unfilteredSequence
+        //     .aggregate({ $match: { age: { $gte: 21 }}})
+        //     .unwind('$cameras[0].annotate_request')
+        //     .exec(function(err, sequence) {
+        //         if (err) throw err;
+        //
+        //         res.send(sequence);
+        //     });
+
+
+        // unfilteredSequence.aggregate([
+        //     // { $match: {
+        //     //     _id: '$_id'
+        //     // }},
+        //     { $unwind: "$cameras" },
+        //     { $unwind: "$annotate_request" }
+        //     // { $group: {
+        //     //     _id: "$_id",
+        //     //     sumPriority: { $sum: "$cameras[0].annotate_request.priority"  }
+        //     // }}
+        // ], function(err, sequence) {
+        //     if (err) throw err;
+        //     log.debug('aggregate: ', sequence );
+        //
+        //     res.send(sequence);
+        // });
     },
 
     updateUnfiltered: function(req, res) {

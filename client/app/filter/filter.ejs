@@ -24,7 +24,7 @@
         <!--</div>-->
     <!--</div>-->
 
-    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
+    <div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >
         <div class="col-md-8 col-md-offset-2">
             <div class="well">
                 <div class="media">
@@ -57,10 +57,11 @@
                             </div>
                             <div class="col-md-6" >
 
-                                <!--<div class="well light_well">-->
+                                <div class="well light_well">
                                     <!--<h5 class="keyword_h5">Annotation Request: </h5>-->
-                                    <!--<span>{{show3Keywords(result.keywords)}}</span>-->
-                                <!--</div>-->
+                                    <p ng-repeat="request in result.cameras[0].annotate_request">Category: {{request.category}}, FPS: {{request.fps}}</p>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,15 +94,15 @@
     <div style="text-align: center;">
         <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
     </div>
-    <div class="row">
-        <div class="col-md-5"></div>
-        <div class="col-md-2">
-            <div class="button_wrapper" style="padding-top: 7px;">
-                <button class="btn btn-default btn-block" type="button" ng-click="back()">Back</button>
-            </div>
-        </div>
-        <div class="col-md-5"></div>
-    </div>
+    <!--<div class="row">-->
+        <!--<div class="col-md-5"></div>-->
+        <!--<div class="col-md-2">-->
+            <!--<div class="button_wrapper" style="padding-top: 7px;">-->
+                <!--<button class="btn btn-default btn-block" type="button" ng-click="back()">Back</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-5"></div>-->
+    <!--</div>-->
 
 </div>
 
