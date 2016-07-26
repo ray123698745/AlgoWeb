@@ -53,7 +53,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             "_id": $scope.sequence_id,
             "location.country": $scope.country,
             "location.state": $scope.state,
-            "location.city": $scope.city,
+            "location.city": $scope.city
         };
 
 

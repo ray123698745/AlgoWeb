@@ -10,11 +10,12 @@ var gps = new Schema({x: Number, y: Number},{_id : false });
 var file_location = new Schema({site: String, root_path: String},{_id : false });
 var yuv = new Schema({version: String, desc: String},{_id : false });
 var objects = new Schema({class: String, occurrence: Number},{_id : false });
-var annotation = new Schema({annotation_density: Number, unique_id: Number, objects: [objects]},{_id : false });
-var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: annotation},{_id : false });
+var annotation = new Schema({category: String, fps: Number, priority: Number, is_annotated: Boolean, annotation_density: Number, unique_id: Number, objects: [objects]},{_id : false });
+var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: [annotation]},{_id : false });
 
 
 var sequenceSchema = new Schema({
+    title: String,
     location: location,
     keywords: [String],
     gps: gps,
@@ -28,17 +29,17 @@ var sequenceSchema = new Schema({
 
 
 
-var annotate_request = new Schema({category: String, fpd: Number, priority: Number},{_id : false });
-var unfiltered_cameras = new Schema({name: String, is_stereo: Boolean, annotate_request: [annotate_request]},{_id : false });
-
-
-var unfilteredSequenceSchema = new Schema({
-    title: String,
-    capture_time: String,
-    frame_number: Number,
-    file_location: [file_location],
-    cameras:[unfiltered_cameras]
-});
+// var annotate_request = new Schema({category: String, fps: Number, priority: Number},{_id : false });
+// var unfiltered_cameras = new Schema({name: String, is_stereo: Boolean, annotate_request: [annotate_request]},{_id : false });
+//
+//
+// var unfilteredSequenceSchema = new Schema({
+//     title: String,
+//     capture_time: String,
+//     frame_number: Number,
+//     file_location: [file_location],
+//     cameras:[unfiltered_cameras]
+// });
 
 
 // Add methods
@@ -47,7 +48,9 @@ var unfilteredSequenceSchema = new Schema({
 // }
 
 var Sequence = mongoose.model('Sequence', sequenceSchema);
-var unfilteredSequence = mongoose.model('unfilteredSequence', unfilteredSequenceSchema);
+var unfilteredSequence = mongoose.model('unfilteredSequence', sequenceSchema);
+
+// var unfilteredSequence = mongoose.model('unfilteredSequence', unfilteredSequenceSchema);
 
 module.exports = {
     sequence: Sequence,

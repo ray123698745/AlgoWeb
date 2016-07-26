@@ -36,7 +36,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
             url: "/annotation",
             templateUrl: "/app/annotation/annotation.ejs",
             controller: 'annotationCtrl'
-        });
+        })
+        .state('review', {
+        url: "/review",
+        templateUrl: "/app/review/review.ejs",
+        controller: 'reviewCtrl'
+    });;
+
 
     $locationProvider.html5Mode(true);
 
@@ -96,6 +102,19 @@ app.service('utilService', ['dataService', function (dataService) {
 }]);
 
 
+app.directive('convertToNumber', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(val) {
+                return parseInt(val, 10);
+            });
+            ngModel.$formatters.push(function(val) {
+                return '' + val;
+            });
+        }
+    };
+});
 
 
 // app.factory('dataFactory', function () {

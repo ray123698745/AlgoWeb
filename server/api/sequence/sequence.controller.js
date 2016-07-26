@@ -48,47 +48,68 @@ module.exports = {
 
         log.debug('Insert: ', req.body);
 
-        var data = {
-            location: req.body.location,
-            keywords: req.body.keywords,
-            gps: req.body.gps,
-            avg_speed: req.body.avg_speed,
-            capture_time: req.body.capture_time,
-            frame_number: req.body.frame_number,
-            usage: req.body.usage,
-            file_location: req.body.file_location,
-            cameras: req.body.cameras
-        };
-
-        log.debug('data: ', data);
+        var queries = req.body;
 
 
-        var newSequence = new Sequence(data);
+        for (var i = 0; i < queries.length; i++){
 
-        newSequence.save(function (err, data) {
-            if (err) {
-                log.debug("Insert failed: ", err);
-                // rollback
-            } else {
-                log.debug('Saved : ', data );
-                res.status(200);
-                res.send({res: 'ok', _id: data._id});
-            }
-        });
+            log.debug('query: ', queries[i]);
+
+            var newSequence = new Sequence(queries[i]);
+
+            newSequence.save(function (err, data) {
+                if (err) {
+                    log.debug("Insert failed: ", err);
+                    // rollback
+                } else {
+                    log.debug('Saved : ', data );
+                    res.status(200);
+                    // res.send({res: 'ok'});
+                }
+            });
+        }
+
+        // var data = {
+        //     _id: req.body._id,
+        //     title: req.body.title,
+        //     location: req.body.location,
+        //     keywords: req.body.keywords,
+        //     gps: req.body.gps,
+        //     avg_speed: req.body.avg_speed,
+        //     capture_time: req.body.capture_time,
+        //     frame_number: req.body.frame_number,
+        //     usage: req.body.usage,
+        //     file_location: req.body.file_location,
+        //     cameras: req.body.cameras
+        // };
 
     },
 
+    getUnfinished: function(req, res) {
+
+        // Change condition to is_annotated == false
+
+        Sequence.find({$where: 'this.cameras[0].annotation.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+            if (err) throw err;
+
+            res.send(sequence);
+        });
+    },
+
+
     update: function(req, res) {
 
-        log.debug('keywords: ', req.body);
+        // log.debug('keywords: ', req.body);
+        //
+        // var data = {
+        //     condition: req.body.condition,
+        //     update: req.body.update,
+        //     options: req.body.options
+        // };
 
-        var data = {
-            condition: req.body.condition,
-            update: req.body.update,
-            options: req.body.options,
-        };
+        var data = req.body;
 
-        log.debug('data: ', data);
+        log.debug('keywords: ', data);
 
 
         Sequence.update(data.condition, data.update, data.options, function(err, numAffected) {
@@ -105,15 +126,17 @@ module.exports = {
 
     insertUnfiltered: function(req, res) {
 
-        log.debug('insertUnfiltered: ', req.body);
+        // log.debug('insertUnfiltered: ', req.body);
 
-        var data = {
-            title: req.body.title,
-            capture_time: req.body.capture_time,
-            frame_number: req.body.frame_number,
-            file_location: req.body.file_location,
-            cameras: req.body.cameras
-        };
+        // var data = {
+        //     title: req.body.title,
+        //     capture_time: req.body.capture_time,
+        //     frame_number: req.body.frame_number,
+        //     file_location: req.body.file_location,
+        //     cameras: req.body.cameras
+        // };
+
+        var data = req.body;
 
 
         log.debug('data: ', data);
@@ -136,62 +159,67 @@ module.exports = {
 
     getAllUnfiltered: function(req, res) {
 
-        unfilteredSequence.find({$where: 'this.cameras[0].annotate_request.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+        unfilteredSequence.find({}, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) throw err;
 
             res.send(sequence);
         });
 
-        // unfilteredSequence
-        //     .aggregate({ $match: { age: { $gte: 21 }}})
-        //     .unwind('$cameras[0].annotate_request')
-        //     .exec(function(err, sequence) {
-        //         if (err) throw err;
-        //
-        //         res.send(sequence);
-        //     });
+    },
 
+    getRequested: function(req, res) {
 
-        // unfilteredSequence.aggregate([
-        //     // { $match: {
-        //     //     _id: '$_id'
-        //     // }},
-        //     { $unwind: "$cameras" },
-        //     { $unwind: "$annotate_request" }
-        //     // { $group: {
-        //     //     _id: "$_id",
-        //     //     sumPriority: { $sum: "$cameras[0].annotate_request.priority"  }
-        //     // }}
-        // ], function(err, sequence) {
-        //     if (err) throw err;
-        //     log.debug('aggregate: ', sequence );
-        //
-        //     res.send(sequence);
-        // });
+        unfilteredSequence.find({$where: 'this.cameras[0].annotation.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+            if (err) throw err;
+
+            res.send(sequence);
+        });
     },
 
     updateUnfiltered: function(req, res) {
 
-        log.debug('keywords: ', req.body);
 
-        var data = {
-            condition: req.body.condition,
-            update: req.body.update,
-            options: req.body.options,
-        };
+        var queries = req.body;
+        log.debug('queries: ', queries);
 
-        log.debug('data: ', data);
+        var numUpdated = 0;
+
+        for (var i = 0; i < queries.length; i++){
+
+            log.debug('condition: ', queries[i].condition);
+            log.debug('update: ', queries[i].update);
+            log.debug('options: ', queries[i].options);
 
 
-        Sequence.update(data.condition, data.update, data.options, function(err, numAffected) {
-            if (err) {
-                log.debug("Result error: ", err);
-                throw err;
-            } else{
-                log.debug("numAffected: ", numAffected);
-                res.send(numAffected);
-            }
-        });
+
+
+            unfilteredSequence.update(queries[i].condition, queries[i].update, queries[i].options, function(err, numAffected) {
+                if (err) {
+                    log.debug("Result error: ", err);
+                    throw err;
+                } else{
+                    log.debug("numAffected: ", numAffected);
+                    numUpdated += numAffected.nModified;
+                    if (numUpdated === queries.length)
+                        res.send(numUpdated + " Sequence selected!");
+                }
+            });
+        }
+
+
+        // var data = {
+        //     condition: req.body.condition,
+        //     update: req.body.update,
+        //     options: req.body.options,
+        // };
+        //
+        // log.debug('data: ', data);
+
+
+
+
+
+
 
     }
 

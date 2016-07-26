@@ -10,12 +10,16 @@ router.get('/', controller.index);
 router.get('/findByID/:id', controller.findByID);
 router.get('/seed', seed);
 router.get('/getAllUnfiltered', controller.getAllUnfiltered);
+router.get('/getRequested', controller.getRequested);
+router.get('/getUnfinished', controller.getUnfinished);
+
+
 
 
 router.post('/query', controller.result);
 router.post('/update', controller.update);
 router.post('/updateUnfiltered', controller.updateUnfiltered);
-router.put('/insert', controller.insert);
+router.post('/insert', controller.insert);
 router.put('/insertUnfiltered', controller.insertUnfiltered);
 
 // router.patch('/:id', controller.update);

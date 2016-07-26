@@ -20,25 +20,64 @@
     <body>
 
     <!--navibar-->
-    <nav class="navbar navbar-default">
-        <div class="container">
+
+    <!--<nav class="navbar navbar-default">-->
+        <!--<div class="container">-->
+            <!--<div class="navbar-header">-->
+                <!--<a class="navbar-brand" href="/">AlgoWeb</a>-->
+            <!--</div>-->
+            <!--<ul class="nav navbar-nav">-->
+                <!--&lt;!&ndash;<li><a ui-sref="home">Home</a></li>&ndash;&gt;-->
+                <!--<li><a ui-sref="query">Query</a></li>-->
+                <!--<li><a ui-sref="filter">Filter</a></li>-->
+                <!--<li><a ui-sref="annotation">Annotation Tasks</a></li>-->
+                <!--<li><a ui-sref="home">Sequence Process</a></li>-->
+                <!--<li><a ui-sref="home">Documentation</a></li>-->
+
+            <!--</ul>-->
+            <!--<ul class="nav navbar-nav navbar-right">-->
+                <!--<li><a href="/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</nav>-->
+
+
+    <div ng-controller="NavigationController">
+        <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">AlgoWeb</a>
+            <a class="navbar-brand" href="/">AlgoWeb</a>
             </div>
+
             <ul class="nav navbar-nav">
                 <!--<li><a ui-sref="home">Home</a></li>-->
                 <li><a ui-sref="query">Query</a></li>
-                <li><a ui-sref="filter">Filter</a></li>
-                <li><a ui-sref="annotation">Annotation</a></li>
-                <!--<li><a ui-sref="home">Import Annotation</a></li>-->
-                <!--<li><a ui-sref="home">Benchmark</a></li>-->
+                <!--<li><a ui-sref="filter">Filter</a></li>-->
+                <!--<li><a ui-sref="annotation">Annotation Tasks</a></li>-->
+                <!--<li><a ui-sref="home">Sequence Process</a></li>-->
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
-        </div>
-    </nav>
+
+            <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+                <ul class="nav navbar-nav">
+                    <li uib-dropdown>
+                        <a href="#" uib-dropdown-toggle>Annotation<b class='caret'></b></a>
+                        <tree tree='Annotation'></tree>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav">
+                    <li uib-dropdown>
+                        <a href="#" uib-dropdown-toggle>Documentation<b class='caret'></b></a>
+                        <tree tree='Documentation'></tree>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </div>
 
 
 
@@ -51,7 +90,7 @@
 
     <!--footer-->
     <footer class="container-fluid text-center">
-        <p>Ambarella AlgoWeb Development Kit v0.0.1 |
+        <p>Ambarella AlgoWeb Development Kit v1.0.2 |
             <!--<a href="https://twitter.com/tyhenkel">@tyhenkel</a> |-->
             <a href="mailto:cjfang@ambarella.com">Report Issues</a>
         </p>
@@ -82,6 +121,9 @@
     <script src="/app/resultList/resultList.js"></script>
     <script src="/app/filter/filter.js"></script>
     <script src="/app/annotation/annotation.js"></script>
+    <script src="/app/navbar/navbar.js"></script>
+    <script src="/app/review/review.js"></script>
+
 
 
 

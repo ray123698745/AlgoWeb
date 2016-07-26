@@ -1,0 +1,247 @@
+<a id="top"></a>
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>{{results.length}} Requested Sequences</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <h2>Summary</h2><br>
+
+                <h4>Priority\Category (Sequences)</h4>
+                <div class="row">
+                    <div class="col-md-2">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>High</th>
+                            </tr>
+                            <tr>
+                                <th>Median</th>
+                            </tr>
+                            <tr>
+                                <th>Low</th>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-10">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Road</th>
+                                <th>Pedestrian</th>
+                                <th>Vehicle</th>
+                                <th>Total</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>6</td>
+                                <td>9</td>
+                                <td>18</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h4>Estimate Annotation Time (Hours)</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Road</th>
+                                <th>Pedestrian</th>
+                                <th>Vehicle</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>5</td>
+                                <td>16</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <!--<div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >-->
+    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
+
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <h4 class="media-heading"><strong>{{result.title}}</strong> </h4>
+
+                <div class="media">
+                    <div class="media-left">
+                        <a><img ng-src="{{thumbSrc(result)}}" class="img-rounded media-object" /></a>
+                    </div>
+                    <div class="media-body">
+                        <!--<h4 class="media-heading"><strong>{{result.title}}</strong> </h4>-->
+                        <div class="row">
+
+                            <div class="col-md-10" >
+
+                                <!--<div class="well light_well">-->
+                                    <!--<h5 class="keyword_h5">Annotation Request: </h5>-->
+                                    <!--<p ng-repeat="request in result.cameras[0].annotate_request">Category: {{request.category}}, FPS: {{request.fps}}</p>-->
+
+                                <!--</div>-->
+
+                                <!--<div class="list-group">-->
+                                    <!--<button ng-repeat="request in result.cameras[0].annotate_request" type="button" class="list-group-item">Category: {{request.category}}, FPS: {{request.fps}}</button>-->
+                                    <!--<button  type="button" class="list-group-item">Category: {{request.category}}, FPS: {{request.fps}}</button>-->
+                                <!--</div>-->
+
+                                <table class="table table-condensed table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>FPS</th>
+                                        <th>Priority</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="request in result.cameras[0].annotation" ng-click="edit(result, request, $index)">
+
+                                            <td ng-show="!request.isEdit">{{request.category}}</td>
+                                            <td ng-show="!request.isEdit">{{request.fps}}</td>
+                                            <td ng-show="!request.isEdit">{{showPriority(request.priority)}}</td>
+
+                                            <td ng-show="request.isEdit">
+                                                <select class="form-control input-sm" ng-model="request.category" ng-change="editingRequest.category=request.category">
+                                                    <!--<option disabled selected value></option>-->
+                                                    <option value="Road">Road</option>
+                                                    <option value="Pedestrian">Pedestrian</option>
+                                                    <option value="Vehicle">Vehicle</option>
+                                                </select>
+                                            </td>
+                                            <td ng-show="request.isEdit">
+                                                <select class="form-control input-sm" ng-model="request.fps" convert-to-number ng-change="editingRequest.fps=request.fps">
+                                                    <!--<option disabled selected value></option>-->
+                                                    <option value="1">1</option>
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                            </td>
+                                            <td ng-show="request.isEdit">
+                                                <select class="form-control input-sm" ng-model="request.priority" convert-to-number ng-change="editingRequest.priority=request.priority">
+                                                    <!--<option disabled selected value></option>-->
+                                                    <option value="3">High</option>
+                                                    <option value="2">Median</option>
+                                                    <option value="1">Low</option>
+                                                </select>
+                                            </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+
+                            <div class="col-md-2" style="padding-left: 1%">
+                                <div class="btn-group-vertical">
+                                    <button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
+                                    <button ng-show="result.isEdit" class="btn btn-default btn-block" type="button" ng-click="submitEdit(result)">Submit</button>
+                                    <button ng-show="result.isEdit" class="btn btn-default btn-block" type="button" ng-click="cancel(result)">Cancel</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <!--<div class="col-md-4">-->
+                    <!--<button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>-->
+                    <!--</div>-->
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <!--<button class="btn btn-default" type="button" ng-click="detail(result)">Detail...</button>-->
+                        <!--<div class="btn-group" uib-dropdown>-->
+                        <!--<button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>-->
+                        <!--Detail... <span class="caret"></span>-->
+                        <!--</button>-->
+                        <!--<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">-->
+                        <!--<li role="menuitem" ng-repeat="camera in result.cameras"><a ng-click="detail(result, result.cameras.indexOf(camera))">{{camera.name}}</a></li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <div class="button_wrapper" style="padding-top: 7px;">
+                <button class="btn btn-default btn-block" type="submit" ng-click="submitReview()">Submit</button>
+            </div>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="myModalContent.html">
+
+    <div class="modal-body">
+        <div class="center_video">
+            <div class="embed-responsive embed-responsive-16by9">
+                <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
+            </div>
+        </div>
+    </div>
+
+</script>

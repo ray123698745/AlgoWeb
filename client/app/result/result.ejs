@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="row">
             <div class="col-md-5">
-                <h1>{{result.capture_time + ' ' + result.location.country}}</h1>
+                <h1>{{result.title}}</h1>
             </div>
             <div class="col-md-5 col-md-offset-1 right_button_wrapper_low">
                 <label class="control-label title_label">Switch Camera:&nbsp;&nbsp; </label>
@@ -163,7 +163,7 @@
                             <div class="col-md-4 col-md-offset-4">
                                 <div style="text-align: center;">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary " ng-click="encode()" >&nbsp;&nbsp;Raw Encode </button>
+                                        <button type="button" class="btn btn-primary disabled" ng-click="encode()" >&nbsp;&nbsp;Raw Encode </button>
                                         <button type="button" class="btn btn-primary dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
