@@ -70,44 +70,46 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
     $scope.submit = function () {
 
-        var queries = [];
+        if (confirm($scope.selected.length + " sequence selected") == true) {
+            var queries = [];
 
-        for (var i = 0; i < $scope.selected.length; i++){
+            for (var i = 0; i < $scope.selected.length; i++){
 
-            var query = {
-                condition: {_id: $scope.selected[i].id},
-                update: {$push: {
-                    "cameras.0.annotation": {
-                        "category": $scope.selected[i].category,
-                        "fps": $scope.selected[i].fps,
-                        "priority": $scope.selected[i].priority,
-                        "is_annotated" : false
-                    }
-                }},
-                options: {multi: false}
-            };
+                var query = {
+                    condition: {_id: $scope.selected[i].id},
+                    update: {$push: {
+                        "cameras.0.annotation": {
+                            "category": $scope.selected[i].category,
+                            "fps": $scope.selected[i].fps,
+                            "priority": $scope.selected[i].priority,
+                            "state" : 'Annotating'
+                        }
+                    }},
+                    options: {multi: false}
+                };
 
-            queries.push(query);
+                queries.push(query);
+
+            }
+
+            //update database
+            $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+                .success(function(databaseResult) {
+                    // alert(databaseResult);
+                    // console.log(databaseResult);
+                    $state.go('review');
+
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("submit request failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("submit request failed!");
+                });
+
 
         }
 
-
-
-        //update database
-        $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
-            .success(function(databaseResult) {
-                alert(databaseResult);
-                // console.log(databaseResult);
-
-            })
-            .error(function (data, status, header, config) {
-                alert("submit request failed!\nStatus: " + status + "\nData: " + data);
-
-                console.log("submit request failed!");
-            });
-
-
-        $state.go('review');
     }
 
 }]);

@@ -13,9 +13,6 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     $http.get("/api/sequence/getRequested")
         .success(function(databaseResult) {
             $scope.results = databaseResult;
-
-            // console.log($scope.results);
-
         })
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
@@ -54,7 +51,7 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     $scope.showPriority = function (priority) {
 
         if (priority == 1) return 'Low';
-        if (priority == 2) return 'Median';
+        if (priority == 2) return 'Medium';
         if (priority == 3) return 'High';
     };
 
@@ -90,39 +87,81 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
     $scope.submitEdit = function (result) {
 
-        console.log("_id:" + result._id);
-        console.log("index:" + $scope.editingRequest.index);
-        console.log("category:" + $scope.editingRequest.category);
-        console.log("fps:" + $scope.editingRequest.fps);
-        console.log("priority:" + $scope.editingRequest.priority);
 
-        // var queries = [];
-        //
-        // var query = {
-        //     condition: {_id: result._id, category: $scope.editingRequest.category},
-        //     update: {$set: {
-        //         "cameras.0.annotation": {
-        //             "category": $scope.editingRequest.category,
-        //             "fps": $scope.editingRequest.fps,
-        //             "priority": $scope.editingRequest.priority
-        //         }
-        //     }},
-        //     options: {multi: false}
-        // };
-        //
-        // queries.push(query);
-        //
-        // $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
-        //     .success(function(databaseResult) {
-        //         alert(databaseResult);
-        //         // console.log(databaseResult);
-        //
-        //     })
-        //     .error(function (data, status, header, config) {
-        //         alert("submit request failed!\nStatus: " + status + "\nData: " + data);
-        //
-        //         console.log("submit request failed!");
-        //     });
+        var queries = [];
+        var set_obj = {};
+
+        var category_key = 'cameras.0.annotation.' + $scope.editingRequest.index + '.category';
+        var fps_key = 'cameras.0.annotation.' + $scope.editingRequest.index + '.fps';
+        var priority_key = 'cameras.0.annotation.' + $scope.editingRequest.index + '.priority';
+
+
+        set_obj[category_key] = $scope.editingRequest.category;
+        set_obj[fps_key] = $scope.editingRequest.fps;
+        set_obj[priority_key] = $scope.editingRequest.priority;
+
+
+
+        var query = {
+            condition: {_id: result._id},
+            update: {$set: set_obj},
+            options: {multi: false}
+        };
+
+        queries.push(query);
+
+        // console.log(query);
+
+
+        $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+            .success(function(databaseResult) {
+                // alert(databaseResult);
+                $scope.cancel(result);
+
+            })
+            .error(function (data, status, header, config) {
+                alert("edit request failed!\nStatus: " + status + "\nData: " + data);
+
+                console.log("submit request failed!");
+            });
+    };
+
+    $scope.delete = function (result) {
+
+        var queries = [];
+
+        var query = {
+            condition: {_id: result._id},
+            update: {$pull: { 'cameras.0.annotation': { category: $scope.editingRequest.category } }},
+            options: {multi: false}
+        };
+
+        queries.push(query);
+
+        // console.log(query);
+
+
+        $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+            .success(function(databaseResult) {
+                // alert(databaseResult);
+
+                $http.get("/api/sequence/getRequested")
+                    .success(function(databaseResult) {
+                        $scope.results = databaseResult;
+                    })
+                    .error(function (data, status, header, config) {
+                        $scope.results = "failed!";
+                    });
+
+
+                $scope.cancel(result);
+
+            })
+            .error(function (data, status, header, config) {
+                alert("edit request failed!\nStatus: " + status + "\nData: " + data);
+
+                console.log("submit request failed!");
+            });
     };
 
 
@@ -149,42 +188,30 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
     $scope.submitReview = function () {
 
-        var queries = [];
+        if (confirm("Submit this batch of sequence?") == true) {
+            var queries = [];
 
-        for (var i = 0; i < $scope.results.length; i++){
+            for (var i = 0; i < $scope.results.length; i++){
 
-            // var query = {
-            //     condition: {_id: $scope.selected[i].id},
-            //     update: {$push: {
-            //         "cameras.0.annotate_request": {
-            //             "category": $scope.selected[i].category,
-            //             "fps": $scope.selected[i].fps,
-            //             "priority": $scope.selected[i].priority
-            //         }
-            //     }},
-            //     options: {multi: false}
-            // };
+                queries.push($scope.results[i]);
+            }
 
-            queries.push($scope.results[i]);
+
+            $http.post("/api/sequence/insert", JSON.stringify(queries))
+                .success(function(databaseResult) {
+                    // alert("Submitted! " + databaseResult);
+                    // console.log(databaseResult);
+                    $state.go('annotation');
+
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("Insert sequence failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("submit request failed!");
+                });
 
         }
-
-
-
-        //update database
-        $http.post("/api/sequence/insert", JSON.stringify(queries))
-            .success(function(databaseResult) {
-                alert(databaseResult);
-                // console.log(databaseResult);
-
-            })
-            .error(function (data, status, header, config) {
-                alert("Insert sequence failed!\nStatus: " + status + "\nData: " + data);
-
-                console.log("submit request failed!");
-            });
-
-        $state.go('annotation');
     }
 
 }]);

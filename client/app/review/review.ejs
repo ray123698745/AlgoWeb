@@ -120,22 +120,9 @@
                         <a><img ng-src="{{thumbSrc(result)}}" class="img-rounded media-object" /></a>
                     </div>
                     <div class="media-body">
-                        <!--<h4 class="media-heading"><strong>{{result.title}}</strong> </h4>-->
                         <div class="row">
 
                             <div class="col-md-10" >
-
-                                <!--<div class="well light_well">-->
-                                    <!--<h5 class="keyword_h5">Annotation Request: </h5>-->
-                                    <!--<p ng-repeat="request in result.cameras[0].annotate_request">Category: {{request.category}}, FPS: {{request.fps}}</p>-->
-
-                                <!--</div>-->
-
-                                <!--<div class="list-group">-->
-                                    <!--<button ng-repeat="request in result.cameras[0].annotate_request" type="button" class="list-group-item">Category: {{request.category}}, FPS: {{request.fps}}</button>-->
-                                    <!--<button  type="button" class="list-group-item">Category: {{request.category}}, FPS: {{request.fps}}</button>-->
-                                <!--</div>-->
-
                                 <table class="table table-condensed table-hover">
                                     <thead>
                                     <tr>
@@ -145,14 +132,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="request in result.cameras[0].annotation" ng-click="edit(result, request, $index)">
+                                    <tr class="pointer_table" ng-repeat="request in result.cameras[0].annotation" ng-click="edit(result, request, $index)">
 
                                             <td ng-show="!request.isEdit">{{request.category}}</td>
                                             <td ng-show="!request.isEdit">{{request.fps}}</td>
                                             <td ng-show="!request.isEdit">{{showPriority(request.priority)}}</td>
 
                                             <td ng-show="request.isEdit">
-                                                <select class="form-control input-sm" ng-model="request.category" ng-change="editingRequest.category=request.category">
+                                                <select class="form-control input-sm" ng-model="editingRequest.category" ng-change="editingRequest.category=request.category">
                                                     <!--<option disabled selected value></option>-->
                                                     <option value="Road">Road</option>
                                                     <option value="Pedestrian">Pedestrian</option>
@@ -160,7 +147,7 @@
                                                 </select>
                                             </td>
                                             <td ng-show="request.isEdit">
-                                                <select class="form-control input-sm" ng-model="request.fps" convert-to-number ng-change="editingRequest.fps=request.fps">
+                                                <select class="form-control input-sm" ng-model="editingRequest.fps" convert-to-number ng-change="editingRequest.fps=request.fps">
                                                     <!--<option disabled selected value></option>-->
                                                     <option value="1">1</option>
                                                     <option value="5">5</option>
@@ -168,10 +155,10 @@
                                                 </select>
                                             </td>
                                             <td ng-show="request.isEdit">
-                                                <select class="form-control input-sm" ng-model="request.priority" convert-to-number ng-change="editingRequest.priority=request.priority">
+                                                <select class="form-control input-sm" ng-model="editingRequest.priority" convert-to-number ng-change="editingRequest.priority=request.priority">
                                                     <!--<option disabled selected value></option>-->
                                                     <option value="3">High</option>
-                                                    <option value="2">Median</option>
+                                                    <option value="2">Medium</option>
                                                     <option value="1">Low</option>
                                                 </select>
                                             </td>
@@ -184,8 +171,9 @@
 
                             <div class="col-md-2" style="padding-left: 1%">
                                 <div class="btn-group-vertical">
-                                    <button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
+                                    <button ng-show="!result.isEdit" class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
                                     <button ng-show="result.isEdit" class="btn btn-default btn-block" type="button" ng-click="submitEdit(result)">Submit</button>
+                                    <button ng-show="result.isEdit" class="btn btn-default btn-block" type="button" ng-click="delete(result)">Delete</button>
                                     <button ng-show="result.isEdit" class="btn btn-default btn-block" type="button" ng-click="cancel(result)">Cancel</button>
                                 </div>
                             </div>

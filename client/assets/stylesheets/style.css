@@ -44,6 +44,10 @@ footer {
     margin-top: 15px;
 }
 
+.pointer_table{
+    cursor: pointer;
+}
+
 /*.navbar {*/
     /*margin-bottom: 0;*/
     /*background-color: #f4511e;*/

@@ -65,29 +65,26 @@ module.exports = {
                     log.debug('Saved : ', data );
                     res.status(200);
                     // res.send({res: 'ok'});
+                    res.send(data);
+
                 }
             });
-        }
 
-        // var data = {
-        //     _id: req.body._id,
-        //     title: req.body.title,
-        //     location: req.body.location,
-        //     keywords: req.body.keywords,
-        //     gps: req.body.gps,
-        //     avg_speed: req.body.avg_speed,
-        //     capture_time: req.body.capture_time,
-        //     frame_number: req.body.frame_number,
-        //     usage: req.body.usage,
-        //     file_location: req.body.file_location,
-        //     cameras: req.body.cameras
-        // };
+
+            // use job queue to:
+
+            // 1. create request folder and package
+            // 2. remove unselected sequence
+            // 3. start raw to yuv process
+            // 4. update db
+
+        }
 
     },
 
     getUnfinished: function(req, res) {
 
-        // Change condition to is_annotated == false
+        // Change condition to state != finish
 
         Sequence.find({$where: 'this.cameras[0].annotation.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) throw err;
@@ -99,17 +96,9 @@ module.exports = {
 
     update: function(req, res) {
 
-        // log.debug('keywords: ', req.body);
-        //
-        // var data = {
-        //     condition: req.body.condition,
-        //     update: req.body.update,
-        //     options: req.body.options
-        // };
-
         var data = req.body;
 
-        log.debug('keywords: ', data);
+        log.debug('data: ', data);
 
 
         Sequence.update(data.condition, data.update, data.options, function(err, numAffected) {
@@ -126,21 +115,10 @@ module.exports = {
 
     insertUnfiltered: function(req, res) {
 
-        // log.debug('insertUnfiltered: ', req.body);
-
-        // var data = {
-        //     title: req.body.title,
-        //     capture_time: req.body.capture_time,
-        //     frame_number: req.body.frame_number,
-        //     file_location: req.body.file_location,
-        //     cameras: req.body.cameras
-        // };
 
         var data = req.body;
 
-
         log.debug('data: ', data);
-
 
         var newUnfilteredSequence = new unfilteredSequence(data);
 
@@ -191,8 +169,6 @@ module.exports = {
             log.debug('options: ', queries[i].options);
 
 
-
-
             unfilteredSequence.update(queries[i].condition, queries[i].update, queries[i].options, function(err, numAffected) {
                 if (err) {
                     log.debug("Result error: ", err);
@@ -205,21 +181,6 @@ module.exports = {
                 }
             });
         }
-
-
-        // var data = {
-        //     condition: req.body.condition,
-        //     update: req.body.update,
-        //     options: req.body.options,
-        // };
-        //
-        // log.debug('data: ', data);
-
-
-
-
-
-
 
     }
 
