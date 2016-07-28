@@ -82,13 +82,31 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
                             "category": $scope.selected[i].category,
                             "fps": $scope.selected[i].fps,
                             "priority": $scope.selected[i].priority,
-                            "state" : 'Annotating'
+                            "state" : 'Pending'
                         }
                     }},
                     options: {multi: false}
                 };
 
                 queries.push(query);
+
+                if ($scope.selected[i].category == "Road"){
+                     query = {
+                        condition: {_id: $scope.selected[i].id},
+                        update: {$push: {
+                            "cameras.0.annotation": {
+                                "category": "Lane",
+                                "fps": $scope.selected[i].fps,
+                                "priority": 0, //???
+                                "state" : 'Pending'
+                            }
+                        }},
+                        options: {multi: false}
+                    };
+
+                    queries.push(query);
+                }
+
 
             }
 
