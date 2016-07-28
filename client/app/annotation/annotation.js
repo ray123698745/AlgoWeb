@@ -72,7 +72,6 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     $scope.submitEdit = function (result) {
 
 
-        var queries = [];
         var set_obj = {};
 
         var state_key = 'cameras.0.annotation.' + $scope.editingRequest.index + '.state';
@@ -84,12 +83,10 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             options: {multi: false}
         };
 
-        queries.push(query);
-
         // console.log(query);
 
 
-        $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+        $http.post("/api/sequence/update", JSON.stringify(query))
             .success(function(databaseResult) {
                 // alert(databaseResult);
                 $scope.cancel(result);
