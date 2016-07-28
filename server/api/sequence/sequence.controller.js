@@ -49,7 +49,8 @@ module.exports = {
         log.debug('Insert: ', req.body);
 
         var queries = req.body;
-
+        var done = 0;
+        
 
         for (var i = 0; i < queries.length; i++){
 
@@ -63,9 +64,12 @@ module.exports = {
                     // rollback
                 } else {
                     log.debug('Saved : ', data );
-                    res.status(200);
-                    // res.send({res: 'ok'});
-                    res.send(data);
+                    done++;
+                    if(done == queries.length){
+                        res.status(200);
+                        res.send({res: 'ok'});
+                        // res.send(data);
+                    }
 
                 }
             });
