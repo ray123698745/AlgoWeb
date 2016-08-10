@@ -196,12 +196,12 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
                 queries.push($scope.results[i]);
             }
 
-
-            $http.post("/api/sequence/insert", JSON.stringify(queries))
-                .success(function(databaseResult) {
-                    // alert("Submitted! " + databaseResult);
+            // $http.post("/api/sequence/insert", JSON.stringify(queries))
+            $http.post("/api/command/processSequence", JSON.stringify(queries))
+                .success(function(respond) {
+                    alert(respond);
                     // console.log(databaseResult);
-                    $state.go('annotation');
+                    // $state.go('annotation');
 
 
                 })

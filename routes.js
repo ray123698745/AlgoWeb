@@ -9,13 +9,14 @@ var path = require('path');
 var express = require('express');
 
 module.exports = function(app) {
-    
-    
-    
+
+
+
     // Insert routes below
     app.use('/api/sequence', require('./server/api/sequence'));
     app.use('/api/script', require('./server/api/script'));
     app.use('/api/command', require('./server/api/command'));
+    app.use('/api/upload', require('./server/api/upload'));
 
 
     app.route('/*')
@@ -56,5 +57,5 @@ module.exports = function(app) {
         });
     });
 
-    
+
 }

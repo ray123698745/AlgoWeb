@@ -61,7 +61,7 @@ app.service('dataService', function () {
 
     this.keywords = {
         "Weather": ["Sunny", "Rain", "Cloudy", "Snow", "Hail"],
-        "Light_Condition": ["Bright", "Indoor", "Shadow", "Night_with_street_light",  "Night_without_street_light", "Dusk", "Dawn", "Backlight", "Tunnel"],
+        "Light_Condition": ["Bright", "Indoor", "Shadow", "Night_with_street_light",  "Night_without_street_light", "Dusk", "Dawn", "Back_lit", "Tunnel"],
         "Road_Type": ["Urban", "Suburban", "Rural", "Highway", "Parking_lot"],
         "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"],
         "Special_Condition": ["Construction", "Accident", "Pot_hole"]
@@ -80,7 +80,7 @@ app.service('utilService', ['dataService', function (dataService) {
                 return siteArray[i].root_path;
             }
         }
-    }
+    };
 
     this.getPrefix = function (capTime) {
 
@@ -92,7 +92,7 @@ app.service('utilService', ['dataService', function (dataService) {
 
         // console.log("Prefix: " + prefix);
         return prefix;
-    }
+    };
 
     // var self = this;
     //

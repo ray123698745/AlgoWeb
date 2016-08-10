@@ -40,6 +40,10 @@ connection.on('close', function() {
 connection.connect(params);
 */
 
+queue.process('processImport', function (job, done){
+    
+});
+
 queue.process('encode', function (job, done){
 
 

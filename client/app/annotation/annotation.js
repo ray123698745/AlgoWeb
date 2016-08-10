@@ -5,15 +5,12 @@
 
 app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', '$anchorScroll', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService, $anchorScroll) {
 
-
     $scope.editing = false;
+    var canceling = false;
 
-    $http.get("/api/sequence/getUnfinished")  //getRequested from sequence collection
+    $http.get("/api/sequence/getUnfinished")
         .success(function(databaseResult) {
             $scope.results = databaseResult;
-
-            // console.log($scope.results);
-
         })
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
@@ -32,50 +29,93 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     };
 
 
-    $scope.download = function (result) {
+    $scope.download = function (result, file, category) {
 
-        return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ result.title +".tar.gz";
-
-
-    };
-
-    $scope.upload = function (result) {
-
-        // return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/L/"+ result.title +"_h264_L.mp4";
-
+        if (file == 'package')
+            return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ result.title +".tar.gz";
+        if (file == 'JSON')
+            return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ result.title + '_' + category + ".json";
     };
 
 
-    $scope.edit = function (result, request, index) {
+    $scope.upload = function (ele) {
 
-        if (!$scope.editing){
-            if (!request.isEdit){
-                request.isEdit = true;
-                result.isEdit = true;
-                $scope.editing = true;
-                $scope.editingRequest = request;
-                $scope.editingRequest.index = index;
+        var files = ele.files;
 
-            }
+        var result = angular.element(ele).scope().result;
+        var index = angular.element(ele).scope().$index;
+
+        if (files.length == 2){
+
+            var fd = new FormData();
+            fd.append("annotation", files[0]);
+            fd.append("annotation", files[1]);
+
+            fd.append("path", utilService.getRootPathBySite(result.file_location));
+            fd.append("id", result._id);
+            fd.append("title", result.title);
+            fd.append("index", index);
+            fd.append("category", result.cameras[0].annotation[index].category);
+
+
+            $http.post("/api/upload/uploadAnnotation", fd,
+                {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                })
+                .success(function(data) {
+                    alert(data);
+                    console.log(data);
+
+                    $http.get("/api/sequence/getUnfinished")
+                        .success(function(databaseResult) {
+                            $scope.results = databaseResult;
+                        })
+                        .error(function (data, status, header, config) {
+                            $scope.results = "failed!";
+                        });
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("Upload annotation failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("Upload annotation failed!");
+                });
+
+
+        } else {
+            alert("Please upload both annotation and state file");
         }
     };
 
-    $scope.cancel = function (result) {
 
-        $scope.editingRequest.isEdit = false;
-        result.isEdit = false;
+    $scope.edit = function (request, index) {
+
+        if (!$scope.editing && !canceling && (request.state == 'Pending' || request.state == 'Annotating' || request.state == 'Reviewing')){
+            if (!request.isEdit){
+                request.isEdit = true;
+                $scope.editing = true;
+            }
+        }
+
+        if(canceling)canceling = false;
+
+    };
+
+    $scope.cancel = function (request) {
+
+        request.isEdit = false;
         $scope.editing = false;
-        $scope.editingRequest = null;
+        canceling = true;
     };
 
 
-    $scope.submitEdit = function (result) {
-
+    $scope.submitEdit = function (result, request, index) {
 
         var set_obj = {};
-
-        var state_key = 'cameras.0.annotation.' + $scope.editingRequest.index + '.state';
-        set_obj[state_key] = $scope.editingRequest.state;
+        var state_key = 'cameras.0.annotation.' + index + '.state';
+        set_obj[state_key] = request.state;
 
         var query = {
             condition: {_id: result._id},
@@ -83,14 +123,10 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             options: {multi: false}
         };
 
-        // console.log(query);
-
-
         $http.post("/api/sequence/update", JSON.stringify(query))
             .success(function(databaseResult) {
-                // alert(databaseResult);
-                $scope.cancel(result);
-
+                $scope.cancel(request);
+                if(canceling)canceling = false;
             })
             .error(function (data, status, header, config) {
                 alert("edit request failed!\nStatus: " + status + "\nData: " + data);
@@ -100,27 +136,82 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     };
 
 
+    $scope.disableEdit = function () {
+        canceling = true;
+    };
 
-    $scope.preview = function (result) {
+
+    $scope.accept = function (result, index) {
+
+        if (confirm("Accept this annotation task?\n" +
+                "Task will be removed from the list.\n" +
+                "Please use the query function to find the annotation result.") == true) {
+
+            var set_obj = {};
+
+            var state_key = 'cameras.0.annotation.' + index + '.state';
+            set_obj[state_key] = 'Accepted';
+
+            var query = {
+                condition: {_id: result._id},
+                update: {$set: set_obj},
+                options: {multi: false}
+            };
+
+            $http.post("/api/sequence/update", JSON.stringify(query))
+                .success(function(databaseResult) {
+                    $http.get("/api/sequence/getUnfinished")
+                        .success(function(databaseResult) {
+                            $scope.results = databaseResult;
+                        })
+                        .error(function (data, status, header, config) {
+                            $scope.results = "failed!";
+                        });
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("edit request failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("submit request failed!");
+                });
+
+        }
+    };
+
+
+    $scope.modify = function (result, index) {
 
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'myModalContent.html',
-            controller: 'annotatePreviewCtrl',
-            size: 'lg',
+            controller: 'annotateModifyCtrl',
+            size: 'md',
             resolve: {
                 result: function () {
                     return result;
+                },
+                index: function () {
+                    return index;
                 }
             }
         });
 
         modalInstance.result.then(function () {
-            // $scope.selected = selectedItem;
+            $http.get("/api/sequence/getUnfinished")
+                .success(function(databaseResult) {
+                    $scope.results = databaseResult;
+                })
+                .error(function (data, status, header, config) {
+                    $scope.results = "failed!";
+                });
         }, function () {
-            // $log.info('Modal dismissed at: ' + new Date());
         });
 
+    };
+
+
+    $scope.showComments = function (result, index) {
+        $anchorScroll('top');
     };
 
 
@@ -130,41 +221,49 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
     $scope.order = function (result) {
 
-
-
         var totalPriority = 0;
 
         result.cameras[0].annotation.forEach(function (request) {
 
             totalPriority += request.priority;
         });
-        // console.log(totalPriority);
 
         return totalPriority;
-
     };
-
-    // $scope.back = function () {
-    //     $state.go('query');
-    // }
 
 }]);
 
 
 
+app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance, $sce, result, index, dataService, utilService) {
 
-app.controller('annotatePreviewCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
+    $scope.submitComments = function () {
+
+        var set_obj = {};
+
+        var state_key = 'cameras.0.annotation.' + index + '.comments';
+        var state_state_key = 'cameras.0.annotation.' + index + '.state';
+
+        set_obj[state_key] = $scope.comments;
+        set_obj[state_state_key] = 'Modifying';
 
 
-    $scope.previewSrc = function () {
+        var query = {
+            condition: {_id: result._id},
+            update: {$set: set_obj},
+            options: {multi: false}
+        };
 
-        // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
+        $http.post("/api/sequence/update", JSON.stringify(query))
+            .success(function(databaseResult) {
+                $uibModalInstance.close();
+            })
+            .error(function (data, status, header, config) {
+                alert("Modify request failed!\nStatus: " + status + "\nData: " + data);
 
-        return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/"+ result.title + "_h264_L.mp4");
-    }
+                console.log("submit request failed!");
+            });
 
-    $scope.ok = function () {
-        $uibModalInstance.close();
     };
 
     $scope.cancel = function () {

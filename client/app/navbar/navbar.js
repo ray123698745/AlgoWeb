@@ -26,7 +26,7 @@ app.controller('NavigationController', function($scope, dataService) {
 
     $scope.Documentation = [{
         name: "Annotation ToolBox 2",
-        link: dataService.data.fileServerAddr + '/vol1/documentation/atb_v2_user_guide_17.pdf'
+        link: dataService.data.fileServerAddr + '/vol1/documentation/atb_v2_user_guide_21.pdf'
     }, {
         name: "Annotation Task",
         link: "#",

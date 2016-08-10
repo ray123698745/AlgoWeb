@@ -11,5 +11,7 @@ var router = express.Router();
 // console.log('command controller');
 
 router.post('/encode', controller.encode);
+router.post('/processSequence', controller.processSequence);
+
 
 module.exports = router;

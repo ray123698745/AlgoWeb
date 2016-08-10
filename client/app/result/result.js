@@ -142,21 +142,19 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     $scope.encode = function () {
 
         var encodeParam = {
-            path: $scope.filePath(),
-            ituner: "ituner/",
-            isStereo: $scope.isStereo,
-            frameNum: $scope.result.frame_number
+            seqObj: $scope.result,
+            ituner: "ituner/"
         };
 
         $http.post("/api/command/encode/", JSON.stringify(encodeParam))
             .success(function(data) {
-                alert("path: " + data.path);
+                alert(data);
             })
             .error(function (data, status, header, config) {
                 console.log("Encode Failed!");
             });
 
-    }
+    };
 
     $scope.filePath = function () {
 

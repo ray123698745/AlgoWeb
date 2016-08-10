@@ -46,55 +46,86 @@ module.exports = {
 
     insert: function(req, res) {
 
-        log.debug('Insert: ', req.body);
+        // log.debug('Insert: ', req.body);
+        var query = req.body;
 
-        var queries = req.body;
-        var done = 0;
-        
+        log.debug('query: ', query);
 
-        for (var i = 0; i < queries.length; i++){
+        var newSequence = new Sequence(query);
 
-            log.debug('query: ', queries[i]);
-
-            var newSequence = new Sequence(queries[i]);
-
-            newSequence.save(function (err, data) {
-                if (err) {
-                    log.debug("Insert failed: ", err);
-                    // rollback
-                } else {
-                    log.debug('Saved : ', data );
-                    done++;
-                    if(done == queries.length){
-                        res.status(200);
-                        res.send({res: 'ok'});
-                        // res.send(data);
-                    }
-
-                }
-            });
+        newSequence.save(function (err, data) {
+            if (err) {
+                log.debug("Insert failed: ", err);
+                // rollback
+            } else {
+                log.debug('Saved : ', data );
+                res.status(200);
+                res.send({res: 'ok'});
+            }
+        });
 
 
-            // use job queue to:
-
-            // 1. create request folder and package
-            // 2. remove unselected sequence
-            // 3. start raw to yuv process
-            // 4. update db
-
-        }
+        // for (var i = 0; i < queries.length; i++){
+        //
+        //     log.debug('query: ', queries[i]);
+        //
+        //     var newSequence = new Sequence(queries[i]);
+        //
+        //     newSequence.save(function (err, data) {
+        //         if (err) {
+        //             log.debug("Insert failed: ", err);
+        //             // rollback
+        //         } else {
+        //             log.debug('Saved : ', data );
+        //             done++;
+        //             if(done == queries.length){
+        //                 res.status(200);
+        //                 res.send({res: 'ok'});
+        //                 // res.send(data);
+        //             }
+        //
+        //         }
+        //     });
+        // }
 
     },
 
     getUnfinished: function(req, res) {
 
-        // Change condition to state != finish
+        // Change condition to not all state == Accepted
 
-        Sequence.find({$where: 'this.cameras[0].annotation.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+        Sequence.find( {$or: [
+            { 'cameras.0.annotation': { $elemMatch: { state: "Pending"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Annotating"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Reviewing"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Finished"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Modifying"} }}
+
+        ] }, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) throw err;
+
+            // log.debug('getUnfinished: ' + sequence);
 
             res.send(sequence);
         });
+
+
+
+        // Sequence.
+        // find().
+        // // where('cameras[0].annotation.length').gt(0).
+        // // elemMatch('this.cameras[0].annotation', {"category":"Finished"}).
+        // // where('age').gt(17).lt(66).
+        // // where('likes').in(['vaporizing', 'talking']).
+        // // limit(10).
+        // sort('-capture_time').
+        // // select('name occupation').
+        // exec(function(err, sequence) {
+        //     if (err) throw err;
+        //     console.log('sequence: ' + sequence);
+        //
+        //     res.send(sequence);
+        // });
     },
 
 
@@ -189,84 +220,3 @@ module.exports = {
     }
 
 };
-
-// GET example:
-// http://example.com/api/users?id=4&token=sdfa3&geo=us
-
-// routes will go here
-// app.get('/api/users', function(req, res) {
-//     var user_id = req.param('id');
-//     var token = req.param('token');
-//     var geo = req.param('geo');
-//
-//     res.send(user_id + ' ' + token + ' ' + geo);
-// });
-
-
-
-
-// module.exports = function(app) {
-//
-//
-//
-
-//     app.use(bodyParser.json());
-//     app.use(bodyParser.urlencoded({ extended: true }));
-//
-//     app.get('/api/todos/:uname', function(req, res) {
-//
-//         Sequences.find({ username: req.params.uname }, function(err, todos) {
-//             if (err) throw err;
-//
-//             res.send(todos);
-//         });
-//
-//     });
-    //
-    // app.get('/api/todo/:id', function(req, res) {
-    //
-    //     Sequence.findById({ _id: req.params.id }, function(err, todo) {
-    //        if (err) throw err;
-    //
-    //        res.send(todo);
-    //    });
-    //
-    // });
-    //
-    // app.post('/api/todo', function(req, res) {
-    //
-    //     if (req.body.id) {
-    //         Todos.findByIdAndUpdate(req.body.id, { todo: req.body.todo, isDone: req.body.isDone, hasAttachment: req.body.hasAttachment }, function(err, todo) {
-    //             if (err) throw err;
-    //
-    //             res.send('Success');
-    //         });
-    //     }
-    //
-    //     else {
-    //
-    //        var newTodo = Todos({
-    //            username: 'test',
-    //            todo: req.body.todo,
-    //            isDone: req.body.isDone,
-    //            hasAttachment: req.body.hasAttachment
-    //        });
-    //        newTodo.save(function(err) {
-    //            if (err) throw err;
-    //            res.send('Success');
-    //        });
-    //
-    //     }
-    //
-    // });
-    //
-    // app.delete('/api/todo', function(req, res) {
-    //
-    //     Todos.findByIdAndRemove(req.body.id, function(err) {
-    //         if (err) throw err;
-    //         res.send('Success');
-    //     })
-    //
-    // });
-
-// }
