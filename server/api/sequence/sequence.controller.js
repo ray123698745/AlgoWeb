@@ -109,7 +109,34 @@ module.exports = {
             res.send(sequence);
         });
 
+        // Sequence.
+        // find().
+        // // where('cameras[0].annotation.length').gt(0).
+        // // elemMatch('this.cameras[0].annotation', {"category":"Finished"}).
+        // // where('age').gt(17).lt(66).
+        // // where('likes').in(['vaporizing', 'talking']).
+        // // limit(10).
+        // sort('-capture_time').
+        // // select('name occupation').
+        // exec(function(err, sequence) {
+        //     if (err) throw err;
+        //     console.log('sequence: ' + sequence);
+        //
+        //     res.send(sequence);
+        // });
+    },
 
+    getAccepted: function(req, res) {
+
+        // Change condition to not all state == Accepted
+
+        Sequence.find( { 'cameras.0.annotation': { $elemMatch: { state: "Accepted"} } }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+            if (err) throw err;
+
+            // log.debug('getUnfinished: ' + sequence);
+
+            res.send(sequence);
+        });
 
         // Sequence.
         // find().

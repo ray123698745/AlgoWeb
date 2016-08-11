@@ -41,7 +41,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
         url: "/review",
         templateUrl: "/app/review/review.ejs",
         controller: 'reviewCtrl'
-    });;
+        })
+        .state('archive', {
+            url: "/archive",
+            templateUrl: "/app/archive/archive.ejs",
+            controller: 'archiveCtrl'
+        });
 
 
     $locationProvider.html5Mode(true);

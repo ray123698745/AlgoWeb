@@ -22,6 +22,12 @@ app.controller('NavigationController', function($scope, dataService) {
     }, {
         name: "Tasks",
         link: "annotation"
+    },{
+        name: "divider",
+        link: "#"
+    }, {
+        name: "Archive",
+        link: "archive"
     }];
 
     $scope.Documentation = [{

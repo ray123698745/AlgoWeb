@@ -1,0 +1,115 @@
+<a id="top"></a>
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>{{results.length}} Annotation Tasks</h1>
+    </div>
+
+    <div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+
+                <h4 class="media-heading"><strong>{{result.title}}</strong> </h4>
+
+                <div class="media">
+                    <div class="media-left">
+                        <a><img ng-src="{{thumbSrc(result)}}" class="img-rounded media-object" /></a>
+                    </div>
+                    <div class="media-body">
+                        <div class="row">
+                            <div class="col-md-12" >
+
+                                <table class="table table-condensed table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>FPS</th>
+                                            <th>Priority</th>
+                                            <th>State</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="pointer_table" ng-repeat="request in result.cameras[0].annotation" ng-show="request.state == 'Accepted'" ng-click="edit(request, $index)">
+
+                                            <td>{{request.category}}</td>
+                                            <td>{{request.fps}}</td>
+                                            <td>{{showPriority(request.priority)}}</td>
+                                            <td ng-show="!request.isEdit">{{request.state}}</td>
+
+
+
+                                            <td ng-show="request.isEdit">
+                                                <select class="form-control input-sm" ng-model="request.state" ng-change="submitEdit(result, request, $index)">
+                                                <!--<select class="form-control input-sm" ng-model="request.state" ng-change="editingRequest.state=request.state">-->
+                                                    <!--<option value="Pending">Pending</option>-->
+                                                    <option value="Annotating">Annotating</option>
+                                                    <option value="Reviewing">Reviewing</option>
+                                                    <!--<option value="Finished">Finished</option>-->
+                                                    <!--<option value="Modifying">Modifying</option>-->
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-sm" ng-show="request.state == 'Accepted'">
+                                                    <a download ng-href="{{download(result, 'JSON', request.category)}}" target="_self" class="btn btn-info">JSON</a>
+                                                </div>
+
+                                                <div class="btn-group btn-group-sm" ng-show="request.state == 'Modifying' || request.state == 'Reviewing'">
+                                                    <label ng-show="request.state == 'Modifying' || request.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">
+                                                        Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
+                                                    </label>
+                                                    <button ng-show="request.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{request.comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>
+                                                </div>
+
+                                                <div class="btn-group btn-group-sm" ng-show="request.state == 'Accepted'">
+                                                    <!--<button class="btn btn-default" type="button" ng-click="accept(result, $index)">Accept</button>-->
+                                                    <button class="btn btn-default" type="button" ng-click="modify(result, $index)">Modify</button>
+                                                </div>
+
+                                                <div class="btn-group btn-group-sm" ng-show="request.isEdit">
+                                                    <button class="btn btn-default" type="button" ng-click="cancel(request)">Cancel</button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-md-offset-4">
+                        <a ng-show="!result.isEdit" download ng-href="{{download(result, 'package', null)}}" target="_self" class="btn btn-default btn-block">Download</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="myModalContent.html">
+
+    <div class="modal-body">
+
+        <div>
+            <h2>Comments</h2>
+            <textarea class="form-control" style="height: 100px" ng-model="comments"></textarea>
+        </div>
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="submitComments()">Submit</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

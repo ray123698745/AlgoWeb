@@ -10,8 +10,8 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     $scope.isTag = true;
     $scope.isAnnotate = false;
     $scope.selectedKeywords = $scope.result.keywords;
-    $scope.isLeft = true;
-    $scope.isRight = false;
+    $scope.isLeft = false;
+    $scope.isRight = true;
     $scope.timeCrops = [{
         annotate_from: new Date('2012-04-23T00:00:00'),
         annotate_to: new Date('2012-04-23T00:00:00'),

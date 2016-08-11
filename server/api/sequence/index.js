@@ -12,6 +12,7 @@ router.get('/seed', seed);
 router.get('/getAllUnfiltered', controller.getAllUnfiltered);
 router.get('/getRequested', controller.getRequested);
 router.get('/getUnfinished', controller.getUnfinished);
+router.get('/getAccepted', controller.getAccepted);
 
 
 
