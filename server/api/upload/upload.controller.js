@@ -5,6 +5,7 @@
 
 var Sequence = require('../sequence/sequence.model.js').sequence;
 var log = require('log4js').getLogger('upload');
+var fs = require('fs');
 require('shelljs/global');
 
 
@@ -19,34 +20,71 @@ module.exports = {
         var index = req.body.index;
         var title = req.body.title;
         var category = req.body.category;
-
-
-
-        // log.debug('files: ', files);
-        // log.debug('path: ', path);
-        // log.debug('id: ', id);
-        // log.debug('index: ', index);
-        // log.debug('title: ', title);
-        // log.debug('category: ', category);
-
-
-        // check if result.title match filename!!
+        var version_number = req.body.version_number;
+        var uploadTime = new Date().toISOString();
         var fileName = title + '_' + category + '.json';
         var statFileName = title + '_' + category + '_stat.json';
+        var destPath = '/supercam' + path + '/Front_Stereo/annotation/' + category + '_v' + version_number + '/';
+        var comments = req.body.comments;
+        comments = comments.replace(/"/g, '\\\"');
+        comments = comments.replace(/(?:\r\n|\r|\n)/g, '\\n');
+
+
+
 
         if ((files[0].originalname == fileName && files[1].originalname == statFileName) || (files[1].originalname == fileName && files[0].originalname == statFileName)){
 
+            mkdir(destPath);
+
             for (var i = 0; i < files.length; i++){
-                // log.debug('original: ', __dirname + '/uploads/' + files[i].filename);
-                // log.debug('dest: ', '/mnt/supercam' + path + '/Front_Stereo/annotation/' + files[i].originalname);
-                mv(__dirname + '/uploads/' + files[i].filename, '/supercam' + path + '/Front_Stereo/annotation/' + files[i].originalname);
+
+                // var endPos = 0;
+                // var fileNameAppendVersion = "";
+
+                if (files[i].originalname.search("_stat") == -1){
+
+                    // endPos = files[i].originalname.search(".json");
+                    // fileNameAppendVersion = files[i].originalname.substring(0, endPos) + '_v' + version_number + files[i].originalname.substring(endPos);
+
+
+                    var jsonFile = fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8');
+
+                    var metadataPos = jsonFile.search('{')+1; //Todo: Should move to file head or bottom
+                    // log.debug('metadataPos: ', metadataPos);
+
+
+                    var metadata = '\n \"annotation-version\":\"' + version_number + '\",\n ' + '\"upload_time\":\"' + uploadTime + '\",\n ' + '\"comments\":\"' + comments + '\",';
+
+                    var addMetadata = jsonFile.substring(0, metadataPos) + metadata + jsonFile.substring(metadataPos);
+
+
+                    fs.writeFileSync(destPath + files[i].originalname, addMetadata, 'utf-8');
+
+
+                    rm(__dirname + '/uploads/' + files[i].filename);
+
+                } else {
+
+                    // endPos = files[i].originalname.search(".json");
+                    // fileNameAppendVersion = files[i].originalname.substring(0, endPos) + '_v' + version_number + files[i].originalname.substring(endPos);
+
+                    mv(__dirname + '/uploads/' + files[i].filename, destPath + files[i].originalname);
+
+                }
             }
 
 
             var set_obj = {};
 
+            var versionIndex = version_number -1;
+            log.debug('versionIndex: ', versionIndex);
+
             var state_key = 'cameras.0.annotation.' + index + '.state';
+            var time_key = 'cameras.0.annotation.' + index + '.version.' + versionIndex + '.upload_time';
+
             set_obj[state_key] = 'Finished';
+            set_obj[time_key] = uploadTime;
+
 
             var query = {
                 condition: {_id: id},

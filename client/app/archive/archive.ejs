@@ -3,10 +3,10 @@
 <div class="container">
 
     <div class="page-header">
-        <h1>{{results.length}} Annotation Tasks</h1>
+        <h1>{{results.length}} Archive Tasks</h1>
     </div>
 
-    <div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >
+    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
         <div class="col-md-8 col-md-offset-2">
             <div class="well">
 
@@ -35,7 +35,7 @@
 
                                             <td>{{request.category}}</td>
                                             <td>{{request.fps}}</td>
-                                            <td>{{showPriority(request.priority)}}</td>
+                                            <td>{{request.priority}}</td>
                                             <td ng-show="!request.isEdit">{{request.state}}</td>
 
 
@@ -52,25 +52,31 @@
                                             </td>
 
                                             <td>
-                                                <div class="btn-group btn-group-sm" ng-show="request.state == 'Accepted'">
-                                                    <a download ng-href="{{download(result, 'JSON', request.category)}}" target="_self" class="btn btn-info">JSON</a>
+
+                                                <div class="btn-group btn-group-sm" ng-show="request.state == 'Accepted'" uib-dropdown dropdown-append-to-body="true">
+                                                    <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle>
+                                                        JSON <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                                        <li role="menuitem" ng-hide="$last && request.state != 'Finished' && request.state != 'Accepted'" ng-repeat="version in request.version"><a download ng-href="{{download(result, 'JSON', request.category, version.version_number)}}" target="_self"><i><b>V{{version.version_number}}</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{showDownloadBtn(version.upload_time)}}</a></li>
+                                                    </ul>
                                                 </div>
 
-                                                <div class="btn-group btn-group-sm" ng-show="request.state == 'Modifying' || request.state == 'Reviewing'">
-                                                    <label ng-show="request.state == 'Modifying' || request.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">
-                                                        Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
-                                                    </label>
-                                                    <button ng-show="request.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{request.comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>
-                                                </div>
+                                                <!--<div class="btn-group btn-group-sm" ng-show="request.state == 'Modifying' || request.state == 'Reviewing'">-->
+                                                    <!--<label ng-show="request.state == 'Modifying' || request.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">-->
+                                                        <!--Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">-->
+                                                    <!--</label>-->
+                                                    <!--<button ng-show="request.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{request.comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>-->
+                                                <!--</div>-->
 
                                                 <div class="btn-group btn-group-sm" ng-show="request.state == 'Accepted'">
                                                     <!--<button class="btn btn-default" type="button" ng-click="accept(result, $index)">Accept</button>-->
                                                     <button class="btn btn-default" type="button" ng-click="modify(result, $index)">Modify</button>
                                                 </div>
 
-                                                <div class="btn-group btn-group-sm" ng-show="request.isEdit">
-                                                    <button class="btn btn-default" type="button" ng-click="cancel(request)">Cancel</button>
-                                                </div>
+                                                <!--<div class="btn-group btn-group-sm" ng-show="request.isEdit">-->
+                                                    <!--<button class="btn btn-default" type="button" ng-click="cancel(request)">Cancel</button>-->
+                                                <!--</div>-->
 
                                             </td>
                                         </tr>

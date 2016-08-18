@@ -48,12 +48,12 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     // };
 
 
-    $scope.showPriority = function (priority) {
-
-        if (priority == 1) return 'Low';
-        if (priority == 2) return 'Medium';
-        if (priority == 3) return 'High';
-    };
+    // $scope.showPriority = function (priority) {
+    //
+    //     if (priority == 1) return 'Low';
+    //     if (priority == 2) return 'Medium';
+    //     if (priority == 3) return 'High';
+    // };
 
 
     $scope.thumbSrc = function (result) {

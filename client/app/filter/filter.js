@@ -75,6 +75,7 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
             for (var i = 0; i < $scope.selected.length; i++){
 
+
                 var query = {
                     condition: {_id: $scope.selected[i].id},
                     update: {$push: {
@@ -82,7 +83,8 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
                             "category": $scope.selected[i].category,
                             "fps": $scope.selected[i].fps,
                             "priority": $scope.selected[i].priority,
-                            "state" : 'Pending'
+                            "state" : 'Pending',
+                            "version" : [{version_number: 1, comments: "Initial request"}]
                         }
                     }},
                     options: {multi: false}
@@ -97,8 +99,9 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
                             "cameras.0.annotation": {
                                 "category": "Lane",
                                 "fps": $scope.selected[i].fps,
-                                "priority": 0, //???
-                                "state" : 'Pending'
+                                "priority": 0, 
+                                "state" : 'Pending',
+                                "version" : [{version_number: 1, comments: "Initial request"}]
                             }
                         }},
                         options: {multi: false}

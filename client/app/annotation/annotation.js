@@ -21,20 +21,31 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/thumb.jpg");
     };
 
-    $scope.showPriority = function (priority) {
+    // $scope.showPriority = function (priority) {
+    //
+    //     if (priority == 1) return 'Low';
+    //     if (priority == 2) return 'Medium';
+    //     if (priority == 3) return 'High';
+    // };
 
-        if (priority == 1) return 'Low';
-        if (priority == 2) return 'Medium';
-        if (priority == 3) return 'High';
-    };
 
-
-    $scope.download = function (result, file, category) {
+    $scope.download = function (result, file, category, version) {
 
         if (file == 'package')
             return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ result.title +".tar.gz";
         if (file == 'JSON')
-            return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ result.title + '_' + category + ".json";
+            return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ category + "_v" + version + '/' + result.title + "_" + category + ".json";
+    };
+
+
+    $scope.showDownloadBtn = function (uploadTime) {
+
+        if(uploadTime){
+            uploadTime = uploadTime.substring(0, 19);
+            uploadTime = uploadTime.replace('T', '-');
+        }
+
+        return uploadTime;
     };
 
 
@@ -56,6 +67,9 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             fd.append("title", result.title);
             fd.append("index", index);
             fd.append("category", result.cameras[0].annotation[index].category);
+            fd.append("version_number", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].version_number);
+            fd.append("comments", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].comments);
+
 
 
             $http.post("/api/upload/uploadAnnotation", fd,
@@ -240,17 +254,17 @@ app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance,
     $scope.submitComments = function () {
 
         var set_obj = {};
+        var version_obj = {};
+        var version_key = 'cameras.0.annotation.' + index + '.version';
+        var state_key = 'cameras.0.annotation.' + index + '.state';
+        var verNum = result.cameras[0].annotation[index].version.length + 1;
 
-        var state_key = 'cameras.0.annotation.' + index + '.comments';
-        var state_state_key = 'cameras.0.annotation.' + index + '.state';
-
-        set_obj[state_key] = $scope.comments;
-        set_obj[state_state_key] = 'Modifying';
-
+        version_obj[version_key] = {version_number: verNum, comments: $scope.comments};
+        set_obj[state_key] = 'Modifying';
 
         var query = {
             condition: {_id: result._id},
-            update: {$set: set_obj},
+            update: {$set: set_obj, $push: version_obj},
             options: {multi: false}
         };
 

@@ -136,7 +136,7 @@
 
                                             <td ng-show="!request.isEdit">{{request.category}}</td>
                                             <td ng-show="!request.isEdit">{{request.fps}}</td>
-                                            <td ng-show="!request.isEdit">{{showPriority(request.priority)}}</td>
+                                            <td ng-show="!request.isEdit">{{request.priority}}</td>
 
                                             <td ng-show="request.isEdit">
                                                 <select class="form-control input-sm" ng-model="editingRequest.category" ng-change="editingRequest.category=request.category">
@@ -157,9 +157,11 @@
                                             <td ng-show="request.isEdit">
                                                 <select class="form-control input-sm" ng-model="editingRequest.priority" convert-to-number ng-change="editingRequest.priority=request.priority">
                                                     <!--<option disabled selected value></option>-->
-                                                    <option value="3">High</option>
-                                                    <option value="2">Medium</option>
-                                                    <option value="1">Low</option>
+                                                    <option value="1">1&nbsp;&nbsp;&nbsp;-----------&nbsp;&nbsp;&nbsp;Low</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5&nbsp;&nbsp;&nbsp;-----------&nbsp;&nbsp;&nbsp;High</option>
                                                 </select>
                                             </td>
                                     </tr>
