@@ -12,31 +12,18 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     $scope.selectedKeywords = $scope.result.keywords;
     $scope.isLeft = false;
     $scope.isRight = true;
-    $scope.timeCrops = [{
-        annotate_from: new Date('2012-04-23T00:00:00'),
-        annotate_to: new Date('2012-04-23T00:00:00'),
-        annotate_fps: null,
-        annotate_note: null,
-        annotate_category: null
-    }];
-    $scope.parent = {
-        annotate_from: new Date('2012-04-23T00:00:00'),
-        annotate_to: new Date('2012-04-23T00:00:00')
-    };
-    $scope.annotate_fps = 30;
-    $scope.annotate_note = "";
-
-
 
 
     $scope.switchCamera = function (camera) {
         $state.go('result', {camera: camera});
     };
 
+
     $scope.switchLR = function () {
         $scope.isLeft = !$scope.isLeft;
         $scope.isRight = !$scope.isRight;
     };
+
 
     $scope.switchFuncView = function (view) {
         if(view === 'map'){
@@ -54,6 +41,7 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         }
     };
 
+
     $scope.previewSrc = function () {
 
         if ($scope.isStereo){
@@ -66,6 +54,7 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         }
     };
 
+
     $scope.toggleSelection = function (keyword) {
 
         var index = $scope.selectedKeywords.indexOf(keyword);
@@ -75,6 +64,7 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         else
             $scope.selectedKeywords.push(keyword);
     };
+
 
     $scope.submitTag = function () {
 
@@ -98,74 +88,38 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         }
     };
 
-    $scope.addTimeCrop = function () {
 
-        $scope.timeCrops.push({
-            annotate_from: new Date('2012-04-23T00:00:00'),
-            annotate_to: new Date('2012-04-23T00:00:00'),
-            annotate_fps: null,
-            annotate_note: null,
-            annotate_category: null
-        });
+    $scope.encode = function (ituner) {
 
-    };
+        if (confirm("Encode with ituner: " + ituner + " ?") == true){
+            var encodeParam = {
+                seqObj: $scope.result,
+                ituner: ituner
+            };
 
-    $scope.deleteTimeCrop = function () {
-
-        $scope.timeCrops.pop();
-    };
-
-
-    $scope.submitAnnotate = function () {
-
-
-        // console.log($scope.parent.annotate_from.toString().substring(19, 24));
-        // console.log($scope.parent.annotate_to.toString().substring(19, 24));
-        // console.log($scope.parent.annotate_fps);
-        // console.log($scope.parent.annotate_note);
-
-        console.log($scope.timeCrops);
-
-
-        //update database
-        // $http.post("/api/sequence/update", JSON.stringify(query))
-        //     .success(function(databaseResult) {
-        //         alert(databaseResult.nModified + " record updated!");
-        //     })
-        //     .error(function (data, status, header, config) {
-        //         console.log("submitTag Failed!");
-        //     });
-
+            $http.post("/api/command/encode/", JSON.stringify(encodeParam))
+                .success(function(data) {
+                    alert(data);
+                })
+                .error(function (data, status, header, config) {
+                    console.log("Send encode request Failed!");
+                });
+        }
 
     };
 
-    $scope.encode = function () {
-
-        var encodeParam = {
-            seqObj: $scope.result,
-            ituner: "ituner/"
-        };
-
-        $http.post("/api/command/encode/", JSON.stringify(encodeParam))
-            .success(function(data) {
-                alert(data);
-            })
-            .error(function (data, status, header, config) {
-                console.log("Encode Failed!");
-            });
-
-    };
 
     $scope.filePath = function () {
 
         return utilService.getRootPathBySite($scope.result.file_location) + "/" + $scope.result.cameras[$scope.cameraIdx].name;
     };
 
-    $scope.download = function (file) {
+
+    $scope.download = function (file, channel, version, category) {
 
         if (file === 'h264'){
             if ($scope.isStereo){
-                if ($scope.isLeft)
+                if (channel == 'left')
                     return dataService.data.fileServerAddr  + $scope.filePath() + "/L/"+ $scope.result.title +"_h264_L.mp4";
                 else
                     return dataService.data.fileServerAddr  + $scope.filePath() + "/R/"+ $scope.result.title +"_h264_R.mp4";
@@ -181,7 +135,7 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
         if (file === 'camera_sensor'){
             if ($scope.isStereo){
-                if ($scope.isLeft)
+                if (channel == 'left')
                     return dataService.data.fileServerAddr  + $scope.filePath() + "/L/" + $scope.result.title + "_meta_L.txt";
                 else
                     return dataService.data.fileServerAddr  + $scope.filePath() + "/R/" + $scope.result.title + "_meta_R.txt";
@@ -194,15 +148,43 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         if (file === 'yuv'){
 
             if ($scope.isStereo){
-                if ($scope.isLeft)
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/yuv/" + $scope.result.title + "_v1_L.tar";
+                if (channel == 'left')
+                    return dataService.data.fileServerAddr + $scope.filePath() + "/L/yuv/" + $scope.result.title + "_yuv_v" + version + "_L.tar";
                 else
-                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/yuv/" + $scope.result.title + "_v1_R.tar";
+                    return dataService.data.fileServerAddr + $scope.filePath() + "/R/yuv/" + $scope.result.title + "_yuv_v" + version + "_R.tar";
             } else {
-                return dataService.data.fileServerAddr  + $scope.filePath() + "/yuv/" + $scope.result.title + "_v1.tar";
+                return dataService.data.fileServerAddr + $scope.filePath() + "/yuv/" + $scope.result.title + "_yuv_v" + version + ".tar";
             }
         }
+
+        if (file === 'annotation'){
+
+            return dataService.data.fileServerAddr + $scope.filePath() + "/annotation/" + category + "_v" + version + "/" + $scope.result.title + "_" + category + ".json";
+        }
+
     };
+
+    $scope.showDownloadBtn = function (uploadTime) {
+
+        if(uploadTime){
+            uploadTime = uploadTime.substring(0, 19);
+            uploadTime = uploadTime.replace('T', '-');
+        }
+
+        return uploadTime;
+    };
+
+    $scope.checkAnnotation = function () {
+
+        for (var i = 0; i < $scope.result.cameras[$scope.cameraIdx].annotation.length; i++){
+
+            if ($scope.result.cameras[$scope.cameraIdx].annotation[i].state == 'Accepted')
+                return false;
+        }
+
+        return true;
+    };
+
 
     $scope.sortKeywords = function (allKeywords) {
 

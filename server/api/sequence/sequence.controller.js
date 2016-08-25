@@ -30,14 +30,14 @@ module.exports = {
 
         var query = req.body;
 
-        log.debug("Query object: ", query);
+        // log.debug("Query object: ", query);
 
         Sequence.find(query, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) {
                 log.debug("Result error: ", err);
                 throw err;
             } else{
-                log.debug("Result found: ", sequence);
+                // log.debug("Result found: ", sequence);
                 res.send(sequence);
             }
         });
@@ -49,7 +49,7 @@ module.exports = {
         // log.debug('Insert: ', req.body);
         var query = req.body;
 
-        log.debug('query: ', query);
+        // log.debug('query: ', query);
 
         var newSequence = new Sequence(query);
 

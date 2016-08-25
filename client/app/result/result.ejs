@@ -159,67 +159,115 @@
                 <div class="col-md-12 download-col">
                     <div class="well">
 
+                        <h3>Download </h3>
                         <div class="row">
-                            <div class="col-md-4 col-md-offset-4">
-                                <div style="text-align: center;">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-primary disabled" ng-click="encode()" >&nbsp;&nbsp;Raw Encode </button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a ng-click="encode()">ituner 1</a></li>
-                                            <li><a href="#">ituner 2</a></li>
-                                            <li><a href="#">ituner 3</a></li>
-                                        </ul>
-                                    </div>
+
+                            <!--<div class="col-md-2">-->
+                                <!--&lt;!&ndash;<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>&ndash;&gt;-->
+                                <!--<a download ng-href="{{download('h264')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H.264</a>-->
+                            <!--</div>-->
+
+                            <div class="col-md-2">
+                                <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button" type="button" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                        H.264 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ><a download ng-href="{{download('h264', 'left')}}" target="_self">Left</a></li>
+                                        <li role="menuitem" ><a download ng-href="{{download('h264', 'right')}}" target="_self">Right</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-2">
+                                <a download ng-href="{{download('car_sensor')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >Gold Sensor</a>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button" type="button" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                        SuperCam Sensor <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ><a download ng-href="{{download('camera_sensor', 'left')}}" target="_self">Left</a></li>
+                                        <li role="menuitem" ><a download ng-href="{{download('camera_sensor', 'right')}}" target="_self">Right</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button" type="button" ng-class="{disabled:result.cameras[cameraIdx].yuv.length==0}" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                        YUV <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ng-repeat="yuv in result.cameras[cameraIdx].yuv">
+                                            <a download ng-href="{{download('yuv', 'left', yuv.version)}}" target="_self"><i><b>V{{yuv.version}}_left</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{yuv.desc}}</a>
+                                            <a download ng-href="{{download('yuv', 'right', yuv.version)}}" target="_self"><i><b>V{{yuv.version}}_right</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{yuv.desc}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button btn-block" type="button" ng-class="{disabled:checkAnnotation()}" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                        Annotation <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ng-repeat="request in result.cameras[cameraIdx].annotation"  >
+                                            <a download ng-repeat="version in request.version" ng-hide="$last && request.state != 'Accepted'" ng-href="{{download('annotation', null, version.version_number, request.category)}}" target="_self"><i><b>{{request.category}}_V{{version.version_number}}</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{showDownloadBtn(version.upload_time)}}</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
 
                             <!--<div class="col-md-2">-->
-                                <!--<button class="btn btn-primary btn-block disabled" type="button">Annotate Request</button>-->
+                                <!--<button class="btn btn-default btn-block disabled" type="button">Depth Image</button>-->
                             <!--</div>-->
+
                         </div>
 
-                        <h3>Download </h3>
+                        <br>
+                        <h3>Functions</h3>
                         <div class="row">
-                            <!--<div class="col-md-1">-->
-                                <!--<label>File Path: </label>-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-2">-->
-                                <!--<input class="form-control" type="text" onClick="this.select();" value="{{filePath()}}">-->
-                            <!--</div>-->
-
                             <div class="col-md-2">
-                                <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
-                                <a download ng-href="{{download('h264')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H.264</a>
+
+
+                                <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button btn-block" type="button" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                        Encode <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem"><a ng-click="encode('liso_v_42v2_3840_new_ce_tao_day_compressed.ini')">Daytime</a></li>
+                                        <li role="menuitem"><a ng-click="encode('liso_v_42v2_3840_new_ce_tao_night_compressed.ini')">Nighttime</a></li>
+                                        <li role="menuitem"><a ng-click="encode('liso_v_42v2_3840_new_ce_tao_backlight_compressed.ini')">Back lit</a></li>
+                                    </ul>
+                                </div>
+
+
+                                <!--<div class="btn-group">-->
+                                    <!--<button type="button" class="btn btn-default disabled" ng-click="encode()" >&nbsp;&nbsp;Raw Encode </button>-->
+                                    <!--<button type="button" class="btn btn-default dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                                        <!--<span class="caret"></span>-->
+                                        <!--<span class="sr-only">Toggle Dropdown</span>-->
+                                    <!--</button>-->
+                                    <!--<ul class="dropdown-menu">-->
+                                        <!--<li><a ng-click="encode()">ituner 1</a></li>-->
+                                        <!--<li><a href="#">ituner 2</a></li>-->
+                                        <!--<li><a href="#">ituner 3</a></li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+
                             </div>
 
                             <div class="col-md-2">
-                                <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
-                                <a download ng-href="{{download('car_sensor')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >Car Sensor</a>
+                                <button class="btn btn-default btn-block disabled" type="button">Dewarp</button>
                             </div>
 
-                            <div class="col-md-2">
-                                <!--<button class="btn btn-default btn-block" type="button" ng-click="download('sensor')">Sensor</button>-->
-                                <a download ng-href="{{download('camera_sensor')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >Camera Sensor</a>
-                            </div>
-
-                            <div class="col-md-2">
-                                <a download ng-href="{{download('yuv')}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >YUV</a>
-                            </div>
-
-                            <div class="col-md-2">
-                                <button class="btn btn-default btn-block disabled" type="button">Depth Image</button>
-                            </div>
-
-                            <div class="col-md-2">
-                                <button class="btn btn-default btn-block disabled" type="button">Annotation </button>
-                            </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -240,7 +288,7 @@
                                     <ul style="list-style-type:none">
                                         <li><div class="title_li">Sequence ID: </div>{{result._id}}</li>
                                         <li><div class="title_li">Location: </div>{{result.location.city + ", " + result.location.state + ", " + result.location.country}}</li>
-                                        <li><div class="title_li">GPS: </div>X: {{result.gps.x}}, Y: {{result.gps.y}}</li>
+                                        <li><div class="title_li">GPS: </div>Latitude: {{result.gps.x}}, Longitude: {{result.gps.y}}</li>
                                         <li><div class="title_li">Average Speed: </div>{{result.avg_speed}}</li>
                                         <li><div class="title_li">Usage: </div>{{result.usage}}</li>
                                     </ul>
