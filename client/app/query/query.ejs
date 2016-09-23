@@ -27,7 +27,7 @@
 
                                         <div class="form-group">
                                             <label class="control-label title_label">Sequence Title</label>
-                                            <input type="text" ng-model="sequence_title" class="form-control" placeholder="16-09-01-183040-us" />
+                                            <input type="text" ng-model="sequence_title" class="form-control" placeholder="XX-XX-XX-XXXXXX-XX" />
                                         </div>
 
                                         <div class="form-group">
@@ -69,13 +69,13 @@
                                                     <label class="control-label">From: </label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" ng-model="from_speed" class="form-control" />
+                                                    <input type="text" ng-model="from_speed" class="form-control" disabled/>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label class="control-label">To: </label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" ng-model="to_speed" class="form-control" />
+                                                    <input type="text" ng-model="to_speed" class="form-control" disabled/>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                                                 <label class="control-label">Country: </label>
                                             </div>
                                             <div class="col-md-3">
-                                                <select class="form-control" ng-model="country">
+                                                <select class="form-control" ng-model="country" disabled>
                                                     <option disabled selected value> -- select a country -- </option>
                                                     <option value="United States">United States</option>
                                                     <option value="Italy">Italy</option>
@@ -117,7 +117,7 @@
                                                 <label class="control-label">State: </label>
                                             </div>
                                             <div class="col-md-3">
-                                                <select class="form-control" ng-model="state">
+                                                <select class="form-control" ng-model="state" disabled>
                                                     <option disabled selected value> -- select a state -- </option>
                                                     <option value="California">California</option>
                                                     <option value="Emilia-Romagna">Emilia-Romagna</option>
@@ -127,7 +127,7 @@
                                                 <label class="control-label">City: </label>
                                             </div>
                                             <div class="col-md-3">
-                                                <select class="form-control" ng-model="city">
+                                                <select class="form-control" ng-model="city" disabled>
                                                     <option disabled selected value> -- select a city -- </option>
                                                     <option value="Saratoga">Saratoga</option>
                                                     <option value="Santa Clara">Santa Clara</option>
@@ -266,13 +266,13 @@
                                                 <label class="control-label">From: </label>
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control" />
+                                                <input type="text" class="form-control" disabled/>
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="control-label">To: </label>
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control" />
+                                                <input type="text" class="form-control" disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -285,7 +285,7 @@
                                                 <label class="control-label">Class: </label>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-control">
+                                                <select class="form-control" disabled>
                                                     <option disabled selected value>Select a Class</option>
                                                     <option value="12">Human</option>
                                                     <option value="13">This is item 2</option>
@@ -296,12 +296,12 @@
                                                 <label class="control-label">Occurrence: </label>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" />
+                                                <input type="text" class="form-control" disabled/>
                                             </div>
 
                                         </div>
                                         <div class="right_button_wrapper" style="padding-bottom: 10px;">
-                                            <button class="btn btn-default" type="button" ng-click="">Add</button>
+                                            <button class="btn btn-default" type="button" ng-click="" disabled>Add</button>
                                         </div>
                                     </div>
 
@@ -323,8 +323,8 @@
                     <div class="col-md-5">
                         <div class="right_button_wrapper ">
                             <div class="btn-group">
-                                <button class="btn btn-default" type="button" ng-click="saveQuery()">Save Query</button>
-                                <button class="btn btn-default" type="button" ng-click="loadQuery()">Load Query</button>
+                                <button class="btn btn-default" type="button" ng-click="saveQuery()" disabled>Save Query</button>
+                                <button class="btn btn-default" type="button" ng-click="loadQuery()" disabled>Load Query</button>
                             </div>
                         </div>
                     </div>
