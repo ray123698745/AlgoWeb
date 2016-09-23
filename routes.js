@@ -17,6 +17,8 @@ module.exports = function(app) {
     app.use('/api/script', require('./server/api/script'));
     app.use('/api/command', require('./server/api/command'));
     app.use('/api/upload', require('./server/api/upload'));
+    app.use('/api/annotation', require('./server/api/annotation'));
+
 
 
     app.route('/*')

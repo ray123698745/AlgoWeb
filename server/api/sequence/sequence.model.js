@@ -11,7 +11,7 @@ var file_location = new Schema({site: String, root_path: String},{_id : false })
 var yuv = new Schema({version: Number, desc: String},{_id : false });
 var objects = new Schema({class: String, occurrence: Number},{_id : false });
 var version = new Schema({version_number: Number, upload_time: String, comments: String},{_id : false });
-var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], annotation_density: Number, unique_id: Number, objects: [objects]},{_id : false });
+var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, classes: [String], objects: [objects]},{_id : false });
 var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: [annotation]},{_id : false });
 
 
@@ -25,8 +25,10 @@ var sequenceSchema = new Schema({
     frame_number: Number,
     usage: String,
     file_location: [file_location],
-    cameras:[cameras]
-});
+    cameras:[cameras],
+    no_annotation: Boolean,
+    version: Number
+}, {versionKey: false});
 
 
 
@@ -56,7 +58,7 @@ var unfilteredSequence = mongoose.model('unfilteredSequence', sequenceSchema);
 module.exports = {
     sequence: Sequence,
     unfilteredsequence: unfilteredSequence
-}
+};
 
 
 

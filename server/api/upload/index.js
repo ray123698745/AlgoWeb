@@ -6,11 +6,19 @@
 var express = require('express');
 var controller = require('./upload.controller.js');
 var multer  = require('multer');
-var upload = multer({ dest: '../server/api/upload/uploads/' });
-
+var upload = multer({ dest: __dirname + '/uploads/' }).array('annotation', 2);
 var router = express.Router();
 
 
-router.post('/uploadAnnotation', upload.array('annotation', 2), controller.uploadAnnotation);
+router.post('/uploadAnnotation', function (req, res) {
+    upload(req, res, function (err) {
+        if (err) {
+            // An error occurred when uploading
+            console.log("error: " + err);
+        } else {
+            controller.uploadAnnotation(req, res);
+        }
+    })
+});
 
 module.exports = router;

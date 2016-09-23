@@ -50,7 +50,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         // Setup query object
 
         var queryObj = {
-            "_id": $scope.sequence_id,
+            "title": $scope.sequence_title,
             "location.country": $scope.country,
             "location.state": $scope.state,
             "location.city": $scope.city

@@ -6,15 +6,96 @@
 app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', '$anchorScroll', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService, $anchorScroll) {
 
     $scope.editing = false;
+    $scope.currentPage = dataService.data.annotationPageNum;
+
+    // $scope.selected = [];
+    $scope.selected = [ {id: "moving_object", label: "Moving object"}, {id: "free_space", label: "Free space"}, {id: "free_space_with_curb", label: "Free space with curb"}];
+
+    // $scope.showResults = [];
+
+    $scope.categoryData = [ {id: "moving_object", label: "Moving object"}, {id: "free_space", label: "Free space"}, {id: "free_space_with_curb", label: "Free space with curb"}];
+    $scope.multiSelectSettings = {
+        // smartButtonMaxItems: 3,
+        showCheckAll: false,
+        showUncheckAll: false
+
+    };
+
+    $scope.event = {
+        onItemSelect: function (item) {
+            // console.log("onItemSelect!");
+            $scope.selectedResults();
+        },
+        onItemDeselect: function (item) {
+            // console.log("onItemDeselect!");
+            $scope.selectedResults();
+        }
+    };
+
+
+
+
     var canceling = false;
 
     $http.get("/api/sequence/getUnfinished")
         .success(function(databaseResult) {
             $scope.results = databaseResult;
+            $scope.showResults = $scope.results;
         })
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
         });
+
+
+    function inArray(arr, obj) {
+        console.log("arr:" + arr);
+        console.log("obj:" + obj);
+
+
+        return (arr.indexOf(obj) != -1);
+    }
+
+    $scope.showed = [];
+
+    $scope.selectedResults = function () {
+        console.log("selectedResults!");
+        console.log("showed:" + $scope.showed);
+
+        if ($scope.results){
+            $scope.showResults = [];
+
+            for (var i = 0; i < $scope.results.length; i++){
+
+                if (!inArray($scope.showed, i)){
+                    for (var j = 0; j < $scope.selected.length; j++){
+                        for ( var k = 0; k < $scope.results[i].cameras[0].annotation.length; k++){
+
+                            if ($scope.results[i].cameras[0].annotation[k].category == $scope.selected[j].id){
+                                $scope.showResults.push($scope.results[i]);
+                                $scope.showed.push(i);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // $scope.results.forEach(function (result) {
+            //     $scope.selected.forEach(function (selectedCategory) {
+            //         for ( var i = 0; i < result.cameras[0].annotation.length; i++){
+            //
+            //             if (result.cameras[0].annotation[i].category == selectedCategory.id){
+            //                 $scope.showResults.push(result);
+            //             }
+            //         }
+            //     });
+            //
+            //
+            //
+            // });
+        }
+
+    };
+
 
 
     $scope.thumbSrc = function (result) {
@@ -67,6 +148,7 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             fd.append("title", result.title);
             fd.append("index", index);
             fd.append("category", result.cameras[0].annotation[index].category);
+            fd.append("fps", result.cameras[0].annotation[index].fps);
             fd.append("version_number", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].version_number);
             fd.append("comments", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].comments);
 
@@ -229,8 +311,11 @@ app.controller('annotationCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     };
 
 
-    $scope.linkToTop = function () {
+    $scope.changePage = function (page) {
         $anchorScroll('top');
+        // console.log("page: " + page);
+
+        dataService.data.annotationPageNum = page;
     };
 
     $scope.order = function (result) {

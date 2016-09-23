@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('AlgoWeb', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'angularUtils.directives.dirPagination']);
+var app = angular.module('AlgoWeb', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function ($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -61,7 +61,10 @@ app.service('dataService', function () {
         queryResult: {},
         selectedSeq:{},
         site: "us",    // us or it
-        fileServerAddr: "http://10.1.3.32:8080"
+        fileServerAddr: "http://10.1.3.32:8080",
+        resultListPageNum: 1,
+        filterPageNum: 1,
+        annotationPageNum: 1
     };
 
     this.keywords = {
@@ -69,7 +72,7 @@ app.service('dataService', function () {
         "Light_Condition": ["Bright", "Indoor", "Shadow", "Night_with_street_light",  "Night_without_street_light", "Dusk", "Dawn", "Back_lit", "Tunnel"],
         "Road_Type": ["Urban", "Suburban", "Rural", "Highway", "Parking_lot"],
         "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"],
-        "Special_Condition": ["Construction", "Accident", "Pot_hole"]
+        "Special_Condition": ["Construction", "Accident", "Pot_hole", "Crowded"]
     }
 
 

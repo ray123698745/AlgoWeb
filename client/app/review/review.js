@@ -10,13 +10,43 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     $scope.editing = false;
 
 
-    $http.get("/api/sequence/getRequested")
+    $http.get("/api/sequence/getAllUnfiltered")
         .success(function(databaseResult) {
             $scope.results = databaseResult;
         })
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
         });
+
+    $scope.requestedCount = function () {
+
+        var count = 0;
+
+        if ($scope.results){
+            $scope.results.forEach(function (result) {
+                if(result.cameras[0].annotation.length > 0){
+                    count ++;
+                }
+            });
+        }
+
+        return count;
+    };
+
+    $scope.requestedResults = function () {
+
+        var results = [];
+
+        if ($scope.results){
+            $scope.results.forEach(function (result) {
+                if(result.cameras[0].annotation.length > 0){
+                    results.push(result);
+                }
+            });
+        }
+
+        return results;
+    };
 
 
     // $scope.order = function (result) {
@@ -145,7 +175,7 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
             .success(function(databaseResult) {
                 // alert(databaseResult);
 
-                $http.get("/api/sequence/getRequested")
+                $http.get("/api/sequence/getAllUnfiltered")
                     .success(function(databaseResult) {
                         $scope.results = databaseResult;
                     })
@@ -170,7 +200,7 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'myModalContent.html',
-            controller: 'filterPreviewCtrl',
+            controller: 'reviewPreviewCtrl',
             size: 'lg',
             resolve: {
                 result: function () {
@@ -189,27 +219,54 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     $scope.submitReview = function () {
 
         if (confirm("Submit this batch of sequence?") == true) {
+
             var queries = [];
 
             for (var i = 0; i < $scope.results.length; i++){
 
-                queries.push($scope.results[i]);
+                if ($scope.results[i].cameras[0].annotation.length > 0){
+                    $scope.results[i].no_annotation = false;
+                    queries.push($scope.results[i]);
+                } else {
+                    $scope.results[i].no_annotation = true;
+
+                    // Todo: testing
+                    // $http.post("/api/sequence/insert", JSON.stringify($scope.results[i]))
+                    //     .success(function(respond) {
+                    //         // alert(respond);
+                    //         console.log(respond);
+                    //         // $state.go('annotation');
+                    //
+                    //
+                    //     })
+                    //     .error(function (data, status, header, config) {
+                    //         alert("Insert sequence failed!\nStatus: " + status + "\nData: " + data);
+                    //
+                    //         console.log("submit request failed!");
+                    //     });
+                }
             }
 
-            // $http.post("/api/sequence/insert", JSON.stringify(queries))
             $http.post("/api/command/processSequence", JSON.stringify(queries))
                 .success(function(respond) {
                     alert(respond);
                     // console.log(databaseResult);
                     // $state.go('annotation');
-
-
                 })
                 .error(function (data, status, header, config) {
                     alert("Insert sequence failed!\nStatus: " + status + "\nData: " + data);
 
                     console.log("submit request failed!");
                 });
+
+            // Todo: testing
+            // $http.get("/api/sequence/removeUnfiltered")
+            //     .success(function(respond) {
+            //         console.log(respond);
+            //     })
+            //     .error(function (data, status, header, config) {
+            //         console.log(data);
+            //     });
 
         }
     }
@@ -219,7 +276,7 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
 
 
-app.controller('filterPreviewCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
+app.controller('reviewPreviewCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
 
 
     $scope.previewSrc = function () {
@@ -227,7 +284,7 @@ app.controller('filterPreviewCtrl', function ($scope, $uibModalInstance, $sce, r
         // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
 
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/R/"+ result.title + "_h264_R.mp4");
-    }
+    };
 
     $scope.ok = function () {
         $uibModalInstance.close();

@@ -14,4 +14,5 @@ router.post('/encode', controller.encode);
 router.post('/processSequence', controller.processSequence);
 
 
+
 module.exports = router;

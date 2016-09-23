@@ -4,9 +4,15 @@
 
     <div class="page-header">
         <h1>{{results.length}} Annotation Tasks</h1>
+        <div style="text-align: right;">
+
+            <!--<div ng-dropdown-multiselect events="event" options="categoryData" selected-model="selected" extra-settings="multiSelectSettings" dropdown-append-to-body="true"></div>-->
+        </div>
     </div>
 
-    <div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >
+
+    <!--<div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >-->
+    <div class="row" dir-paginate="result in showResults | itemsPerPage: 10" current-page="currentPage" >
         <div class="col-md-8 col-md-offset-2">
             <div class="well">
 
@@ -97,7 +103,7 @@
     </div>
 
     <div style="text-align: center;">
-        <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
+        <dir-pagination-controls on-page-change="changePage(newPageNumber)"></dir-pagination-controls>
     </div>
 
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce', 'dataService', 'utilService', function ($scope, $http, $state, $stateParams, $sce, dataService, utilService) {
+app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce', '$uibModal', 'dataService', 'utilService', function ($scope, $http, $state, $stateParams, $sce, $uibModal, dataService, utilService) {
 
     $scope.result = dataService.data.selectedSeq;
     $scope.keywordsObj = dataService.keywords;
@@ -91,6 +91,8 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
     $scope.encode = function (ituner) {
 
+        // showProgressBar();
+
         if (confirm("Encode with ituner: " + ituner + " ?") == true){
             var encodeParam = {
                 seqObj: $scope.result,
@@ -99,7 +101,8 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
             $http.post("/api/command/encode/", JSON.stringify(encodeParam))
                 .success(function(data) {
-                    alert(data);
+
+                    showProgressBar();
                 })
                 .error(function (data, status, header, config) {
                     console.log("Send encode request Failed!");
@@ -107,6 +110,28 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
         }
 
     };
+
+    function showProgressBar() {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'progressBarContent.html',
+            controller: 'ProgressBarCtrl',
+            size: 'lg',
+            resolve: {
+                result: function () {
+                    return $scope.result;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            // $scope.selected = selectedItem;
+        }, function () {
+            // $log.info('Modal dismissed at: ' + new Date());
+        });
+
+    }
 
 
     $scope.filePath = function () {
@@ -208,3 +233,24 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
 
 }]);
+
+
+
+
+app.controller('ProgressBarCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
+
+
+    $scope.previewSrc = function () {
+
+        // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
+        return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/R/"+ result.title + "_h264_R.mp4");
+    };
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});

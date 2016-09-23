@@ -20,14 +20,23 @@ module.exports = {
         var index = req.body.index;
         var title = req.body.title;
         var category = req.body.category;
+        var fps = req.body.fps;
         var version_number = req.body.version_number;
         var uploadTime = new Date().toISOString();
         var fileName = title + '_' + category + '.json';
         var statFileName = title + '_' + category + '_stat.json';
         var destPath = '/supercam' + path + '/Front_Stereo/annotation/' + category + '_v' + version_number + '/';
         var comments = req.body.comments;
+        log.debug("path: " + path);
+        log.debug("id: " + id);
+        log.debug("title: " + title);
+        log.debug("comments: " + comments);
+        log.debug("files: " + files[0].path);
+
         comments = comments.replace(/"/g, '\\\"');
         comments = comments.replace(/(?:\r\n|\r|\n)/g, '\\n');
+
+
 
 
 
@@ -43,17 +52,16 @@ module.exports = {
 
                 if (files[i].originalname.search("_stat") == -1){
 
-                    // endPos = files[i].originalname.search(".json");
-                    // fileNameAppendVersion = files[i].originalname.substring(0, endPos) + '_v' + version_number + files[i].originalname.substring(endPos);
-
-
                     var jsonFile = fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8');
+
+                    if (jsonFile.search('\"metadata\"') != -1){
+                        jsonFile = '{' + jsonFile.substring(jsonFile.search('},')+2);
+                    }
 
                     var metadataPos = jsonFile.search('{')+1; //Todo: Should move to file head or bottom
                     // log.debug('metadataPos: ', metadataPos);
 
-
-                    var metadata = '\n \"annotation-version\":\"' + version_number + '\",\n ' + '\"upload_time\":\"' + uploadTime + '\",\n ' + '\"comments\":\"' + comments + '\",';
+                    var metadata = '\n \"metadata\":\n {\n  \"annotation-version\":\"' + version_number + '\",\n  ' + '\"upload_time\":\"' + uploadTime + '\",\n  ' + '\"comments\":\"' + comments + '\",\n  ' + '\"fps\":\"' + fps + '\"\n },';
 
                     var addMetadata = jsonFile.substring(0, metadataPos) + metadata + jsonFile.substring(metadataPos);
 
@@ -65,8 +73,8 @@ module.exports = {
 
                 } else {
 
-                    // endPos = files[i].originalname.search(".json");
-                    // fileNameAppendVersion = files[i].originalname.substring(0, endPos) + '_v' + version_number + files[i].originalname.substring(endPos);
+                    var statFile = fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8');
+
 
                     mv(__dirname + '/uploads/' + files[i].filename, destPath + files[i].originalname);
 

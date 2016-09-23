@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
+    <div class="row" dir-paginate="result in results | itemsPerPage: 10" current-page="currentPage" >
         <div class="col-md-8 col-md-offset-2">
             <div class="well">
                 <div class="media">
@@ -63,7 +63,9 @@
                     <div class="col-md-4">
                         <button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
                     </div>
-                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <!--<button class="btn btn-default btn-block" type="button" ng-click="deleteSequence(result)">Delete</button>-->
+                    </div>
                     <div class="col-md-2">
                         <!--<button class="btn btn-default" type="button" ng-click="detail(result)">Detail...</button>-->
                         <div class="btn-group" uib-dropdown>
@@ -82,7 +84,7 @@
     </div>
 
     <div style="text-align: center;">
-        <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
+        <dir-pagination-controls on-page-change="changePage(newPageNumber)"></dir-pagination-controls>
     </div>
     <div class="row">
         <div class="col-md-5"></div>

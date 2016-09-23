@@ -3,7 +3,7 @@
 <div class="container">
 
     <div class="page-header">
-        <h1>{{results.length}} Requested Sequences</h1>
+        <h1>{{requestedCount()}} Requested Sequences</h1>
     </div>
 
     <div class="row">
@@ -109,9 +109,9 @@
     </div>
 
     <!--<div class="row" dir-paginate="result in results | orderBy : order : true | itemsPerPage: 10" >-->
-    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
+    <div class="row" dir-paginate="result in requestedResults() | itemsPerPage: 10" >
 
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2" ng-show="result.cameras[0].annotation.length > 0">
             <div class="well">
                 <h4 class="media-heading"><strong>{{result.title}}</strong> </h4>
 
@@ -141,9 +141,9 @@
                                             <td ng-show="request.isEdit">
                                                 <select class="form-control input-sm" ng-model="editingRequest.category" ng-change="editingRequest.category=request.category">
                                                     <!--<option disabled selected value></option>-->
-                                                    <option value="Road">Road</option>
-                                                    <option value="Pedestrian">Pedestrian</option>
-                                                    <option value="Vehicle">Vehicle</option>
+                                                    <option value="moving_object">Moving Object</option>
+                                                    <option value="free_space">Free Space</option>
+                                                    <option value="free_space_with_curb">Free Space With Curb</option>
                                                 </select>
                                             </td>
                                             <td ng-show="request.isEdit">

@@ -2,10 +2,7 @@
  * Created by rayfang on 6/26/16.
  */
 'use strict';
-
-var Sequence = require('../sequence/sequence.model.js');
 var log = require('log4js').getLogger('command');
-var spawn = require('child_process').spawn;
 var kue = require('kue');
 var queue = kue.createQueue();
 
@@ -35,7 +32,7 @@ module.exports = {
             isInitEncode: false,
             channel: 'right'
         });
-        encode.save(); 
+        encode.save();
 
         // if (req.body.isStereo) {
         //
@@ -91,25 +88,14 @@ module.exports = {
             // }
 
             var processSequence = queue.create('processSequence', {
-                sequenceObj: queries[i]
+                sequenceObj: queries[i],
+                batchSequenceCount: (queries.length - i)
             });
             processSequence.save();
-
-
-
-
-            // use job queue to:
-
-            // 1. create request folder and package
-            // 1.5. insert to DB when annotation package ready
-            // 2. remove unselected sequence
-            // 3. start raw to yuv process
-            // 4. update db
 
         }
 
         res.send('Start processing');
-
     }
 
 

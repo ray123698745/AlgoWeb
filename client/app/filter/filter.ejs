@@ -6,7 +6,7 @@
         <h1>{{selected.length}}/{{results.length}} Sequences Selected</h1>
     </div>
 
-    <div class="row" dir-paginate="result in results | itemsPerPage: 10" >
+    <div class="row" dir-paginate="result in results | itemsPerPage: 10" current-page="currentPage" >
         <div class="col-md-1 col-md-offset-1">
             <div style="padding-top: 100%; padding-right: 50%; text-align: right">
                 <input type="checkbox" ng-click="toggleSelection(result._id)" ng-checked="arrayObjectIndexOf(selected, result._id, 'id') > -1" />
@@ -20,76 +20,90 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-title_label"><strong>{{result.title}}</strong> </h4>
-                        <div class="row" ng-show="arrayObjectIndexOf(selected, result._id, 'id') > -1" style="padding-bottom: 2%">
 
-                            <div class="col-md-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div style="padding-top: 15%;">
-                                            <label>Category:</label>
+
+                        <div ng-show="arrayObjectIndexOf(selected, result._id, 'id') > -1" style="padding-bottom: 2%">
+                            <div class="row" >
+
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div style="padding-top: 15%;">
+                                                <label>Category:</label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-8" style="padding-left: 0%;">
-                                        <div style="padding-top: 3%;">
-                                            <select class="form-control input-sm" ng-model="selected[arrayObjectIndexOf(selected, result._id, 'id')].category">
-                                                <option disabled selected value></option>
-                                                <option value="Road">Road</option>
-                                                <!--<option value="lane">Lane</option>-->
-                                                <option value="Pedestrian">Pedestrian</option>
-                                                <option value="Vehicle">Vehicle</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        <div class="col-md-8" style="padding-left: 0%;">
+                                            <div style="padding-top: 3%;">
 
-
-                            <div class="col-md-3">
-                                <div class="row">
-                                    <div class="col-md-3" style="padding-left: 0%;">
-                                        <div style="padding-top: 40%;">
-                                            <label>FPS:</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-9" style="padding-left: 0%;">
-                                        <div style="padding-top: 5%;">
-                                            <select class="form-control input-sm" ng-model="selected[arrayObjectIndexOf(selected, result._id, 'id')].fps">
-                                                <option disabled selected value></option>
-                                                <option value="1">1</option>
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                            </select>
+                                                <select class="form-control input-sm" ng-model="selected[arrayObjectIndexOf(selected, result._id, 'id')].category">
+                                                    <!--<option disabled selected value></option>-->
+                                                    <option value="moving_object">Moving Object</option>
+                                                    <option value="free_space">Free Space</option>
+                                                    <option value="free_space_with_curb">Free Space With Curb</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
 
-                            <div class="col-md-4">
-                                <div class="row">
-                                    <div class="col-md-4" style="padding-left: 0%;">
-                                        <div style="padding-top: 20%;">
-                                            <label>Priority:</label>
+                                <div class="col-md-3">
+                                    <div class="row">
+                                        <div class="col-md-3" style="padding-left: 0%;">
+                                            <div style="padding-top: 40%;">
+                                                <label>FPS:</label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-8" style="padding-left: 0%;">
-                                        <div style="padding-top: 5%;">
-                                            <select class="form-control input-sm" ng-model="selected[arrayObjectIndexOf(selected, result._id, 'id')].priority">
-                                                <option disabled selected value></option>
-                                                <option value="1">1&nbsp;&nbsp;&nbsp;-----------&nbsp;&nbsp;&nbsp;Low</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5&nbsp;&nbsp;&nbsp;-----------&nbsp;&nbsp;&nbsp;High</option>
-                                            </select>
+                                        <div class="col-md-9" style="padding-left: 0%;">
+                                            <div style="padding-top: 5%;">
+                                                <select class="form-control input-sm" ng-model="selected[arrayObjectIndexOf(selected, result._id, 'id')].fps">
+                                                    <option disabled selected value></option>
+                                                    <option value="1">1</option>
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-4" style="padding-left: 0%;">
+                                            <div style="padding-top: 20%;">
+                                                <label>Priority:</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-8" style="padding-left: 0%;">
+                                            <div style="padding-top: 5%;">
+                                                <select id="multi_select" class="form-control input-sm" ng-model="selected[arrayObjectIndexOf(selected, result._id, 'id')].priority">
+                                                    <option disabled selected value></option>
+                                                    <option value="1">1&nbsp;&nbsp;&nbsp;-----------&nbsp;&nbsp;&nbsp;Low</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5&nbsp;&nbsp;&nbsp;-----------&nbsp;&nbsp;&nbsp;High</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+
+                            <!--<div class="row" >-->
+                                <!--<div class="col-md-2 col-md-offset-10" style="padding-top: 3%;">-->
+                                    <!--<button class="btn btn-default btn-block" type="button" ng-click="">Add</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+
+                            </div>
+
 
                         <div class="row" >
                             <div class="col-md-5 col-md-offset-3" style="padding-top: 1%">
@@ -106,6 +120,7 @@
                             <!--<button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>-->
                         <!--</div>-->
                     <!--</div>-->
+
                 </div>
 
             </div>
@@ -113,7 +128,7 @@
     </div>
 
     <div style="text-align: center;">
-        <dir-pagination-controls on-page-change="linkToTop()"></dir-pagination-controls>
+        <dir-pagination-controls on-page-change="changePage(newPageNumber)"></dir-pagination-controls>
     </div>
 
     <div class="row">
@@ -128,12 +143,35 @@
 
 </div>
 
-<script type="text/ng-template" id="myModalContent.html">
+<script type="text/ng-template" id="filterPreview.html">
 
     <div class="modal-body">
-        <div class="center_video">
-            <div class="embed-responsive embed-responsive-16by9">
-                <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
+
+        <div class="row">
+            <div class="col-md-9">
+                <div>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="padding-left: 0">
+                <uib-accordion close-others="true">
+                    <uib-accordion-group ng-repeat="(category, keywords) in keywordsObj" is-open="status.open">
+                        <uib-accordion-heading>
+                            {{category}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                        </uib-accordion-heading>
+                        <span ng-repeat="word in keywords" ><label class="control-label checkbox-inline"><input type="checkbox" ng-click="toggleSelection(word)" ng-checked="result.keywords.indexOf(word) > -1" />{{word}}</label></span>
+                    </uib-accordion-group>
+                </uib-accordion>
+
+                <div style="text-align: center">
+                    <div class="btn-group">
+                        <button class="btn btn-default" type="button" ng-click="submitTag()">Submit</button>
+                        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

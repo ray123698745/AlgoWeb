@@ -4,7 +4,7 @@ var Sequence = require('./sequence.model.js').sequence;
 var unfilteredSequence = require('./sequence.model.js').unfilteredsequence;
 
 var log = require('log4js').getLogger('db');
-
+require('shelljs/global');
 
 module.exports = {
 
@@ -207,14 +207,14 @@ module.exports = {
 
     },
 
-    getRequested: function(req, res) {
-
-        unfilteredSequence.find({$where: 'this.cameras[0].annotation.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
-            if (err) throw err;
-
-            res.send(sequence);
-        });
-    },
+    // getRequested: function(req, res) {
+    //
+    //     unfilteredSequence.find({$where: 'this.cameras[0].annotation.length > 0' }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+    //         if (err) throw err;
+    //
+    //         res.send(sequence);
+    //     });
+    // },
 
     updateUnfiltered: function(req, res) {
 
@@ -244,6 +244,177 @@ module.exports = {
             });
         }
 
+    },
+
+
+    removeUnfiltered: function (req, res) {
+
+        unfilteredSequence.remove( {}, function(err, result) {
+            if (err) throw err;
+
+            res.send(result);
+        });
+
+    },
+
+    deleteSequence: function (req, res) {
+
+        log.debug('deleteSequence');
+
+        var id = req.body.id;
+        var path = req.body.path;
+
+        rm('-r', '/supercam' + path);
+
+        unfilteredSequence.remove( {_id: id}, function(err, result) {
+            if (err) throw err;
+
+            log.debug('deleteSequence result: ' + result);
+
+            res.send('ok!');
+        });
+
+    },
+
+    addAnnotationRequest: function (req, res) {
+
+        var params = req.body;
+        numUpdated = 0;
+
+
+        for (var i = 0; i < params.length; i++) {
+
+            compareRequest(params[i], res, params.length);
+        }
+
     }
 
+};
+
+
+var numUpdated = 0;
+var compareRequest = function (param, res, totalRequest) {
+
+    unfilteredSequence.find({_id: param.id}, function(err, sequence){
+
+        if (err) throw err;
+
+        var removeFreeSpace = false;
+        var updateType = "$push";
+        var index = 0;
+
+        if (sequence[0].cameras[0].annotation.length > 0){
+
+            for (var i = 0; i < sequence[0].cameras[0].annotation.length; i++){
+
+
+
+                if (sequence[0].cameras[0].annotation[i].category == "free_space_with_curb"
+                    && param.category == "free_space"){
+
+                    param.category = "free_space_with_curb";
+                    if (sequence[0].cameras[0].annotation[i].fps > param.fps)
+                        param.fps = sequence[0].cameras[0].annotation[i].fps;
+                    if (sequence[0].cameras[0].annotation[i].priority > param.priority)
+                        param.priority = sequence[0].cameras[0].annotation[i].priority;
+                }
+
+                if (sequence[0].cameras[0].annotation[i].category == "free_space"
+                    && param.category == "free_space_with_curb"){
+
+                    removeFreeSpace = true;
+                    if (sequence[0].cameras[0].annotation[i].fps > param.fps)
+                        param.fps = sequence[0].cameras[0].annotation[i].fps;
+                    if (sequence[0].cameras[0].annotation[i].priority > param.priority)
+                        param.priority = sequence[0].cameras[0].annotation[i].priority;
+                }
+
+                if (sequence[0].cameras[0].annotation[i].category == param.category){
+                    updateType = "$set";
+                    if (sequence[0].cameras[0].annotation[i].fps > param.fps)
+                        param.fps = sequence[0].cameras[0].annotation[i].fps;
+                    if (sequence[0].cameras[0].annotation[i].priority > param.priority)
+                        param.priority = sequence[0].cameras[0].annotation[i].priority;
+
+                    index = i;
+                }
+            }
+        }
+
+
+        var updateObj = {};
+
+        if (updateType == "$push"){
+
+            updateObj = {$push: {
+                "cameras.0.annotation": {
+                    "category": param.category,
+                    "fps": param.fps,
+                    "priority": param.priority,
+                    "state" : 'Pending',
+                    "version" : [{version_number: 1, comments: "Initial request"}]
+                }
+            }};
+        } else {
+            var set_Obj = {};
+            var set_key = "cameras.0.annotation." + index;
+
+            set_Obj[set_key] = {
+                "category": param.category,
+                "fps": param.fps,
+                "priority": param.priority,
+                "state" : 'Pending',
+                "version" : [{version_number: 1, comments: "Initial request"}]
+            };
+
+            updateObj = {$set: set_Obj};
+        }
+
+        var query = {
+            condition: {_id: param.id},
+            update: updateObj,
+            options: {multi: false}
+        };
+
+        unfilteredSequence.update(query.condition, query.update, query.options, function(err, numAffected) {
+            if (err) {
+                log.debug("addAnnotationRequest Result error: ", err);
+                throw err;
+            } else{
+                log.debug("addAnnotationRequest numAffected: ", numAffected);
+
+                if(removeFreeSpace){
+
+                    var query = {
+                        condition: {_id: param.id},
+                        update: {$pull: { 'cameras.0.annotation': { category: "free_space" } }},
+                        options: {multi: false}
+                    };
+
+                    unfilteredSequence.update(query.condition, query.update, query.options, function(err, numAffected) {
+                        if (err) {
+                            log.debug("removeFreeSpace Result error: ", err);
+                            throw err;
+                        } else{
+                            log.debug("removeFreeSpace numAffected: ", numAffected);
+                            // numUpdated += numAffected.nModified;
+                            numUpdated += 1;
+
+                            if (numUpdated == totalRequest)
+                                res.send("ok!");
+
+                        }
+                    });
+
+                } else {
+                    // numUpdated += numAffected.nModified;
+                    numUpdated += 1;
+                    if (numUpdated == totalRequest)
+                        res.send("ok!");
+                }
+
+
+            }
+        });
+    });
 };

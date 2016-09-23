@@ -7,6 +7,7 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
 
     $scope.selected = [];
+    $scope.currentPage = dataService.data.filterPageNum;
 
     $http.get("/api/sequence/getAllUnfiltered")
         .success(function(databaseResult) {
@@ -51,7 +52,7 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'myModalContent.html',
+            templateUrl: 'filterPreview.html',
             controller: 'filterPreviewCtrl',
             size: 'lg',
             resolve: {
@@ -60,73 +61,52 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
                 }
             }
         });
+
+        // modalInstance.result.then(function (result) {
+        //     $scope.selected[$scope.arrayObjectIndexOf($scope.selected, result._id, 'id')].keywords = result.keywords;
+        // }, function () {
+        //     console.log('Modal dismissed at: ' + new Date());
+        // });
     };
 
 
-    $scope.linkToTop = function () {
+    $scope.changePage = function (page) {
         $anchorScroll('top');
+        // console.log("page: " + page);
+
+        dataService.data.filterPageNum = page;
     };
+
 
 
     $scope.submit = function () {
 
         if (confirm($scope.selected.length + " sequence selected") == true) {
-            var queries = [];
+            var params = [];
 
             for (var i = 0; i < $scope.selected.length; i++){
 
-
-                var query = {
-                    condition: {_id: $scope.selected[i].id},
-                    update: {$push: {
-                        "cameras.0.annotation": {
-                            "category": $scope.selected[i].category,
-                            "fps": $scope.selected[i].fps,
-                            "priority": $scope.selected[i].priority,
-                            "state" : 'Pending',
-                            "version" : [{version_number: 1, comments: "Initial request"}]
-                        }
-                    }},
-                    options: {multi: false}
+                var param = {
+                    "id": $scope.selected[i].id,
+                    "category": $scope.selected[i].category,
+                    "fps": $scope.selected[i].fps,
+                    "priority": $scope.selected[i].priority
                 };
 
-                queries.push(query);
-
-                if ($scope.selected[i].category == "Road"){
-                     query = {
-                        condition: {_id: $scope.selected[i].id},
-                        update: {$push: {
-                            "cameras.0.annotation": {
-                                "category": "Lane",
-                                "fps": $scope.selected[i].fps,
-                                "priority": 0, 
-                                "state" : 'Pending',
-                                "version" : [{version_number: 1, comments: "Initial request"}]
-                            }
-                        }},
-                        options: {multi: false}
-                    };
-
-                    queries.push(query);
-                }
-
-
+                params.push(param);
             }
 
             //update database
-            $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+            $http.post("/api/sequence/addAnnotationRequest", JSON.stringify(params))
                 .success(function(databaseResult) {
-                    // alert(databaseResult);
-                    // console.log(databaseResult);
                     $state.go('review');
-
-
                 })
                 .error(function (data, status, header, config) {
                     alert("submit request failed!\nStatus: " + status + "\nData: " + data);
 
                     console.log("submit request failed!");
                 });
+
 
 
         }
@@ -138,7 +118,10 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
 
 
-app.controller('filterPreviewCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
+app.controller('filterPreviewCtrl', function ($http, $scope, $uibModalInstance, $sce, result, dataService, utilService) {
+
+    $scope.result = result;
+    $scope.keywordsObj = dataService.keywords;
 
 
     $scope.previewSrc = function () {
@@ -146,13 +129,57 @@ app.controller('filterPreviewCtrl', function ($scope, $uibModalInstance, $sce, r
         // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
 
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/R/"+ result.title + "_h264_R.mp4");
-    }
+    };
 
-    $scope.ok = function () {
-        $uibModalInstance.close();
+
+
+    $scope.toggleSelection = function (keyword) {
+
+        var index = $scope.result.keywords.indexOf(keyword);
+
+        if (index > -1)
+            $scope.result.keywords.splice(index, 1);
+        else
+            $scope.result.keywords.push(keyword);
+    };
+
+    $scope.submitTag = function () {
+
+        if (confirm("Keywords:\n" + $scope.result.keywords) == true) {
+
+            var queries = [{
+                condition: {_id: $scope.result._id},
+                update: {$set: {"keywords": $scope.result.keywords}},
+                options: {multi: false}
+            }];
+
+
+            //update database
+            $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+                .success(function(databaseResult) {
+                    // alert(databaseResult.nModified + " record updated!");
+                    $uibModalInstance.close();
+
+                })
+                .error(function (data, status, header, config) {
+                    console.log("submitTag Failed!");
+                });
+
+        }
+
     };
 
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+
+    // $uibModalInstance.dismiss(result);
+
+    // $scope.ok = function () {
+    //     $uibModalInstance.close();
+    // };
+    //
+    // $scope.cancel = function () {
+    //     $uibModalInstance.dismiss('cancel');
+    // };
 });

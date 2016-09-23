@@ -30,10 +30,12 @@ app.controller('NavigationController', function($scope, dataService) {
         link: "archive"
     }];
 
-    $scope.Documentation = [{
-        name: "Annotation ToolBox 2",
-        link: dataService.data.fileServerAddr + '/vol1/documentation/atb_v2_user_guide_21.pdf'
-    }, {
+    $scope.Documentation = [
+    //     {
+    //     name: "Annotation ToolBox 2",
+    //     link: dataService.data.fileServerAddr + '/vol1/documentation/atb_v2_user_guide_21.pdf'
+    // },
+        {
         name: "Annotation Task",
         link: "#",
         subtree: [{

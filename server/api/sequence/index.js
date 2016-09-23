@@ -10,9 +10,10 @@ router.get('/', controller.index);
 router.get('/findByID/:id', controller.findByID);
 router.get('/seed', seed);
 router.get('/getAllUnfiltered', controller.getAllUnfiltered);
-router.get('/getRequested', controller.getRequested);
+// router.get('/getRequested', controller.getRequested);
 router.get('/getUnfinished', controller.getUnfinished);
 router.get('/getAccepted', controller.getAccepted);
+router.get('/removeUnfiltered', controller.removeUnfiltered);
 
 
 
@@ -21,7 +22,10 @@ router.post('/query', controller.result);
 router.post('/update', controller.update);
 router.post('/updateUnfiltered', controller.updateUnfiltered);
 router.post('/insert', controller.insert);
-router.put('/insertUnfiltered', controller.insertUnfiltered);
+router.post('/insertUnfiltered', controller.insertUnfiltered);
+router.post('/deleteSequence', controller.deleteSequence);
+
+router.post('/addAnnotationRequest', controller.addAnnotationRequest);
 
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);
