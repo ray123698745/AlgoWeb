@@ -21,7 +21,7 @@ app.controller('NavigationController', function($scope, dataService) {
         link: "#"
     }, {
         name: "Tasks",
-        link: "annotation"
+        link: "annotationTrack"
     },{
         name: "divider",
         link: "#"

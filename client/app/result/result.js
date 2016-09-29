@@ -19,9 +19,15 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
     };
 
 
-    $scope.switchLR = function () {
-        $scope.isLeft = !$scope.isLeft;
-        $scope.isRight = !$scope.isRight;
+    $scope.switchLR = function (side) {
+        if (side == 'left' && $scope.isRight){
+            $scope.isLeft = !$scope.isLeft;
+            $scope.isRight = !$scope.isRight;
+        }
+        if (side == 'right' && $scope.isLeft){
+            $scope.isLeft = !$scope.isLeft;
+            $scope.isRight = !$scope.isRight;
+        }
     };
 
 

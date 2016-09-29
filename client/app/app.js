@@ -32,10 +32,20 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
             templateUrl: "/app/filter/filter.ejs",
             controller: 'filterCtrl'
         })
-        .state('annotation', {
-            url: "/annotation",
-            templateUrl: "/app/annotation/annotation.ejs",
-            controller: 'annotationCtrl'
+        // .state('annotation', {
+        //     url: "/annotation",
+        //     templateUrl: "/app/annotation/annotation.ejs",
+        //     controller: 'annotationCtrl'
+        // })
+        .state('annotationTrack', {
+            url: "/annotationTrack",
+            templateUrl: "/app/annotation/annotationTrack.ejs",
+            controller: 'annotationTrackCtrl'
+        })
+        .state('annotationManage', {
+            url: "/annotationManage",
+            templateUrl: "/app/annotation/annotationManage.ejs",
+            controller: 'annotationManageCtrl'
         })
         .state('review', {
         url: "/review",

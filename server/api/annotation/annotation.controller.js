@@ -5,6 +5,7 @@
 
 var annotationBatch = require('./annotation.model.js');
 var log = require('log4js').getLogger('annotation');
+require('shelljs/global');
 
 
 module.exports = {
@@ -30,17 +31,31 @@ module.exports = {
         });
     },
 
-    removeBatch: function(req, res) {
+    getAllBatch: function(req, res) {
 
-        var query = req.body;
-
-        log.debug('query: ', query);
-
-        annotationBatch.remove( query, function(err, result) {
+        annotationBatch.find({}, null, {sort: {batchName: -1}}, function(err, batch) {
             if (err) throw err;
 
+            res.send(batch);
+        });
 
-            res.send(result);
+    },
+
+    removeBatch: function(req, res) {
+
+        var id = req.body.id;
+        var batchName = req.body.batchName;
+
+        log.debug('removeBatch id: ', id);
+
+
+        annotationBatch.remove( {_id: id}, function(err, result) {
+            if (err) throw err;
+
+            rm('/supercam/vol1/annotation/tasks_batch/' + batchName + '.tar.gz');
+            log.debug('removeBatch done!: ' + result);
+
+            res.send('ok!');
         });
     }
 
