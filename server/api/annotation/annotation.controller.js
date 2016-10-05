@@ -18,8 +18,6 @@ module.exports = {
 
         var newAnnotationBatch = new annotationBatch(query);
 
-        log.debug('20');
-
         newAnnotationBatch.save(function (err, data) {
             if (err) {
                 log.debug("insertBatch failed: ", err);

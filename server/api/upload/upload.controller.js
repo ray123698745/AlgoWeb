@@ -19,6 +19,7 @@ module.exports = {
         var id = req.body.id;
         var index = req.body.index;
         var title = req.body.title;
+        var frame_number = req.body.frame_number;
         var category = req.body.category;
         var fps = req.body.fps;
         var version_number = req.body.version_number;
@@ -27,7 +28,8 @@ module.exports = {
         var statFileName = title + '_' + category + '_stat.json';
         var destPath = '/supercam' + path + '/Front_Stereo/annotation/' + category + '_v' + version_number + '/';
         var comments = req.body.comments;
-        log.debug("path: " + path);
+        var statFile = {};
+            log.debug("path: " + path);
         log.debug("id: " + id);
         log.debug("title: " + title);
         log.debug("comments: " + comments);
@@ -73,7 +75,7 @@ module.exports = {
 
                 } else {
 
-                    var statFile = fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8');
+                    statFile = JSON.parse(fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8'));
 
 
                     mv(__dirname + '/uploads/' + files[i].filename, destPath + files[i].originalname);
@@ -89,9 +91,25 @@ module.exports = {
 
             var state_key = 'cameras.0.annotation.' + index + '.state';
             var time_key = 'cameras.0.annotation.' + index + '.version.' + versionIndex + '.upload_time';
+            var total_objects_key = 'cameras.0.annotation.' + index + '.total_objects';
+            var unique_id_key = 'cameras.0.annotation.' + index + '.unique_id';
+            var classes_key = 'cameras.0.annotation.' + index + '.classes';
+            var density_key = 'cameras.0.annotation.' + index + '.density';
+
+
 
             set_obj[state_key] = 'Finished';
             set_obj[time_key] = uploadTime;
+            set_obj[total_objects_key] = statFile.n_objects;
+            set_obj[unique_id_key] = statFile.ids;
+            set_obj[density_key] = statFile.n_objects/frame_number;
+            set_obj[classes_key] = [];
+
+            for (var i = 0; i < statFile.class_count.length; i++){
+                set_obj[classes_key][i] = {};
+                set_obj[classes_key][i].class = statFile.class_count[i][0];
+                set_obj[classes_key][i].occurrence = statFile.class_count[i][1];
+            }
 
 
             var query = {

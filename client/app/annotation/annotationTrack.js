@@ -173,6 +173,28 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
             return dataService.data.fileServerAddr  + utilService.getRootPathBySite(result.file_location) + '/' + result.cameras[0].name + "/annotation/"+ category + "_v" + version + '/' + result.title + "_" + category + ".json";
     };
 
+    $scope.preview = function (result) {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'myPreviewContent.html',
+            controller: 'annotatePreviewCtrl',
+            size: 'lg',
+            resolve: {
+                result: function () {
+                    return result;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            // $scope.selected = selectedItem;
+        }, function () {
+            // $log.info('Modal dismissed at: ' + new Date());
+        });
+
+    };
+
 
     $scope.showDownloadBtn = function (uploadTime) {
 
@@ -183,6 +205,7 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
 
         return uploadTime;
     };
+
 
 
     // $scope.upload = function (ele) {
@@ -436,6 +459,25 @@ app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance,
                 console.log("submit request failed!");
             });
 
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+
+app.controller('annotatePreviewCtrl', function ($scope, $uibModalInstance, $sce, result, dataService, utilService) {
+
+
+    $scope.previewSrc = function () {
+
+        // console.log(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/L/h264.mp4");
+        return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/" + result.cameras[0].name + "/R/" + result.title + "_h264_R.mp4");
+    };
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
     };
 
     $scope.cancel = function () {

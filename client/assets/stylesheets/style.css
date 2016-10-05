@@ -48,6 +48,10 @@ footer {
     cursor: pointer;
 }
 
+.bright_row{
+    background-color: #3e444c;
+}
+
 /*.navbar {*/
     /*margin-bottom: 0;*/
     /*background-color: #f4511e;*/

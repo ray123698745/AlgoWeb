@@ -9,9 +9,11 @@ var location = new Schema({country: String, state: String, city: String},{_id : 
 var gps = new Schema({x: Number, y: Number},{_id : false });
 var file_location = new Schema({site: String, root_path: String},{_id : false });
 var yuv = new Schema({version: Number, desc: String},{_id : false });
-var objects = new Schema({class: String, occurrence: Number},{_id : false });
+// var objects = new Schema({class: String, occurrence: Number},{_id : false });
 var version = new Schema({version_number: Number, upload_time: String, comments: String},{_id : false });
-var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, classes: [String], objects: [objects]},{_id : false });
+var class_object = new Schema({class: String, occurrence: Number},{_id : false });
+
+var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, classes: [class_object]},{_id : false });
 var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: [annotation]},{_id : false });
 
 

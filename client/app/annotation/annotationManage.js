@@ -63,6 +63,7 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
                     }
                 }
             }
+
         })
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
@@ -102,7 +103,7 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
             }
         }
 
-
+// console.log($scope.showResultsGroup());
     };
 
     $scope.switchToDownload = function () {
@@ -259,6 +260,7 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
             fd.append("path", utilService.getRootPathBySite(result.file_location));
             fd.append("id", result._id);
             fd.append("title", result.title);
+            fd.append("frame_number", result.frame_number);
             fd.append("index", index);
             fd.append("category", result.category);
             fd.append("fps", result.fps);

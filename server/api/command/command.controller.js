@@ -73,27 +73,51 @@ module.exports = {
         log.debug('processSequence');
 
         var queries = req.body;
+        var batchSequenceCount = 30;
+        var parts = 1;
+        var remains = 30;
 
-        for (var i = 0; i < queries.length; i++){
-
-            // log.debug('query: ', queries[i]);
-
-            // if(queries[i].title == '16-08-03-071110-it'){
-            //     log.debug('title: ', queries[i].title);
-            //
-            //     var processSequence = queue.create('processSequence', {
-            //         sequenceObj: queries[i]
-            //     });
-            //     processSequence.save();
-            // }
-
-            var processSequence = queue.create('processSequence', {
-                sequenceObj: queries[i],
-                batchSequenceCount: (queries.length - i)
-            });
-            processSequence.save();
-
+        if(queries.length > 30){
+            parts = parseInt(queries.length / 30)+1;
+            remains = queries.length % 30;
         }
+
+        for (var i = 0; i < parts; i++){
+
+            if (i == parts-1) batchSequenceCount = remains;
+
+            for (var j = 0; j < batchSequenceCount; j++){
+                var processSequence = queue.create('processSequence', {
+                    sequenceObj: queries[j],
+                    batchSequenceCount: (batchSequenceCount - j)
+                });
+                processSequence.save();
+            }
+        }
+
+
+
+        // for (var i = 0; i < queries.length; i++){
+        //
+        //     // log.debug('query: ', queries[i]);
+        //
+        //     // if(queries[i].title == '16-08-03-071110-it'){
+        //     //     log.debug('title: ', queries[i].title);
+        //     //
+        //     //     var processSequence = queue.create('processSequence', {
+        //     //         sequenceObj: queries[i]
+        //     //     });
+        //     //     processSequence.save();
+        //     // }
+        //
+        //
+        //     var processSequence = queue.create('processSequence', {
+        //         sequenceObj: queries[i],
+        //         batchSequenceCount: (queries.length - i)
+        //     });
+        //     processSequence.save();
+        //
+        // }
 
         res.send('Start processing');
     }

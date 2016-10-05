@@ -19,96 +19,101 @@
     <div class="row" style="padding-top: 40px">
         <div class="col-md-8 col-md-offset-2">
 
-            <div class="well" ng-show="tab.moving_object || tab.free_space || tab.free_space_with_curb">
+            <div ng-show="tab.moving_object || tab.free_space || tab.free_space_with_curb">
+                <div class="well" >
+                    <div style="text-align: right; padding-top: 30px">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="control-label" style="color: white; font-size: medium;">Search by Title: </label>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0; ">
+                                <input type="text" class="form-control" ng-model="searchTitle" ng-change="search()">
+                            </div>
+                            <div class="col-md-1" style="padding-left: 0; " >
+                                <label class="control-label" style="color: white; font-size: medium;">State: </label>
+                            </div>
+                            <div class="col-md-2" style="padding-left: 0">
+                                <div ng-dropdown-multiselect events="event" options="stateData" selected-model="selectedState" extra-settings="multiSelectSettings"></div>
+                            </div>
 
-                <!--<h3>{{showResults.length}} Tasks</h3>-->
-
-                <div style="text-align: right; padding-top: 30px">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="control-label" style="color: white; font-size: medium;">Search by Title: </label>
-                        </div>
-                        <div class="col-md-3" style="padding-left: 0; ">
-                            <input type="text" class="form-control" ng-model="searchTitle" ng-change="search()">
-                        </div>
-                        <div class="col-md-1" style="padding-left: 0; " >
-                            <label class="control-label" style="color: white; font-size: medium;">State: </label>
-                        </div>
-                        <div class="col-md-2" style="padding-left: 0">
-                            <div ng-dropdown-multiselect events="event" options="stateData" selected-model="selectedState" extra-settings="multiSelectSettings"></div>
-                        </div>
-
-                        <div class="col-md-1" style="padding-left: 0;">
-                            <label class="control-label" style="color: white; font-size: medium;">Order: </label>
-                        </div>
-                        <div class="col-md-1" style="padding-left: 0; padding-right: 0">
-                            <div ng-dropdown-multiselect options="orderData" selected-model="selectedOrder" extra-settings="multiSelectSettings"></div>
+                            <div class="col-md-1" style="padding-left: 0;">
+                                <label class="control-label" style="color: white; font-size: medium;">Order: </label>
+                            </div>
+                            <div class="col-md-1" style="padding-left: 0; padding-right: 0">
+                                <div ng-dropdown-multiselect options="orderData" selected-model="selectedOrder" extra-settings="multiSelectSettings"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div style="padding-top: 25px"></div>
-                <table class="table table-condensed table-hover">
-                    <thead>
-                    <tr>
-                        <th>Sequence Title</th>
-                        <th>Priority</th>
-                        <th>State</th>
-                        <th>Functions</th>
 
-                    </tr>
-                    </thead>
+                <div class="well"  >
 
-                    <tbody>
-                    <tr class="pointer_table" ng-repeat="result in showResults | orderBy : order" ng-click="editState(result)">
+                    <!--<h3>{{showResults.length}} Tasks</h3>-->
+                    <div style="padding-top: 15px"></div>
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th>Sequence Title</th>
+                            <th>Priority</th>
+                            <th>State</th>
+                            <th>Functions</th>
 
-                        <td>{{result.title}}</td>
-                        <td>{{result.priority}}</td>
+                        </tr>
+                        </thead>
 
-                        <td ng-show="!result.isEdit">{{result.state}}</td>
-                        <td ng-show="result.isEdit">
-                            <select class="form-control input-sm" ng-model="result.state" ng-change="submitEdit(result)">
-                                <!--<select class="form-control input-sm" ng-model="request.state" ng-change="editingRequest.state=request.state">-->
-                                <!--<option value="Pending">Pending</option>-->
-                                <option value="Annotating">Annotating</option>
-                                <option value="Reviewing">Reviewing</option>
-                                <!--<option value="Finished">Finished</option>-->
-                                <!--<option value="Modifying">Modifying</option>-->
-                            </select>
-                        </td>
+                        <tbody>
+                        <tr class="pointer_table" ng-class="{bright_row: ($index % 10 == 9)}" ng-repeat="result in showResults | orderBy : order" ng-click="editState(result)">
 
-                        <td>
+                            <td>{{result.title}}</td>
+                            <td>{{result.priority}}</td>
 
-                            <div class="btn-group btn-group-sm" ng-show="result.state == 'Finished' || result.state == 'Modifying'" uib-dropdown dropdown-append-to-body="true">
-                                <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle>
-                                    JSON <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                    <li role="menuitem" ng-hide="$last && result.state != 'Finished' && result.state != 'Accepted'" ng-repeat="version in result.version"><a download ng-href="{{download(result, 'JSON', version.version_number)}}" target="_self"><i><b>V{{version.version_number}}</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{showDownloadBtn(version.upload_time)}}</a></li>
-                                </ul>
-                            </div>
+                            <td ng-show="!result.isEdit">{{result.state}}</td>
+                            <td ng-show="result.isEdit">
+                                <select class="form-control input-sm" ng-model="result.state" ng-change="submitEdit(result)">
+                                    <!--<select class="form-control input-sm" ng-model="request.state" ng-change="editingRequest.state=request.state">-->
+                                    <option value="Pending">Pending</option>
+                                    <option value="Annotating">Annotating</option>
+                                    <option value="Reviewing">Reviewing</option>
+                                    <!--<option value="Finished">Finished</option>-->
+                                    <!--<option value="Modifying">Modifying</option>-->
+                                </select>
+                            </td>
 
-                            <div class="btn-group btn-group-sm" ng-show="result.state == 'Modifying' || result.state == 'Reviewing'">
-                                <label ng-show="result.state == 'Modifying' || result.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">
-                                    Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
-                                </label>
-                                <button ng-show="result.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{result.version[result.version.length-1].comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>
-                            </div>
+                            <td>
 
-                            <!--<div class="btn-group btn-group-sm" ng-show="request.state == 'Finished'">-->
-                                <!--<button class="btn btn-default" type="button" ng-click="accept(result, $index)">Accept</button>-->
-                                <!--<button class="btn btn-default" type="button" ng-click="modify(result, $index)">Modify</button>-->
-                            <!--</div>-->
+                                <div class="btn-group btn-group-sm" ng-show="result.state == 'Finished' || result.state == 'Modifying'" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle>
+                                        JSON <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ng-hide="$last && result.state != 'Finished' && result.state != 'Accepted'" ng-repeat="version in result.version"><a download ng-href="{{download(result, 'JSON', version.version_number)}}" target="_self"><i><b>V{{version.version_number}}</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{showDownloadBtn(version.upload_time)}}</a></li>
+                                    </ul>
+                                </div>
 
-                            <div class="btn-group btn-group-sm" ng-show="result.isEdit">
-                                <button class="btn btn-default" type="button" ng-click="cancel(result)">Cancel</button>
-                            </div>
+                                <div class="btn-group btn-group-sm" ng-show="result.state == 'Modifying' || result.state == 'Reviewing'">
+                                    <label ng-show="result.state == 'Modifying' || result.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">
+                                        Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
+                                    </label>
+                                    <button ng-show="result.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{result.version[result.version.length-1].comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>
+                                </div>
 
-                        </td>
-                    </tr>
+                                <!--<div class="btn-group btn-group-sm" ng-show="request.state == 'Finished'">-->
+                                    <!--<button class="btn btn-default" type="button" ng-click="accept(result, $index)">Accept</button>-->
+                                    <!--<button class="btn btn-default" type="button" ng-click="modify(result, $index)">Modify</button>-->
+                                <!--</div>-->
 
-                    </tbody>
-                </table>
+                                <div class="btn-group btn-group-sm" ng-show="result.isEdit">
+                                    <button class="btn btn-default" type="button" ng-click="cancel(result)">Cancel</button>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <!--<tr ng-show="$index % 10 == 0"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>-->
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="well" ng-show="tab.download">

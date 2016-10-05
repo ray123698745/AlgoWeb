@@ -52,8 +52,11 @@
                         <div class="col-md-4">
                             <strong>{{result.title}}</strong>
                         </div>
-                        <div class="col-md-3 col-md-offset-5" style="text-align: right;">
-                            <a ng-show="!result.isEdit" download ng-href="{{download(result, 'package', null)}}" target="_self" class="btn-sm btn-default" >Download ini</a>
+                        <div class="col-md-2 col-md-offset-4" style="text-align: center;">
+                            <a class="btn-sm btn-default btn-block" target="_self" ng-click="preview(result)" >Preview</a>
+                        </div>
+                        <div class="col-md-2" style="text-align: center;">
+                            <a download ng-href="{{download(result, 'package', null)}}" target="_self" class="btn-sm btn-default btn-block" >Download ini</a>
                         </div>
                     </div>
 
@@ -100,7 +103,7 @@
 
                                         <td>
 
-                                            <div class="btn-group btn-group-sm" ng-show="request.state == 'Finished' || request.state == 'Modifying'" uib-dropdown dropdown-append-to-body="true">
+                                            <div class="btn-group btn-group-sm" ng-show="request.state == 'Finished'" uib-dropdown dropdown-append-to-body="true">
                                                 <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle>
                                                     JSON <span class="caret"></span>
                                                 </button>
@@ -109,7 +112,7 @@
                                                 </ul>
                                             </div>
 
-                                            <div class="btn-group btn-group-sm" ng-show="request.state == 'Modifying' || request.state == 'Reviewing'">
+                                            <div class="btn-group btn-group-sm" ng-show="request.state == 'Modifying'">
                                                 <!--<label ng-show="request.state == 'Modifying' || request.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">-->
                                                     <!--Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">-->
                                                 <!--</label>-->
@@ -175,4 +178,33 @@
         <button class="btn btn-default" type="button" ng-click="submitComments()">Submit</button>
         <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
     </div>
+</script>
+
+
+<script type="text/ng-template" id="myPreviewContent.html">
+    <!--<div class="modal-header">-->
+    <!--<h3 class="modal-title">Preview</h3>-->
+    <!--</div>-->
+    <div class="modal-body">
+        <!--<ul>-->
+        <!--<li ng-repeat="item in items">-->
+        <!--<a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--Selected: <b>{{ selected.item }}</b>-->
+
+        <div class="center_video">
+            <div class="embed-responsive embed-responsive-16by9">
+                <video ng-src="{{previewSrc()}}" type="video/mp4" controls></video>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--<div class="modal-footer">-->
+    <!--<div class="modal-footer">-->
+    <!--<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>-->
+    <!--<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>-->
+    <!--</div>-->
 </script>
