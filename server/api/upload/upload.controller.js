@@ -19,7 +19,6 @@ module.exports = {
         var id = req.body.id;
         var index = req.body.index;
         var title = req.body.title;
-        var frame_number = req.body.frame_number;
         var category = req.body.category;
         var fps = req.body.fps;
         var version_number = req.body.version_number;
@@ -37,10 +36,6 @@ module.exports = {
 
         comments = comments.replace(/"/g, '\\\"');
         comments = comments.replace(/(?:\r\n|\r|\n)/g, '\\n');
-
-
-
-
 
 
         if ((files[0].originalname == fileName && files[1].originalname == statFileName) || (files[1].originalname == fileName && files[0].originalname == statFileName)){
@@ -102,7 +97,7 @@ module.exports = {
             set_obj[time_key] = uploadTime;
             set_obj[total_objects_key] = statFile.n_objects;
             set_obj[unique_id_key] = statFile.ids;
-            set_obj[density_key] = statFile.n_objects/frame_number;
+            set_obj[density_key] = statFile.n_objects/statFile.frames;
             set_obj[classes_key] = [];
 
             for (var i = 0; i < statFile.class_count.length; i++){

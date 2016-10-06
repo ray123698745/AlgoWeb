@@ -13,7 +13,7 @@ var yuv = new Schema({version: Number, desc: String},{_id : false });
 var version = new Schema({version_number: Number, upload_time: String, comments: String},{_id : false });
 var class_object = new Schema({class: String, occurrence: Number},{_id : false });
 
-var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, classes: [class_object]},{_id : false });
+var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, density: Number, classes: [class_object]},{_id : false });
 var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: [annotation]},{_id : false });
 
 

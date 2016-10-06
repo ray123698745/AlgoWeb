@@ -4,6 +4,11 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
 
     $scope.keywordsObj = dataService.keywords;
     $scope.selectedKeywords = [];
+    $scope.objects = [{
+        class: null,
+        occurrence: null
+    }];
+    $scope.version = 4;
 
 
     $scope.toggleSelection = function (keyword) {
@@ -14,7 +19,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             $scope.selectedKeywords.splice(index, 1);
         else
             $scope.selectedKeywords.push(keyword);
-    }
+    };
 
     $scope.fromDateOptions = {
         formatYear: 'yy',
@@ -70,10 +75,53 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         //     queryObj.yuv = { $exists: false }; // should unset the array after remove the last element
 
 
-        // console.log($scope.selectedKeywords);
 
         if ($scope.selectedKeywords.length > 0)
             queryObj.keywords = {"$all": $scope.selectedKeywords};
+
+        // if ($scope.version)
+        //     queryObj.version = $scope.version;
+
+        if ($scope.task) {
+            var task_key = 'cameras.0.annotation.category';
+            queryObj[task_key] = $scope.task;
+        }
+        if ($scope.density){
+            var density_key = 'cameras.0.annotation.density';
+            queryObj[density_key] = {"$gte": $scope.density};
+        }
+
+        if ($scope.ids){
+            var ids_key = 'cameras.0.annotation.unique_id';
+            queryObj[ids_key] = {"$gte": $scope.ids};
+        }
+
+        var object_key = '$and';
+        var object_array = [];
+        for (var i = 0; i < $scope.objects.length; i++){
+            if($scope.objects[i].class){
+
+                var group_object = {};
+
+                var class_key = 'cameras.0.annotation.classes.class';
+                // var class_object = {};
+                group_object[class_key] = $scope.objects[i].class;
+
+                if ($scope.objects[i].occurrence){
+                    var occurrence_key = 'cameras.0.annotation.classes.occurrence';
+                    // var occurrence_object = {};
+                    group_object[occurrence_key] = {"$gte": $scope.objects[i].occurrence};
+                }
+
+                object_array.push(group_object);
+
+            }
+        }
+
+        if (object_array.length > 0)
+            queryObj[object_key] = object_array;
+
+        // console.log(queryObj);
 
         dataService.data.queryObj = queryObj;
 
@@ -81,12 +129,24 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
 
         $state.go('resultList');
 
-    }
+    };
 
+    $scope.addObject = function () {
+
+        $scope.objects.push({
+            class: null,
+            occurrence: null
+        });
+    };
+
+    $scope.deleteObject = function () {
+
+        $scope.objects.pop();
+    };
 
     $scope.saveQuery = function() {
 
-    }
+    };
 
     $scope.loadQuery = function() {
 

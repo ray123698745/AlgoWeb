@@ -27,7 +27,7 @@
 
                                         <div class="form-group">
                                             <label class="control-label title_label">Sequence Title</label>
-                                            <input type="text" ng-model="sequence_title" class="form-control" placeholder="XX-XX-XX-XXXXXX-XX" />
+                                            <input type="text" ng-model="sequence_title" class="form-control" placeholder="" />
                                         </div>
 
                                         <div class="form-group">
@@ -63,22 +63,37 @@
                                     <div class="well" style="background-color:#272b30">
 
                                         <div class="form-group">
-                                            <label class="control-label title_label">Average Speed</label>
+                                            <label class="control-label title_label">Database Version</label>
                                             <div class="row">
-                                                <div class="col-md-2">
-                                                    <label class="control-label">From: </label>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input type="text" ng-model="from_speed" class="form-control" disabled/>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label class="control-label">To: </label>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input type="text" ng-model="to_speed" class="form-control" disabled/>
+                                                <div class="col-md-12">
+                                                    <select class="form-control" ng-model="version" disabled>
+                                                        <option value="5">v5</option>
+                                                        <option value="4">v4</option>
+                                                        <option value="3">v3</option>
+                                                        <option value="2">v2</option>
+                                                        <option value="1">v1</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!--<div class="form-group">-->
+                                            <!--<label class="control-label title_label">Average Speed</label>-->
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-md-2">-->
+                                                    <!--<label class="control-label">From: </label>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-md-4">-->
+                                                    <!--<input type="text" ng-model="from_speed" class="form-control" disabled/>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-md-2">-->
+                                                    <!--<label class="control-label">To: </label>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-md-4">-->
+                                                    <!--<input type="text" ng-model="to_speed" class="form-control" disabled/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
 
                                         <!--<div class="form-group">-->
                                             <!--<div class="row">-->
@@ -258,52 +273,97 @@
                                 <div class="col-md-12">
 
 
-
                                     <div class="form-group">
-                                        <label class="control-label title_label">Annotation Density</label>
+                                        <label class="control-label title_label">Task</label>
                                         <div class="row">
-                                            <div class="col-md-2">
-                                                <label class="control-label">From: </label>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" disabled/>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label">To: </label>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" disabled/>
-                                            </div>
-                                        </div>
-                                    </div>
 
-
-                                    <div class="form-group">
-                                        <label class="control-label title_label">Objects </label>
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label class="control-label">Class: </label>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <select class="form-control" disabled>
-                                                    <option disabled selected value>Select a Class</option>
-                                                    <option value="12">Human</option>
-                                                    <option value="13">This is item 2</option>
-                                                    <option value="14">This is item 3</option>
+                                            <!--<div class="col-md-1">-->
+                                                <!--<label class="control-label">Country: </label>-->
+                                            <!--</div>-->
+                                            <div class="col-md-12">
+                                                <select class="form-control" ng-model="task">
+                                                    <option selected value></option>
+                                                    <option value="moving_object">Moving Object</option>
+                                                    <option value="free_space">Free Space</option>
+                                                    <option value="free_space_with_curb">Free Space With Curb</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
-                                                <label class="control-label">Occurrence: </label>
+                                        </div>
+                                    </div>
+
+                                    <!--<div ng-show="task">-->
+                                        <div>
+                                        <div class="form-group">
+                                            <label class="control-label title_label">Density (objects per frame)</label>
+                                            <div class="row">
+
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" ng-model="density"/>
+                                                </div>
+
+                                                <div class="col-md-3" >
+                                                    <label class="control-label" >and above</label>
+                                                </div>
+                                                <!--<div class="col-md-2">-->
+                                                <!--<label class="control-label">To: </label>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-md-4">-->
+                                                <!--<input type="text" class="form-control" disabled/>-->
+                                                <!--</div>-->
                                             </div>
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" disabled/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label title_label">Unique IDs</label>
+                                            <div class="row">
+
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" ng-model="ids"/>
+                                                </div>
+
+                                                <div class="col-md-3" >
+                                                    <label class="control-label" >and above</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="control-label title_label">Objects </label>
+
+                                            <div class="row"  ng-repeat="object in objects" style="margin-bottom: 10px">
+                                                <div class="col-md-2">
+                                                    <label class="control-label">Class: </label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" ng-model="object.class">
+                                                        <option selected value></option>
+                                                        <option value="human">Human</option>
+                                                        <option value="vehicle">Vehicle</option>
+                                                        <option value="road">Road</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">Occurrence: </label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" ng-model="object.occurrence"/>
+                                                </div>
+                                            </div>
+
+                                            <div style="padding-top: 9%; padding-bottom: 10px; text-align: right;">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-default" type="button" ng-click="addObject()">&nbsp;&nbsp;Add&nbsp;&nbsp;</button>
+                                                    <button class="btn btn-default" type="button" ng-click="deleteObject()">Delete</button>
+                                                </div>
                                             </div>
 
                                         </div>
-                                        <div class="right_button_wrapper" style="padding-bottom: 10px;">
-                                            <button class="btn btn-default" type="button" ng-click="" disabled>Add</button>
-                                        </div>
+
+
                                     </div>
+
 
 
                                 </div>
