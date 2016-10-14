@@ -448,16 +448,82 @@ app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance,
             update: {$set: set_obj, $push: version_obj},
             options: {multi: false}
         };
+        
 
-        $http.post("/api/sequence/update", JSON.stringify(query))
-            .success(function(databaseResult) {
-                $uibModalInstance.close();
-            })
-            .error(function (data, status, header, config) {
-                alert("Modify request failed!\nStatus: " + status + "\nData: " + data);
+        if ($scope.files && $scope.files.length == 1){
 
-                console.log("submit request failed!");
-            });
+            console.log("version_number", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].version_number);
+            console.log("originalname: " + $scope.files);
+
+
+            var fd = new FormData();
+            fd.append("annotation", $scope.files[0]);
+            // fd.append("annotation", files[1]);
+
+            fd.append("path", utilService.getRootPathBySite(result.file_location));
+            // fd.append("id", result._id);
+            fd.append("title", result.title);
+            // fd.append("index", index);
+            fd.append("category", result.cameras[0].annotation[index].category);
+            // fd.append("fps", result.fps);
+            fd.append("version_number", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].version_number);
+            // fd.append("comments", result.version[result.version.length-1].comments);
+
+
+
+            $http.post("/api/upload/uploadReview", fd,
+                {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                })
+                .success(function(data) {
+                    // alert(data);
+                    console.log(data);
+                    $http.post("/api/sequence/update", JSON.stringify(query))
+                        .success(function(databaseResult) {
+                            $uibModalInstance.close();
+                        })
+                        .error(function (data, status, header, config) {
+                            alert("Modify request failed!\nStatus: " + status + "\nData: " + data);
+
+                            console.log("submit request failed!");
+                        });
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("Upload annotation failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("Upload annotation failed!");
+                });
+        } else {
+            
+            $http.post("/api/sequence/update", JSON.stringify(query))
+                .success(function(databaseResult) {
+                    $uibModalInstance.close();
+                })
+                .error(function (data, status, header, config) {
+                    alert("Modify request failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("submit request failed!");
+                });
+        }
+
+
+        
+        
+        
+
+    };
+
+    $scope.upload = function (ele) {
+
+        $scope.files = ele.files;
+
+        // var result = angular.element(ele).scope().result;
+        // var index = result.index;
+
+
 
     };
 

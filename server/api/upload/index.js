@@ -21,4 +21,15 @@ router.post('/uploadAnnotation', function (req, res) {
     })
 });
 
+router.post('/uploadReview', function (req, res) {
+    upload(req, res, function (err) {
+        if (err) {
+            // An error occurred when uploading
+            console.log("error: " + err);
+        } else {
+            controller.uploadReview(req, res);
+        }
+    })
+});
+
 module.exports = router;

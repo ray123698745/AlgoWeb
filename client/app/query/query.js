@@ -85,6 +85,9 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         if ($scope.task) {
             var task_key = 'cameras.0.annotation.category';
             queryObj[task_key] = $scope.task;
+
+            var state_key = 'cameras.0.annotation.state';
+            queryObj[state_key] = 'Accepted';
         }
         if ($scope.density){
             var density_key = 'cameras.0.annotation.density';
@@ -121,7 +124,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         if (object_array.length > 0)
             queryObj[object_key] = object_array;
 
-        // console.log(queryObj);
+        console.log(queryObj);
 
         dataService.data.queryObj = queryObj;
 

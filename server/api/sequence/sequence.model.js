@@ -16,6 +16,7 @@ var class_object = new Schema({class: String, occurrence: Number},{_id : false }
 var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, density: Number, classes: [class_object]},{_id : false });
 var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: [annotation]},{_id : false });
 
+// var database_version = new Schema({version: Number, id: ObjectId},{_id : false });
 
 var sequenceSchema = new Schema({
     title: String,
@@ -34,17 +35,11 @@ var sequenceSchema = new Schema({
 
 
 
-// var annotate_request = new Schema({category: String, fps: Number, priority: Number},{_id : false });
-// var unfiltered_cameras = new Schema({name: String, is_stereo: Boolean, annotate_request: [annotate_request]},{_id : false });
-//
-//
-// var unfilteredSequenceSchema = new Schema({
-//     title: String,
-//     capture_time: String,
-//     frame_number: Number,
-//     file_location: [file_location],
-//     cameras:[unfiltered_cameras]
-// });
+var databaseVersionSchema = new Schema({
+    version_number: Number,
+    create_time: String,
+    description: String
+});
 
 
 // Add methods
@@ -54,12 +49,15 @@ var sequenceSchema = new Schema({
 
 var Sequence = mongoose.model('Sequence', sequenceSchema);
 var unfilteredSequence = mongoose.model('unfilteredSequence', sequenceSchema);
+var databaseVersion = mongoose.model('databaseVersion', databaseVersionSchema);
+
 
 // var unfilteredSequence = mongoose.model('unfilteredSequence', unfilteredSequenceSchema);
 
 module.exports = {
     sequence: Sequence,
-    unfilteredsequence: unfilteredSequence
+    unfilteredsequence: unfilteredSequence,
+    databaseVersion: databaseVersion
 };
 
 

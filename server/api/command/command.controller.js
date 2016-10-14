@@ -73,14 +73,16 @@ module.exports = {
         log.debug('processSequence');
 
         var queries = req.body;
-        var batchSequenceCount = 30;
+        var batchSequenceCount = queries.length;
         var parts = 1;
-        var remains = 30;
+        var remains = batchSequenceCount;
 
         if(queries.length > 30){
             parts = parseInt(queries.length / 30)+1;
             remains = queries.length % 30;
+            batchSequenceCount = 30;
         }
+
 
         for (var i = 0; i < parts; i++){
 

@@ -133,5 +133,44 @@ module.exports = {
 
             res.send('Wrong JSON file. \nSequence title or category doesn\'t match.');
         }
+    },
+
+
+    uploadReview: function (req, res) {
+
+        var files = req.files;
+        var path = req.body.path;
+        // var id = req.body.id;
+        // var index = req.body.index;
+        var title = req.body.title;
+        var category = req.body.category;
+        // var fps = req.body.fps;
+        var version_number = req.body.version_number;
+        // var uploadTime = new Date().toISOString();
+        var fileName = title + '_' + category + '.json';
+        // var statFileName = title + '_' + category + '_stat.json';
+        var destPath = '/supercam' + path + '/Front_Stereo/annotation/' + category + '_v' + version_number + '/';
+        // var comments = req.body.comments;
+        // var statFile = {};
+        // log.debug("path: " + path);
+        // log.debug("id: " + id);
+        // log.debug("title: " + title);
+        log.debug("fileName: " + fileName);
+        log.debug("files: " + files[0].path);
+
+        // comments = comments.replace(/"/g, '\\\"');
+        // comments = comments.replace(/(?:\r\n|\r|\n)/g, '\\n');
+
+
+        if (files[0].originalname == fileName){
+
+            mv(__dirname + '/uploads/' + files[0].filename, destPath + files[0].originalname);
+            res.send('Upload success!');
+
+        } else {
+
+            rm(__dirname + '/uploads/' + files[0].filename);
+            res.send('Wrong JSON file. \nSequence title or category doesn\'t match.');
+        }
     }
 };

@@ -59,7 +59,6 @@
                             <a download ng-href="{{download(result, 'package', null)}}" target="_self" class="btn-sm btn-default btn-block" >Download ini</a>
                         </div>
                     </div>
-
                 </h4>
 
                 <div class="media">
@@ -171,12 +170,22 @@
             <textarea class="form-control" style="height: 100px" ng-model="comments"></textarea>
         </div>
 
+        <div style="padding-top: 20px; text-align: right">
+            Upload reviewed JSON file
+            <label class="btn-sm btn-info btn-file">
+                Browse... <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
+            </label>
+        </div>
 
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-default" type="button" ng-click="submitComments()">Submit</button>
-        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+
+
+        <!--<div class="btn-group btn-group">-->
+            <button class="btn btn-default" type="button" ng-click="submitComments()">Submit</button>
+            <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+        <!--</div>-->
     </div>
 </script>
 
