@@ -69,6 +69,30 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         // });
     };
 
+    $scope.showAllKeywords = function (keywords) {
+
+        if (keywords.length > 3) {
+
+            var keyString = keywords[0];
+
+
+            for (var i = 1; i < keywords.length; i++) {
+                keyString = keyString + ", " + keywords[i];
+            }
+
+            return keyString;
+        }
+    };
+
+    $scope.show3Keywords = function (keywords) {
+
+        if (keywords.length > 0) {
+            if (keywords.length == 1) return keywords[0];
+            if (keywords.length == 2) return keywords[0] + ", " + keywords[1];
+            if (keywords.length == 3) return keywords[0] + ", " + keywords[1] + ", " + keywords[2];
+            if (keywords.length > 3) return keywords[0] + ", " + keywords[1] + ", " + keywords[2] + "...";
+        }
+    };
 
     $scope.changePage = function (page) {
         $anchorScroll('top');
@@ -78,6 +102,35 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     };
 
 
+    $scope.deleteSequence = function (selectedSeq) {
+
+        var param = {
+            id: selectedSeq._id,
+            path: utilService.getRootPathBySite(selectedSeq.file_location)
+        };
+
+        if (confirm("Delete this sequence?\nThis action cannot be recoverd.") == true) {
+            $http.post("/api/sequence/deleteSequence", JSON.stringify(param))
+                .success(function (respond) {
+                    alert(respond);
+
+                    $http.get("/api/sequence/getAllUnfiltered")
+                        .success(function(databaseResult) {
+                            $scope.results = databaseResult;
+                        })
+                        .error(function (data, status, header, config) {
+                            $scope.results = "failed!";
+                        });
+                })
+                .error(function (data, status, header, config) {
+                    alert("delete sequence failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("delete sequence failed!");
+                });
+        }
+
+
+    };
 
     $scope.submit = function () {
 

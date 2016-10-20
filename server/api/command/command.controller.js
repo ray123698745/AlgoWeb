@@ -90,7 +90,7 @@ module.exports = {
 
             for (var j = 0; j < batchSequenceCount; j++){
                 var processSequence = queue.create('processSequence', {
-                    sequenceObj: queries[j],
+                    sequenceObj: queries[j+(30*i)],
                     batchSequenceCount: (batchSequenceCount - j)
                 });
                 processSequence.save();

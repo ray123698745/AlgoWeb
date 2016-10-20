@@ -106,8 +106,20 @@
 
 
                         <div class="row" >
-                            <div class="col-md-5 col-md-offset-3" style="padding-top: 1%">
+                            <div class="col-md-4" style="padding-top: 1%">
                                 <button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button>
+                            </div>
+                            <div class="col-md-2" style="padding-top: 1%">
+                                <button class="btn btn-default btn-block" type="button" ng-click="deleteSequence(result)">Delete</button>
+                            </div>
+
+                            <div class="col-md-6" uib-popover="{{showAllKeywords(result.keywords)}}" popover-trigger="mouseenter" popover-placement="top" >
+                                <!--<div class="col-md-6" uib-popover-html="htmlPopover" popover-trigger="mouseenter" popover-placement="top" >-->
+
+                                <div class="well light_well">
+                                    <h5 class="keyword_h5">Keywords: </h5>
+                                    <span>{{show3Keywords(result.keywords)}}</span>
+                                </div>
                             </div>
                         </div>
 
