@@ -9,9 +9,15 @@
             <ul class="nav nav-tabs nav-justified">
                 <li ng-class="{active: tab.moving_object}"><a ng-click="switchTab('moving_object')" class="title_label">Moving Object</a></li>
                 <li ng-class="{active: tab.free_space}"><a ng-click="switchTab('free_space')" class="title_label">Free Space</a></li>
-                <li ng-class="{active: tab.free_space_with_curb}"><a ng-click="switchTab('free_space_with_curb')" class="title_label">Free Space With Curb</a></li>
+                <li ng-class="{active: tab.free_space_with_curb}"><a ng-click="switchTab('free_space_with_curb')" class="title_label">Free Space w Curb</a></li>
                 <li ng-class="{active: tab.download}"><a ng-click="switchToDownload()" class="title_label">Download Package</a></li>
+                <li><label class="btn btn-default btn-file btn-block title_label">
+                        Batch Update <input type="file" name="annotation" style="display: none;" onchange="angular.element(this).scope().batchUpdate(this)">
+                    </label>
+                </li>
+
             </ul>
+
         </div>
     </div>
 

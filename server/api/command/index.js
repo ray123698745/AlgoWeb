@@ -12,6 +12,7 @@ var router = express.Router();
 
 router.post('/encode', controller.encode);
 router.post('/processSequence', controller.processSequence);
+router.post('/resample', controller.resample);
 
 
 

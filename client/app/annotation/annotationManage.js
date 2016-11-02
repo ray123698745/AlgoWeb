@@ -243,6 +243,74 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
         return uploadTime;
     };
 
+
+    $scope.batchUpdate = function (ele) {
+
+        var file = ele.files;
+
+        // var result = angular.element(ele).scope().result;
+        // var index = result.index;
+
+        if (file.length == 1){
+
+            console.log(file[0]);
+
+            var fd = new FormData();
+            fd.append("batchFile", file[0]);
+
+
+            $http.post("/api/upload/batchUpdate", fd,
+                {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                })
+                .success(function(data) {
+                    alert(data);
+                    console.log(data);
+
+                    $http.get("/api/sequence/getUnfinished")
+                        .success(function(databaseResult) {
+                            $scope.results = databaseResult;
+                            tempResults = [];
+                            $scope.showResults = [];
+                            $scope.selectedState.id = 'all_state';
+
+                            for (var i = 0; i < $scope.results.length; i++){
+                                for ( var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
+
+                                    if ($scope.results[i].cameras[0].annotation[j].category == currentTab){
+                                        $scope.showResults.push($scope.results[i].cameras[0].annotation[j]);
+                                        $scope.showResults[$scope.showResults.length-1].title = $scope.results[i].title;
+                                        $scope.showResults[$scope.showResults.length-1]._id = $scope.results[i]._id;
+                                        $scope.showResults[$scope.showResults.length-1].index = j;
+                                        $scope.showResults[$scope.showResults.length-1].file_location = $scope.results[i].file_location;
+                                        tempResults.push($scope.showResults[$scope.showResults.length-1]);
+
+                                        break;
+                                    }
+                                }
+                            }
+                        })
+                        .error(function (data, status, header, config) {
+                            $scope.results = "failed!";
+                        });
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("Batch update failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("Batch update failed!");
+                });
+        } else {
+            alert("Please upload at least one file!");
+        }
+
+
+
+    };
+
+
     $scope.upload = function (ele) {
 
         var files = ele.files;

@@ -241,30 +241,33 @@
                                         Encode <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                        <li role="menuitem"><a ng-click="encode('liso_v_42v2_3840_new_ce_tao_day_compressed.ini')">Daytime</a></li>
-                                        <li role="menuitem"><a ng-click="encode('liso_v_42v2_3840_new_ce_tao_night_compressed.ini')">Nighttime</a></li>
-                                        <li role="menuitem"><a ng-click="encode('liso_v_42v2_3840_new_ce_tao_backlight_compressed.ini')">Back lit</a></li>
+                                        <li role="menuitem"><a ng-click="encode('20161013_nighttime_Br_LV1.ini')">Nighttime Br_LV1</a></li>
+                                        <li role="menuitem"><a ng-click="encode('20161013_nighttime_Br_LV2.ini')">Nighttime Br_LV2</a></li>
+                                        <li role="menuitem"><a ng-click="encode('20161013_nighttime_Br_LV3.ini')">Nighttime Br_LV3</a></li>
                                     </ul>
                                 </div>
 
 
-                                <!--<div class="btn-group">-->
-                                    <!--<button type="button" class="btn btn-default disabled" ng-click="encode()" >&nbsp;&nbsp;Raw Encode </button>-->
-                                    <!--<button type="button" class="btn btn-default dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                                        <!--<span class="caret"></span>-->
-                                        <!--<span class="sr-only">Toggle Dropdown</span>-->
-                                    <!--</button>-->
-                                    <!--<ul class="dropdown-menu">-->
-                                        <!--<li><a ng-click="encode()">ituner 1</a></li>-->
-                                        <!--<li><a href="#">ituner 2</a></li>-->
-                                        <!--<li><a href="#">ituner 3</a></li>-->
-                                    <!--</ul>-->
-                                <!--</div>-->
+                            </div>
 
+                            <div class="col-md-2">
+                                <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                                    <button id="single-button btn-block" type="button" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                        Resample <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem"><a ng-click="resample('1080p')">1080p</a></li>
+                                        <li role="menuitem"><a ng-click="resample('VGA')">VGA</a></li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="col-md-2">
                                 <button class="btn btn-default btn-block disabled" type="button">Dewarp</button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-default btn-block disabled" type="button">Disparity</button>
                             </div>
 
                         </div>

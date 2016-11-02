@@ -139,6 +139,35 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
     }
 
+    $scope.resample = function (type) {
+        if (type == '1080p'){
+
+        } else {
+
+        }
+
+        if (confirm("Resample to: " + type + "?") == true){
+            var resampleParam = {
+                path: $scope.filePath(),
+                title: $scope.result.title,
+                frameNum: $scope.result.frame_number,
+                version: 1,  //Todo: need to select
+                type: type
+            };
+
+
+
+            $http.post("/api/command/resample/", JSON.stringify(resampleParam))
+                .success(function(data) {
+
+                    showProgressBar();
+                })
+                .error(function (data, status, header, config) {
+                    console.log("Send resample request Failed!");
+                });
+        }
+
+    };
 
     $scope.filePath = function () {
 
