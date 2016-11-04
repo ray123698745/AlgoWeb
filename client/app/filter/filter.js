@@ -48,6 +48,19 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
     };
 
 
+    $scope.showRequested = function (result) {
+
+        var text = "";
+
+        result.cameras[0].annotation.forEach(function (task) {
+
+            text += task.category + ", FPS: " + task.fps + "\n";
+        });
+
+        return text;
+    };
+
+
     $scope.preview = function (result) {
 
         var modalInstance = $uibModal.open({
