@@ -53,7 +53,9 @@ module.exports = {
                     var jsonFile = fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8');
 
                     if (jsonFile.search('\"metadata\"') != -1){
-                        jsonFile = '{' + jsonFile.substring(jsonFile.search('},')+2);
+                        var modifiedPos = jsonFile.search('\"metadata\"');
+                        jsonFile = jsonFile.substring(0, modifiedPos) + jsonFile.substring(jsonFile.search('},')+2);
+
                     }
 
                     var metadataPos = jsonFile.search('{')+1;

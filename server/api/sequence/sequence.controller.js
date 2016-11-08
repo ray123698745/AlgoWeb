@@ -17,6 +17,32 @@ module.exports = {
         });
     },
 
+    genTitle: function(req, res) {
+
+
+        var query = {
+            capture_time: {"$gte": '2016-10-020T00:00:00.000Z', "$lte": '2016-10-25T00:00:00.000Z'}
+        };
+
+        log.debug(query);
+
+        Sequence.find(query, {title: 1, _id: 0}, {sort: {capture_time: -1}}, function(err, sequence) {
+            if (err) {
+                log.debug("Result error: ", err);
+                throw err;
+            } else{
+
+                var text = "";
+
+                sequence.forEach(function (seq) {
+                    text += seq.title + "\n";
+                });
+
+                res.send(text);
+            }
+        });
+    },
+
     findByID: function(req, res) {
 
         Sequence.find({ _id: req.params.id }, function(err, sequence) {

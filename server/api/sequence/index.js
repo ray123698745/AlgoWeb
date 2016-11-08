@@ -14,6 +14,8 @@ router.get('/getAllUnfiltered', controller.getAllUnfiltered);
 router.get('/getUnfinished', controller.getUnfinished);
 router.get('/getAccepted', controller.getAccepted);
 router.get('/removeUnfiltered', controller.removeUnfiltered);
+router.get('/genTitle', controller.genTitle);
+
 
 
 
