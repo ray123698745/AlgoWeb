@@ -51,33 +51,47 @@ module.exports = {
                 if (files[i].originalname.search("_stat") == -1){
 
                     var jsonFile = fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8');
+                    var jsonResult = "";
 
                     if (jsonFile.search('\"metadata\"') != -1){
-                        var modifiedPos = jsonFile.search('\"metadata\"');
-                        jsonFile = jsonFile.substring(0, modifiedPos) + jsonFile.substring(jsonFile.search('},')+2);
+                        // var modifiedPos = jsonFile.search('\"metadata\"');
+                        // jsonFile = jsonFile.substring(0, modifiedPos) + jsonFile.substring(jsonFile.search('},')+2);
 
+
+                        var jsonObj = JSON.parse(jsonFile);
+
+                        jsonObj.metadata["annotation-version"] = version_number;
+                        jsonObj.metadata["upload_time"] = uploadTime;
+
+                        // Backward compatible
+                        if(!jsonObj.metadata.comments.v1){
+                            var tempComment = jsonObj.metadata.comments;
+                            jsonObj.metadata.comments = {};
+                            var tempKey = 'v1';
+
+                            if(version_number != 1) tempKey = 'v' + (version_number-1);
+                            jsonObj.metadata.comments[tempKey] = tempComment
+                        }
+
+                        var versionKey = 'v' + version_number;
+                        jsonObj.metadata.comments[versionKey] = comments;
+                        jsonResult = JSON.stringify(jsonObj, null, 1);
+
+                        log.debug('jsonObj: ', jsonObj.metadata);
+
+                    } else {
+                        var metadataPos = jsonFile.search('{')+1;
+                        var metadata = '\n \"metadata\":\n {\n  \"annotation-version\":\"' + version_number + '\",\n  ' + '\"upload_time\":\"' + uploadTime + '\",\n  ' + '\"fps\":\"' + fps + '\",\n  ' + '\"comments\": {\n   \"v1\": \"' + comments + '\"\n  }\n },';
+                        jsonResult = jsonFile.substring(0, metadataPos) + metadata + jsonFile.substring(metadataPos);
                     }
 
-                    var metadataPos = jsonFile.search('{')+1;
-                    // log.debug('metadataPos: ', metadataPos);
-
-                    var metadata = '\n \"metadata\":\n {\n  \"annotation-version\":\"' + version_number + '\",\n  ' + '\"upload_time\":\"' + uploadTime + '\",\n  ' + '\"comments\":\"' + comments + '\",\n  ' + '\"fps\":\"' + fps + '\"\n },';
-
-                    var addMetadata = jsonFile.substring(0, metadataPos) + metadata + jsonFile.substring(metadataPos);
-
-
-                    fs.writeFileSync(destPath + files[i].originalname, addMetadata, 'utf-8');
-
-
+                    fs.writeFileSync(destPath + files[i].originalname, jsonResult, 'utf-8');
                     rm(__dirname + '/uploads/' + files[i].filename);
 
                 } else {
 
                     statFile = JSON.parse(fs.readFileSync(__dirname + '/uploads/' + files[i].filename, 'utf-8'));
-
-
                     mv(__dirname + '/uploads/' + files[i].filename, destPath + files[i].originalname);
-
                 }
             }
 
