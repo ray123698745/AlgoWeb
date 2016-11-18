@@ -20,7 +20,7 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
     $scope.noResult = false;
     $scope.categoryData = [ {id: "all_task", label: "All task"}, {id: "moving_object", label: "Moving object"}, {id: "free_space", label: "Free space"}, {id: "free_space_with_curb", label: "Free space with curb"}];
     $scope.stateData = [ {id: "all_state", label: "All State"}, {id: "Pending", label: "Pending"}, {id: "Annotating", label: "Annotating"}, {id: "Reviewing", label: "Reviewing"}, {id: "Finished", label: "Finished"}, {id: "Modifying", label: "Modifying"}];
-    $scope.orderData = [ {id: "date", label: "Date"}, {id: "priority", label: "Priority"}];
+    $scope.orderData = [ {id: "date", label: "Date"}, {id: "priority", label: "Priority"}, {id: "fps", label: "FPS"}];
 
     $scope.multiSelectSettings = {
         smartButtonMaxItems: 1,
@@ -419,6 +419,21 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
             }
         }
 
+        if ($scope.selectedOrder.id == 'fps'){
+
+            if ($scope.selectedTask.id == 'all_task'){
+                result.cameras[0].annotation.forEach(function (request) {
+
+                    order -= request.fps;
+                });
+            } else {
+                result.cameras[0].annotation.forEach(function (request) {
+                    if (request.category == $scope.selectedTask.id)
+                        order -= request.fps;
+                });
+            }
+        }
+
         return order;
     };
 
@@ -448,7 +463,7 @@ app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance,
             update: {$set: set_obj, $push: version_obj},
             options: {multi: false}
         };
-        
+
 
         if ($scope.files && $scope.files.length == 1){
 
@@ -497,7 +512,7 @@ app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance,
                     console.log("Upload annotation failed!");
                 });
         } else {
-            
+
             $http.post("/api/sequence/update", JSON.stringify(query))
                 .success(function(databaseResult) {
                     $uibModalInstance.close();
@@ -510,9 +525,9 @@ app.controller('annotateModifyCtrl', function ($scope, $http, $uibModalInstance,
         }
 
 
-        
-        
-        
+
+
+
 
     };
 

@@ -222,6 +222,19 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
             return dataService.data.fileServerAddr + $scope.filePath() + "/annotation/" + category + "_v" + version + "/" + $scope.result.title + "_" + category + ".json";
         }
 
+        if (file === 'blt'){
+            if ($scope.isStereo){
+                if (channel == 'left')
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/L/cali_data/RECT_Left.blt";
+                else
+                    return dataService.data.fileServerAddr  + $scope.filePath() + "/R/cali_data/RECT_Right.blt";
+            }
+            // else {
+            //     return dataService.data.fileServerAddr  + $scope.filePath() + "/" + $scope.result.title + "_meta.txt";
+            // }
+
+        }
+
     };
 
     $scope.showDownloadBtn = function (uploadTime) {
