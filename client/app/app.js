@@ -84,7 +84,7 @@ app.service('dataService', function () {
         "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"],
         "Special_Condition": ["Accident", "Pot_hole"],
         "Vehicle": ["No_vehicle", "Few_vehicle", "More_vehicle", "Special_vehicle"],
-        "Pedestrian": ["No_pedestrian", "Few_pedestrian", "More_pedestrian"],
+        "Pedestrian": ["No_Pedestrian", "Few_Pedestrian", "More_Pedestrian", "Special_Pedestrian"],
         "Free_Space": ["Construction", "Intersection", "Round_about"]
     }
 

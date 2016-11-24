@@ -6,6 +6,14 @@
         <h1>{{selected.length}}/{{results.length}} Sequences Selected</h1>
     </div>
 
+    <div class="row">
+        <div class="col-md-2 col-md-offset-8">
+            <div style="text-align: right; padding-bottom: 20px;">
+                <button class="btn btn-default btn-block" type="button" ng-click="gotoManagePage()" style="padding-left: 10px">Filter</button>
+            </div>
+        </div>
+    </div>
+
     <div class="row" dir-paginate="result in results | itemsPerPage: 10" current-page="currentPage" >
         <div class="col-md-1 col-md-offset-1">
             <div style="padding-top: 100%; padding-right: 50%; text-align: right">

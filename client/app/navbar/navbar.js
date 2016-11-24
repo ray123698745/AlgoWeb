@@ -31,27 +31,33 @@ app.controller('NavigationController', function($scope, dataService) {
     }];
 
     $scope.Documentation = [
-    //     {
-    //     name: "Annotation ToolBox 2",
-    //     link: dataService.data.fileServerAddr + '/vol1/documentation/atb_v2_user_guide_21.pdf'
-    // },
         {
-        name: "Annotation Task",
-        link: "#",
-        subtree: [{
-            name: "Road",
-            link: dataService.data.fileServerAddr + '/vol1/documentation/road_annotation_guide_V1.1.pdf'
-        },{
-            name: "Pedestrian",
-            link: dataService.data.fileServerAddr + '/vol1/documentation/Pedestrian_Tracking_Rules_v2.1.1.pdf'
-        }]
-    }, {
-        name: "divider",
-        link: "#"
-    }, {
-        name: "Gold Framework",
-        link: dataService.data.fileServerAddr + '/vol1/documentation/gold/html/index.html'
-    }];
+            name: "Annotation Task",
+            link: "#",
+            subtree: [{
+                name: "Road",
+                link: dataService.data.fileServerAddr + '/vol1/documentation/road_annotation_guide_V1.1.pdf'
+            },{
+                name: "Pedestrian",
+                link: dataService.data.fileServerAddr + '/vol1/documentation/Pedestrian_Tracking_Rules_v2.1.1.pdf'
+            }]
+        },
+        {
+            name: "divider",
+            link: "#"
+        },
+        {
+            name: "Sequence Selection",
+            link: dataService.data.fileServerAddr + '/vol1/documentation/Sequence_selection.pdf'
+        },
+        {
+            name: "divider",
+            link: "#"
+        },
+        {
+            name: "Gold Framework",
+            link: dataService.data.fileServerAddr + '/vol1/documentation/gold/html/index.html'
+        }];
 
 });
 

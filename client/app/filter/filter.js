@@ -82,6 +82,27 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         // });
     };
 
+    $scope.filter = function (result) {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'filterPreview.html',
+            controller: 'filterPreviewCtrl',
+            size: 'lg',
+            resolve: {
+                result: function () {
+                    return result;
+                }
+            }
+        });
+
+        // modalInstance.result.then(function (result) {
+        //     $scope.selected[$scope.arrayObjectIndexOf($scope.selected, result._id, 'id')].keywords = result.keywords;
+        // }, function () {
+        //     console.log('Modal dismissed at: ' + new Date());
+        // });
+    };
+
     $scope.showAllKeywords = function (keywords) {
 
         if (keywords.length > 3) {
