@@ -19,8 +19,8 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
     $scope.showResults = [];
     $scope.noResult = false;
     $scope.categoryData = [ {id: "all_task", label: "All task"}, {id: "moving_object", label: "Moving object"}, {id: "free_space", label: "Free space"}, {id: "free_space_with_curb", label: "Free space with curb"}];
-    $scope.stateData = [ {id: "all_state", label: "All State"}, {id: "Pending", label: "Pending"}, {id: "Annotating", label: "Annotating"}, {id: "Reviewing", label: "Reviewing"}, {id: "Finished", label: "Finished"}, {id: "Modifying", label: "Modifying"}];
-    $scope.orderData = [ {id: "date", label: "Date"}, {id: "priority", label: "Priority"}, {id: "fps", label: "FPS"}];
+    $scope.stateData = [ {id: "all_state", label: "All State"}, {id: "Pending", label: "Pending"}, {id: "Annotating", label: "Annotating"}, {id: "Reviewing", label: "Reviewing"}, {id: "Finished_Basic", label: "Finished_Basic"}, {id: "Finished", label: "Finished"}, {id: "Modifying", label: "Modifying"}];
+    $scope.orderData = [ {id: "date", label: "Date"}, {id: "priority", label: "Priority"}, {id: "fps", label: "FPS"}, {id: "upload_time", label: "Upload Time"}];
 
     $scope.multiSelectSettings = {
         smartButtonMaxItems: 1,
@@ -54,7 +54,6 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
     var resultBeforeSearch = [];
 
     $scope.search = function () {
-
 
         if (firstSearch){
             resultBeforeSearch = $scope.showResults;
@@ -208,113 +207,6 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
 
 
 
-    // $scope.upload = function (ele) {
-    //
-    //     var files = ele.files;
-    //
-    //     var result = angular.element(ele).scope().result;
-    //     var index = angular.element(ele).scope().$index;
-    //
-    //     if (files.length == 2){
-    //
-    //         var fd = new FormData();
-    //         fd.append("annotation", files[0]);
-    //         fd.append("annotation", files[1]);
-    //
-    //         fd.append("path", utilService.getRootPathBySite(result.file_location));
-    //         fd.append("id", result._id);
-    //         fd.append("title", result.title);
-    //         fd.append("index", index);
-    //         fd.append("category", result.cameras[0].annotation[index].category);
-    //         fd.append("fps", result.cameras[0].annotation[index].fps);
-    //         fd.append("version_number", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].version_number);
-    //         fd.append("comments", result.cameras[0].annotation[index].version[result.cameras[0].annotation[index].version.length-1].comments);
-    //
-    //
-    //
-    //         $http.post("/api/upload/uploadAnnotation", fd,
-    //             {
-    //                 withCredentials: true,
-    //                 headers: {'Content-Type': undefined },
-    //                 transformRequest: angular.identity
-    //             })
-    //             .success(function(data) {
-    //                 alert(data);
-    //                 console.log(data);
-    //
-    //                 $http.get("/api/sequence/getUnfinished")
-    //                     .success(function(databaseResult) {
-    //                         $scope.results = databaseResult;
-    //                     })
-    //                     .error(function (data, status, header, config) {
-    //                         $scope.results = "failed!";
-    //                     });
-    //
-    //             })
-    //             .error(function (data, status, header, config) {
-    //                 alert("Upload annotation failed!\nStatus: " + status + "\nData: " + data);
-    //
-    //                 console.log("Upload annotation failed!");
-    //             });
-    //
-    //
-    //     } else {
-    //         alert("Please upload both annotation and state file");
-    //     }
-    // };
-
-
-    // $scope.edit = function (request, index) {
-    //
-    //     if (!$scope.editing && !canceling && (request.state == 'Pending' || request.state == 'Annotating' || request.state == 'Reviewing')){
-    //         if (!request.isEdit){
-    //             request.isEdit = true;
-    //             $scope.editing = true;
-    //         }
-    //     }
-    //
-    //     if(canceling)canceling = false;
-    //
-    // };
-    //
-    // $scope.cancel = function (request) {
-    //
-    //     request.isEdit = false;
-    //     $scope.editing = false;
-    //     canceling = true;
-    // };
-    //
-    //
-    // $scope.submitEdit = function (result, request, index) {
-    //
-    //     var set_obj = {};
-    //     var state_key = 'cameras.0.annotation.' + index + '.state';
-    //     set_obj[state_key] = request.state;
-    //
-    //     var query = {
-    //         condition: {_id: result._id},
-    //         update: {$set: set_obj},
-    //         options: {multi: false}
-    //     };
-    //
-    //     $http.post("/api/sequence/update", JSON.stringify(query))
-    //         .success(function(databaseResult) {
-    //             $scope.cancel(request);
-    //             if(canceling)canceling = false;
-    //         })
-    //         .error(function (data, status, header, config) {
-    //             alert("edit request failed!\nStatus: " + status + "\nData: " + data);
-    //
-    //             console.log("submit request failed!");
-    //         });
-    // };
-    //
-    //
-    // $scope.disableEdit = function () {
-    //     canceling = true;
-    // };
-
-
     $scope.accept = function (result, index) {
 
         if (confirm("Accept this annotation task?\n" +
@@ -431,6 +323,51 @@ app.controller('annotationTrackCtrl', ['$scope', '$http', '$state', '$sce', '$ui
                     if (request.category == $scope.selectedTask.id)
                         order -= request.fps;
                 });
+            }
+        }
+
+        if ($scope.selectedOrder.id == 'upload_time'){
+
+            var curDate = new Date();
+
+            if ($scope.selectedTask.id == 'all_task'){
+
+                var minOrder = curDate.getTime();
+
+                result.cameras[0].annotation.forEach(function (request) {
+
+                    if (request.state == 'Finished' || request.state == 'Finished_Basic'){
+                        var uploadDate = new Date(request.version[(request.version.length)-1].upload_time);
+
+                        order = curDate - uploadDate;
+                    } else {
+                        order = curDate.getTime();
+                    }
+
+
+                    if (order < minOrder) minOrder = order;
+                });
+
+                order = parseInt(minOrder/100000);
+
+
+            } else {
+
+                for (var i = 0; i < result.cameras[0].annotation.length; i++){
+                    if (result.cameras[0].annotation[i].category == $scope.selectedTask.id && (result.cameras[0].annotation[i].state == 'Finished' || result.cameras[0].annotation[i].state == 'Finished_Basic')){
+
+                        var uploadDate = new Date(result.cameras[0].annotation[i].version[(result.cameras[0].annotation[i].version.length)-1].upload_time);
+
+                        order = parseInt((curDate - uploadDate)/100000);
+                        break;
+
+                    } else {
+                        // console.log(result.title + ", " + result.cameras[0].annotation[i].category + ', ' + result.cameras[0].annotation[i].state);
+
+                        order = parseInt(curDate.getTime()/100000);
+                    }
+                }
+
             }
         }
 

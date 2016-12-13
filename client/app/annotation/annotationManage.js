@@ -22,7 +22,7 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
 
     $scope.selectedState = {id: "all_state", label: "All State"};
     $scope.selectedOrder = {id: "date", label: "Date"};
-    $scope.stateData = [ {id: "all_state", label: "All State"}, {id: "Pending", label: "Pending"}, {id: "Annotating", label: "Annotating"}, {id: "Reviewing", label: "Reviewing"}, {id: "Finished", label: "Finished"}, {id: "Modifying", label: "Modifying"}];
+    $scope.stateData = [ {id: "all_state", label: "All State"}, {id: "Pending", label: "Pending"}, {id: "Annotating", label: "Annotating"}, {id: "Reviewing", label: "Reviewing"}, {id: "Finished_Basic", label: "Finished_Basic"}, {id: "Finished", label: "Finished"}, {id: "Modifying", label: "Modifying"}];
     $scope.orderData = [ {id: "date", label: "Date"}, {id: "priority", label: "Priority"}];
 
     $scope.multiSelectSettings = {
@@ -311,6 +311,7 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
     };
 
 
+
     $scope.upload = function (ele) {
 
         var files = ele.files;
@@ -318,6 +319,10 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
         var result = angular.element(ele).scope().result;
         var index = result.index;
 
+
+        if (typeof result.fully_annotated == 'undefined') {
+            result.fully_annotated = false;
+        }
 
         if (files.length == 2){
 
@@ -333,6 +338,8 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
             fd.append("fps", result.fps);
             fd.append("version_number", result.version[result.version.length-1].version_number);
             fd.append("comments", result.version[result.version.length-1].comments);
+            fd.append("fully_annotated", result.fully_annotated);
+
 
 
 

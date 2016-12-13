@@ -23,6 +23,8 @@ module.exports = {
         var category = req.body.category;
         var fps = req.body.fps;
         var version_number = req.body.version_number;
+        var fully_annotated = req.body.fully_annotated;
+
         var uploadTime = new Date().toISOString();
         var fileName = title + '_' + category + '.json';
         var statFileName = title + '_' + category + '_stat.json';
@@ -34,6 +36,8 @@ module.exports = {
         log.debug("title: " + title);
         log.debug("comments: " + comments);
         log.debug("files: " + files[0].path);
+        log.debug("fully_annotated: " + fully_annotated);
+
 
         comments = comments.replace(/"/g, '\\\"');
         comments = comments.replace(/(?:\r\n|\r|\n)/g, '\\n');
@@ -109,8 +113,12 @@ module.exports = {
             var density_key = 'cameras.0.annotation.' + index + '.density';
 
 
+            if (fully_annotated){
+                set_obj[state_key] = 'Finished';
+            } else {
+                set_obj[state_key] = 'Finished_Basic';
+            }
 
-            set_obj[state_key] = 'Finished';
             set_obj[time_key] = uploadTime;
             set_obj[total_objects_key] = statFile.n_objects;
             set_obj[unique_id_key] = statFile.ids;

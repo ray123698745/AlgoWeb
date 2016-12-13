@@ -21,6 +21,24 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         });
 
 
+    $scope.filteredResults = function () {
+
+        var results = [];
+
+        if ($scope.results){
+            $scope.results.forEach(function (result) {
+                // if($scope.selectedKeywords in result.keywords){
+                //     results.push(result);
+                // }
+                if(result.keywords.includes($scope.selectedKeywords)){
+                    results.push(result);
+                }
+            });
+        }
+
+        return results;
+    };
+
     $scope.thumbSrc = function (result) {
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/thumb.jpg");
     };
@@ -86,9 +104,9 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
 
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'filterPreview.html',
-            controller: 'filterPreviewCtrl',
-            size: 'lg',
+            templateUrl: 'selectionFilter.html',
+            controller: 'selectionFilterCtrl',
+            size: 'sm',
             resolve: {
                 result: function () {
                     return result;
@@ -217,6 +235,66 @@ app.controller('filterPreviewCtrl', function ($http, $scope, $uibModalInstance, 
 
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location)+ "/" + result.cameras[0].name + "/R/"+ result.title + "_h264_R.mp4");
     };
+
+
+
+    $scope.toggleSelection = function (keyword) {
+
+        var index = $scope.result.keywords.indexOf(keyword);
+
+        if (index > -1)
+            $scope.result.keywords.splice(index, 1);
+        else
+            $scope.result.keywords.push(keyword);
+    };
+
+    $scope.submitTag = function () {
+
+        if (confirm("Keywords:\n" + $scope.result.keywords) == true) {
+
+            var queries = [{
+                condition: {_id: $scope.result._id},
+                update: {$set: {"keywords": $scope.result.keywords}},
+                options: {multi: false}
+            }];
+
+
+            //update database
+            $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
+                .success(function(databaseResult) {
+                    // alert(databaseResult.nModified + " record updated!");
+                    $uibModalInstance.close();
+
+                })
+                .error(function (data, status, header, config) {
+                    console.log("submitTag Failed!");
+                });
+
+        }
+
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    // $uibModalInstance.dismiss(result);
+
+    // $scope.ok = function () {
+    //     $uibModalInstance.close();
+    // };
+    //
+    // $scope.cancel = function () {
+    //     $uibModalInstance.dismiss('cancel');
+    // };
+});
+
+
+app.controller('selectionFilterCtrl', function ($http, $scope, $uibModalInstance, $sce, result, dataService, utilService) {
+
+    $scope.result = result;
+    $scope.keywordsObj = dataService.keywords;
+    $scope.selectedKeywords = result;
 
 
 

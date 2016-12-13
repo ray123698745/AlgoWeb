@@ -102,6 +102,9 @@
                                         Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
                                     </label>
                                     <button ng-show="result.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{result.version[result.version.length-1].comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>
+                                    <span>&nbsp;&nbsp;&nbsp;</span>
+                                    <input type="checkbox" ng-click="disableEdit()" ng-checked="result.fully_annotated" ng-model="result.fully_annotated" />
+                                    Fully Annotated
                                 </div>
 
                                 <!--<div class="btn-group btn-group-sm" ng-show="request.state == 'Finished'">-->
