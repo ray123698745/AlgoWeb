@@ -88,12 +88,12 @@
 
                             <td>
 
-                                <div class="btn-group btn-group-sm" ng-show="result.state == 'Finished' || result.state == 'Modifying'" uib-dropdown dropdown-append-to-body="true">
+                                <div class="btn-group btn-group-sm" ng-show="result.state == 'Finished' || result.state == 'Finished_Basic' || result.state == 'Modifying'" uib-dropdown dropdown-append-to-body="true">
                                     <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle>
                                         JSON <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                        <li role="menuitem" ng-hide="$last && result.state != 'Finished' && result.state != 'Accepted'" ng-repeat="version in result.version"><a download ng-href="{{download(result, 'JSON', version.version_number)}}" target="_self"><i><b>V{{version.version_number}}</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{showDownloadBtn(version.upload_time)}}</a></li>
+                                        <li role="menuitem" ng-hide="$last && result.state != 'Finished' && result.state != 'Finished_Basic' && result.state != 'Accepted'" ng-repeat="version in result.version"><a download ng-href="{{download(result, 'JSON', version.version_number)}}" target="_self"><i><b>V{{version.version_number}}</b></i>&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;{{showDownloadBtn(version.upload_time)}}</a></li>
                                     </ul>
                                 </div>
 
