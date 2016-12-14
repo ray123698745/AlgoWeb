@@ -21,6 +21,8 @@ app.controller('filterCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
         });
 
 
+
+    // Todo: ???
     $scope.filteredResults = function () {
 
         var results = [];
@@ -308,29 +310,9 @@ app.controller('selectionFilterCtrl', function ($http, $scope, $uibModalInstance
             $scope.result.keywords.push(keyword);
     };
 
-    $scope.submitTag = function () {
+    $scope.submitFilter = function () {
 
-        if (confirm("Keywords:\n" + $scope.result.keywords) == true) {
-
-            var queries = [{
-                condition: {_id: $scope.result._id},
-                update: {$set: {"keywords": $scope.result.keywords}},
-                options: {multi: false}
-            }];
-
-
-            //update database
-            $http.post("/api/sequence/updateUnfiltered", JSON.stringify(queries))
-                .success(function(databaseResult) {
-                    // alert(databaseResult.nModified + " record updated!");
-                    $uibModalInstance.close();
-
-                })
-                .error(function (data, status, header, config) {
-                    console.log("submitTag Failed!");
-                });
-
-        }
+        //Todo: submitFilter
 
     };
 

@@ -125,6 +125,7 @@ module.exports = {
             { 'cameras.0.annotation': { $elemMatch: { state: "Annotating"} }},
             { 'cameras.0.annotation': { $elemMatch: { state: "Reviewing"} }},
             { 'cameras.0.annotation': { $elemMatch: { state: "Finished"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Finished_Basic"} }},
             { 'cameras.0.annotation': { $elemMatch: { state: "Modifying"} }}
 
         ] }, null, {sort: {capture_time: -1}}, function(err, sequence) {

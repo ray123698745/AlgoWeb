@@ -113,7 +113,7 @@ module.exports = {
             var density_key = 'cameras.0.annotation.' + index + '.density';
 
 
-            if (fully_annotated){
+            if (fully_annotated == 'true'){
                 set_obj[state_key] = 'Finished';
             } else {
                 set_obj[state_key] = 'Finished_Basic';
