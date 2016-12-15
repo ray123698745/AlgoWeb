@@ -58,7 +58,8 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             "title": $scope.sequence_title,
             "location.country": $scope.country,
             "location.state": $scope.state,
-            "location.city": $scope.city
+            "location.city": $scope.city,
+            "version": $scope.version
         };
 
 
@@ -86,8 +87,21 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             var task_key = 'cameras.0.annotation.category';
             queryObj[task_key] = $scope.task;
 
+
+            // queryObj[state_key] = 'Accepted';
+
+            var AcceptedObj = {};
+            var FinishedObj = {};
+            var FinishedBasicObj = {};
+
             var state_key = 'cameras.0.annotation.state';
-            queryObj[state_key] = 'Accepted';
+            AcceptedObj[state_key] = 'Accepted';
+            FinishedObj[state_key] = 'Finished';
+            FinishedBasicObj[state_key] = 'Finished_Basic';
+
+            var or_key = '$or';
+            queryObj[or_key] = [AcceptedObj, FinishedObj, FinishedBasicObj];
+
         }
         if ($scope.density){
             var density_key = 'cameras.0.annotation.density';

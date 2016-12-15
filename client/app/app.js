@@ -3,7 +3,9 @@
 var app = angular.module('AlgoWeb', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 
 
-app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function ($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider',function ($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider) {
+
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob|mailto):/);
 
     $urlRouterProvider.otherwise("/");
 
@@ -13,12 +15,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',function
             templateUrl: "/app/home/home.ejs"
         })
         .state('query', {
-            url: "/query",
+            url: "/",
             templateUrl: "/app/query/query.ejs",
             controller: 'queryCtrl'
         })
         .state('resultList', {
-            url: "/",
+            url: "/resultList",
             templateUrl: "/app/resultList/resultList.ejs",
             controller: 'resultListCtrl'
         })

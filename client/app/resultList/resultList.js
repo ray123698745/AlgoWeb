@@ -3,11 +3,19 @@
  */
 'use strict';
 
-app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', '$anchorScroll', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService, $anchorScroll) {
+app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 'dataService', 'utilService', '$anchorScroll', '$window', function ($scope, $http, $state, $sce, $uibModal, dataService, utilService, $anchorScroll, $window) {
 
     $scope.sortBy = "Date";
     $scope.currentPage = dataService.data.resultListPageNum;
-    // console.log("currentPage: " + $scope.currentPage);
+
+    // $scope.url = {
+    //     moving_object: "",
+    //     free_space: "",
+    //     yuv_R: "",
+    //     yuv_L: ""
+    // };
+
+    $scope.jsonUrl = "";
 
     var query = dataService.data.queryObj;
 
@@ -18,12 +26,141 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             $scope.results = databaseResult;
             dataService.data.queryResult = databaseResult;
 
-            // console.log($scope.results);
 
+            // $scope.url.moving_object = ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('moving_object')], {type: 'text/plain'}));
+            // $scope.url.free_space = ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('free_space')], {type: 'text/plain'}));
+            // $scope.url.yuv_R = ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('yuv_R')], {type: 'text/plain'}));
+            // $scope.url.yuv_L = ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('yuv_L')], {type: 'text/plain'}));
+
+            $scope.jsonUrl = ($window.URL || $window.webkitURL).createObjectURL(new Blob([createContent()], {type: 'text/plain'}));
+
+
+            // $scope.url = {
+            //     moving_object: ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('moving_object')], {type: 'text/plain'})),
+            //     free_space: ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('free_space')], {type: 'text/plain'})),
+            //     yuv: ($window.URL || $window.webkitURL).createObjectURL(new Blob([fileContent('yuv')], {type: 'text/plain'}))
+            // };
         })
         .error(function (data, status, header, config) {
             $scope.results = "failed!";
         });
+
+
+
+
+    var createContent = function () {
+
+        var content = { sequence:[] };
+
+        if ($scope.results){
+
+            for (var i = 0; i < $scope.results.length; i++){
+
+                if (!$scope.results[i].no_annotation){
+
+                    var seq = {};
+                    var hasFinished = false;
+                    // console.log("title: " + $scope.results[i].title + ', count: ' + i);
+
+                    for (var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
+                        if ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted'){
+                            var lastAnnotationVersion = $scope.results[i].cameras[0].annotation[j].version.length;
+
+                            seq.annotation = {};
+                            var category = $scope.results[i].cameras[0].annotation[j].category;
+                            seq.annotation[category] = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + category + '_v' + lastAnnotationVersion + '/' + $scope.results[i].title + '_' + category + '.json';
+
+                            hasFinished = true;
+
+                        }
+                    }
+
+                    if (hasFinished){
+                        var lastYuvVersion = $scope.results[i].cameras[0].yuv.length;
+                        seq.yuv_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_L.tar';
+                        seq.yuv_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_R.tar';
+
+                        seq.h264_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/' + $scope.results[i].title + '_h264_L.mp4';
+                        seq.h264_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/' + $scope.results[i].title + '_h264_R.mp4';
+
+                        seq.calibration_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/cali_data/Left.ini';
+                        seq.calibration_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/cali_data/Right.ini';
+
+                        seq.LUT_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/cali_data/RECT_Left.blt';
+                        seq.LUT_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/cali_data/RECT_Right.blt';
+
+                        content.sequence.push(seq);
+                    }
+            
+                }
+            }
+        }
+
+
+        // console.log("content: " + JSON.stringify(content, null, 1));
+
+        return JSON.stringify(content, null, 1);
+
+    };
+
+
+
+    var fileContent = function (type) {
+
+        var content = "";
+
+        if ($scope.results){
+            if (type == 'yuv_L' || type == 'yuv_R'){
+                var lastVersion = 1;
+
+                for (var i = 0; i < $scope.results.length; i++){
+
+                    if ($scope.results[i].cameras[0].yuv.length > 0){
+
+                        lastVersion = $scope.results[i].cameras[0].yuv.length;
+                        if (type == 'yuv_L')
+                            content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastVersion + '_L.tar\n';
+                        else
+                            content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastVersion + '_R.tar\n';
+
+                        // console.log("content: " + content);
+                    }
+                }
+
+
+
+            } else {
+
+                var lastVersion = 1;
+
+                for (var i = 0; i < $scope.results.length; i++){
+
+                    if (!$scope.results[i].no_annotation){
+
+                        // console.log("title: " + $scope.results[i].title + ', count: ' + i);
+
+                        for (var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
+                            if ($scope.results[i].cameras[0].annotation[j].category == type && ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted')){
+                                lastVersion = $scope.results[i].cameras[0].annotation[j].version[($scope.results[i].cameras[0].annotation[j].version.length)-1].version_number;
+                                content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + type + '_v' + lastVersion + '/' + $scope.results[i].title + '_' + type + '.json\n';
+                                break;
+                            }
+                        }
+
+
+                    }
+                }
+
+            }
+
+            // console.log("content: " + content);
+        }
+
+        return content;
+    };
+
+
+
 
     $scope.thumbSrc = function (result) {
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/thumb.jpg");
@@ -115,6 +252,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
 
     };
+
 
     $scope.changePage = function (page) {
         $anchorScroll('top');
