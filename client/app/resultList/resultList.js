@@ -59,14 +59,13 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
                 if (!$scope.results[i].no_annotation){
 
                     var seq = {};
+                    seq.annotation = {};
                     var hasFinished = false;
                     // console.log("title: " + $scope.results[i].title + ', count: ' + i);
 
                     for (var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
                         if ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted'){
                             var lastAnnotationVersion = $scope.results[i].cameras[0].annotation[j].version.length;
-
-                            seq.annotation = {};
                             var category = $scope.results[i].cameras[0].annotation[j].category;
                             seq.annotation[category] = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + category + '_v' + lastAnnotationVersion + '/' + $scope.results[i].title + '_' + category + '.json';
 
@@ -91,7 +90,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
                         content.sequence.push(seq);
                     }
-            
+
                 }
             }
         }

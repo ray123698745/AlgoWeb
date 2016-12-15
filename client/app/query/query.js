@@ -84,23 +84,78 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         //     queryObj.version = $scope.version;
 
         if ($scope.task) {
-            var task_key = 'cameras.0.annotation.category';
-            queryObj[task_key] = $scope.task;
+
+            // var task_key = 'cameras.0.annotation.category';
+            // var and_key = '$and';
+            // var taskObj = {};
+            // taskObj[task_key] = $scope.task;
+            //
+            // var AcceptedObj = {};
+            // var FinishedObj = {};
+            // var FinishedBasicObj = {};
+            // var orObj = {};
+            //
+            // var state_key = 'cameras.0.annotation.state';
+            // AcceptedObj[state_key] = 'Accepted';
+            // FinishedObj[state_key] = 'Finished';
+            // FinishedBasicObj[state_key] = 'Finished_Basic';
+            //
+            var or_key = '$or';
+            // orObj[or_key] = [AcceptedObj, FinishedObj, FinishedBasicObj];
+            //
+            // queryObj[and_key] = [taskObj, orObj];
+
+            // queryObj[task_key] = $scope.task;
 
 
             // queryObj[state_key] = 'Accepted';
 
-            var AcceptedObj = {};
-            var FinishedObj = {};
-            var FinishedBasicObj = {};
 
-            var state_key = 'cameras.0.annotation.state';
-            AcceptedObj[state_key] = 'Accepted';
-            FinishedObj[state_key] = 'Finished';
-            FinishedBasicObj[state_key] = 'Finished_Basic';
 
-            var or_key = '$or';
-            queryObj[or_key] = [AcceptedObj, FinishedObj, FinishedBasicObj];
+            queryObj[or_key] = [
+                {'cameras.0.annotation': {
+                    $elemMatch: {
+                        category: $scope.task,
+                        state: 'Accepted'
+                    }
+                }},
+                {'cameras.0.annotation': {
+                    $elemMatch: {
+                        category: $scope.task,
+                        state: 'Finished'
+                    }
+                }},
+                {'cameras.0.annotation': {
+                    $elemMatch: {
+                        category: $scope.task,
+                        state: 'Finished_Basic'
+                    }
+                }}
+            ];
+
+            // var query2 = {
+            //
+            //     $or: [
+            //         {'cameras.0.annotation': {
+            //             $elemMatch: {
+            //                 category: $scope.task,
+            //                 state: Accepted
+            //             }
+            //         }},
+            //         {'cameras.0.annotation': {
+            //             $elemMatch: {
+            //                 category: $scope.task,
+            //                 state: Finished
+            //             }
+            //         }},
+            //         {'cameras.0.annotation': {
+            //             $elemMatch: {
+            //                 category: $scope.task,
+            //                 state: Finished_Basic
+            //             }
+            //         }}]
+            // }
+
 
         }
         if ($scope.density){
