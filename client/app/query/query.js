@@ -9,7 +9,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         occurrence: null
     }];
     $scope.version = 4;
-
+    $scope.annotation = 'Yes';
 
     $scope.toggleSelection = function (keyword) {
 
@@ -70,10 +70,10 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             queryObj.avg_speed = {"$gte": $scope.from_speed, "$lte": $scope.to_speed};
 
 
-        // if ($scope.yuv == "Yes")
-        //     queryObj.yuv = { $exists: true, $ne: [] };
-        // if ($scope.yuv == "No")
-        //     queryObj.yuv = { $exists: false }; // should unset the array after remove the last element
+        if ($scope.annotation == "Yes")
+            queryObj.no_annotation = false;
+        if ($scope.annotation == "No")
+            queryObj.no_annotation = true;
 
 
 

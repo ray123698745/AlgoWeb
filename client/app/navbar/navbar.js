@@ -36,7 +36,7 @@ app.controller('NavigationController', function($scope, dataService) {
             link: "#",
             subtree: [{
                 name: "Road",
-                link: dataService.data.fileServerAddr + '/vol1/documentation/road_annotation_guide_V1.1.pdf'
+                link: dataService.data.fileServerAddr + '/vol1/documentation/road_annotation_guide_V1.2.pdf'
             },{
                 name: "Pedestrian",
                 link: dataService.data.fileServerAddr + '/vol1/documentation/Pedestrian_Tracking_Rules_v2.1.1.pdf'
