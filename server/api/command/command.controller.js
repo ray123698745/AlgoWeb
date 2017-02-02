@@ -75,29 +75,66 @@ module.exports = {
         log.debug('processSequence');
 
         var queries = req.body;
-        var batchSequenceCount = queries.length;
-        var parts = 1;
-        var remains = batchSequenceCount;
 
-        if(queries.length > 30){
-            parts = parseInt(queries.length / 30)+1;
-            remains = queries.length % 30;
-            batchSequenceCount = 30;
+
+
+        for (var i = 0; i < queries.length; i++){
+
+            var encode_job = queue.create('encode', {
+                sequenceObj: queries[i],
+                channel: 'left',
+                isInitEncode: true
+            });
+
+            encode_job.save(); //Todo: Uncomment this line to start encode
+
+            encode_job = queue.create('encode', {
+                sequenceObj: queries[i],
+                channel: 'right',
+                isInitEncode: true
+            });
+
+            encode_job.save(); //Todo: Uncomment this line to start encode
+
         }
 
 
-        for (var i = 0; i < parts; i++){
+        // for (var i = 0; i < queries.length; i++){
+        //
+        //     var processSequence = queue.create('processSequence', {
+        //         sequenceObj: queries[j+(30*i)],
+        //         batchSequenceCount: (batchSequenceCount - j)
+        //     });
+        //
+        //     processSequence.save();
+        // }
 
-            if (i == parts-1) batchSequenceCount = remains;
 
-            for (var j = 0; j < batchSequenceCount; j++){
-                var processSequence = queue.create('processSequence', {
-                    sequenceObj: queries[j+(30*i)],
-                    batchSequenceCount: (batchSequenceCount - j)
-                });
-                processSequence.save();
-            }
-        }
+        //Todo: before 01/13/2017 -- generate annotation package first
+        // var queries = req.body;
+        // var batchSequenceCount = queries.length;
+        // var parts = 1;
+        // var remains = batchSequenceCount;
+        //
+        // if(queries.length > 30){
+        //     parts = parseInt(queries.length / 30)+1;
+        //     remains = queries.length % 30;
+        //     batchSequenceCount = 30;
+        // }
+        //
+        //
+        // for (var i = 0; i < parts; i++){
+        //
+        //     if (i == parts-1) batchSequenceCount = remains;
+        //
+        //     for (var j = 0; j < batchSequenceCount; j++){
+        //         var processSequence = queue.create('processSequence', {
+        //             sequenceObj: queries[j+(30*i)],
+        //             batchSequenceCount: (batchSequenceCount - j)
+        //         });
+        //         processSequence.save();
+        //     }
+        // }
 
 
 

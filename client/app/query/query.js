@@ -85,32 +85,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
 
         if ($scope.task) {
 
-            // var task_key = 'cameras.0.annotation.category';
-            // var and_key = '$and';
-            // var taskObj = {};
-            // taskObj[task_key] = $scope.task;
-            //
-            // var AcceptedObj = {};
-            // var FinishedObj = {};
-            // var FinishedBasicObj = {};
-            // var orObj = {};
-            //
-            // var state_key = 'cameras.0.annotation.state';
-            // AcceptedObj[state_key] = 'Accepted';
-            // FinishedObj[state_key] = 'Finished';
-            // FinishedBasicObj[state_key] = 'Finished_Basic';
-            //
             var or_key = '$or';
-            // orObj[or_key] = [AcceptedObj, FinishedObj, FinishedBasicObj];
-            //
-            // queryObj[and_key] = [taskObj, orObj];
-
-            // queryObj[task_key] = $scope.task;
-
-
-            // queryObj[state_key] = 'Accepted';
-
-
 
             queryObj[or_key] = [
                 {'cameras.0.annotation': {
@@ -133,30 +108,6 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
                 }}
             ];
 
-            // var query2 = {
-            //
-            //     $or: [
-            //         {'cameras.0.annotation': {
-            //             $elemMatch: {
-            //                 category: $scope.task,
-            //                 state: Accepted
-            //             }
-            //         }},
-            //         {'cameras.0.annotation': {
-            //             $elemMatch: {
-            //                 category: $scope.task,
-            //                 state: Finished
-            //             }
-            //         }},
-            //         {'cameras.0.annotation': {
-            //             $elemMatch: {
-            //                 category: $scope.task,
-            //                 state: Finished_Basic
-            //             }
-            //         }}]
-            // }
-
-
         }
         if ($scope.density){
             var density_key = 'cameras.0.annotation.density';
@@ -168,32 +119,36 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             queryObj[ids_key] = {"$gte": $scope.ids};
         }
 
-        var object_key = '$and';
-        var object_array = [];
-        for (var i = 0; i < $scope.objects.length; i++){
-            if($scope.objects[i].class){
+        if ($scope.objects[0].class){
+            var and_key = '$and';
+            queryObj[and_key] = [];
 
-                var group_object = {};
+            for (var i = 0; i < $scope.objects.length; i++){
+                if($scope.objects[i].class){
 
-                var class_key = 'cameras.0.annotation.classes.class';
-                // var class_object = {};
-                group_object[class_key] = $scope.objects[i].class;
+                    var classesKey = 'cameras.0.annotation.classes';
+                    var classesObj = {};
 
-                if ($scope.objects[i].occurrence){
-                    var occurrence_key = 'cameras.0.annotation.classes.occurrence';
-                    // var occurrence_object = {};
-                    group_object[occurrence_key] = {"$gte": $scope.objects[i].occurrence};
+                    if(!$scope.objects[i].occurrence)
+                        $scope.objects[i].occurrence = 1;
+
+                    classesObj[classesKey] = {
+                        $elemMatch: {
+                            class: $scope.objects[i].class,
+                            occurrence: {"$gte": $scope.objects[i].occurrence}
+                        }
+                    };
+
+                    queryObj[and_key].push(classesObj);
+
                 }
-
-                object_array.push(group_object);
-
             }
+
+            // console.log(queryObj);
         }
 
-        if (object_array.length > 0)
-            queryObj[object_key] = object_array;
 
-        console.log(queryObj);
+
 
         dataService.data.queryObj = queryObj;
 

@@ -1,0 +1,67 @@
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>Monitor<small></small></h1>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <!--GENERAL-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-muted">GENERAL </h3>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!--KEYWORDS & ANNOTATION-->
+            <div class="row">
+
+                <!--KEYWORDS-->
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-muted">KEYWORDS <button class="btn btn-default" type="button" style="text-align: right" ng-click="toggleCollapse()">Collapse/Open All</button>
+                                </h3>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <uib-accordion close-others="false">
+
+                                    <uib-accordion-group ng-repeat="(category, keywords) in keywordsWithCount" is-open="open">
+                                        <uib-accordion-heading>
+                                            {{category}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                                        </uib-accordion-heading>
+                                        <div ng-repeat="wordObj in keywords" ><label class="">{{wordObj.word}}</label><uib-progressbar class="progress-striped active" max="max" value="wordObj.count" type="info"><span style="color:white; white-space:nowrap;">{{wordObj.count}} / {{max}}</span></uib-progressbar><br></div>
+                                    </uib-accordion-group>
+
+                                </uib-accordion>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+
+
+

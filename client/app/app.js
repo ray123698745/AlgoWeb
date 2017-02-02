@@ -58,7 +58,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compi
             url: "/archive",
             templateUrl: "/app/archive/archive.ejs",
             controller: 'archiveCtrl'
-        });
+        })
+        .state('monitor', {
+        url: "/monitor",
+        templateUrl: "/app/monitor/monitor.ejs",
+        controller: 'monitorCtrl'
+    });
 
 
     $locationProvider.html5Mode(true);
@@ -70,7 +75,7 @@ app.service('dataService', function () {
 
     this.data = {
         queryObj: {},
-        queryResult: {},
+        queryResult: [],
         selectedSeq:{},
         site: "us",    // us or it
         fileServerAddr: "http://10.1.2.209:8080",
@@ -80,7 +85,7 @@ app.service('dataService', function () {
     };
 
     this.keywords = {
-        "Weather": ["Sunny", "Rain", "Cloudy", "Snow", "Hail"],
+        "Weather": ["Clear", "Rain", "Cloudy", "Snow", "Hail"],
         "Light_Condition": ["Bright", "Indoor", "Shadow", "Night_with_street_light",  "Night_without_street_light", "Dusk", "Dawn", "Back_lit", "Tunnel"],
         "Road_Type": ["Urban", "Suburban", "Rural", "Highway", "Parking_lot"],
         "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"],

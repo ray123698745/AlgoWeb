@@ -18,11 +18,23 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     $scope.jsonUrl = "";
 
     var query = dataService.data.queryObj;
+    $scope.results = [];
 
     $http.post("/api/sequence/query", JSON.stringify(query))
     // $http.get("/api/sequence/getAllUnfiltered")
 
         .success(function (databaseResult) {
+
+            // var new_added = ['16-11-14-082050-tw', '16-11-14-075645-tw', '16-11-14-074717-tw', '16-11-23-104901-tw', '16-11-23-194630-tw', '16-11-23-213654-tw','16-11-24-160400-tw', '16-10-22-144618-tw', '16-10-23-194509-tw', '16-11-04-163158-tw', '16-11-21-144403-tw', '16-11-14-135323-tw', '16-11-13-212634-tw', '16-09-16-163729-us', '16-11-23-214143-tw', '16-11-23-194409-tw', '16-11-21-155049-tw', '16-11-21-152240-tw', '16-11-21-144706-tw', '16-11-21-144609-tw', '16-11-21-144313-tw', '16-11-14-140644-tw', '16-11-04-074711-tw', '16-10-23-195542-tw', '16-10-23-183903-tw', '16-10-22-111856-tw', '16-10-22-111639-tw', '16-10-22-103658-tw', '16-10-22-102012-tw'];
+            // for (var i = 0; i < databaseResult.length; i++){
+            //     for (var j = 0; j < new_added.length; j++){
+            //         if (databaseResult[i].title == new_added[j]){
+            //             $scope.results.push(databaseResult[i]);
+            //             dataService.data.queryResult.push(databaseResult[i]);
+            //         }
+            //     }
+            // }
+
             $scope.results = databaseResult;
             dataService.data.queryResult = databaseResult;
 
@@ -79,8 +91,11 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
                         seq.yuv_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_L.tar';
                         seq.yuv_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_R.tar';
 
-                        seq.h264_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/' + $scope.results[i].title + '_h264_L.mp4';
-                        seq.h264_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/' + $scope.results[i].title + '_h264_R.mp4';
+                        seq.h265_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_h265_v' + lastYuvVersion + '_L.mp4';
+                        seq.h265_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_h265_v' + lastYuvVersion + '_R.mp4';
+
+                        // seq.h264_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/' + $scope.results[i].title + '_h264_L.mp4';
+                        // seq.h264_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/' + $scope.results[i].title + '_h264_R.mp4';
 
                         seq.calibration_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/cali_data/Left.ini';
                         seq.calibration_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/cali_data/Right.ini';
@@ -104,59 +119,59 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
 
 
-    var fileContent = function (type) {
-
-        var content = "";
-
-        if ($scope.results){
-            if (type == 'yuv_L' || type == 'yuv_R'){
-                var lastVersion = 1;
-
-                for (var i = 0; i < $scope.results.length; i++){
-
-                    if ($scope.results[i].cameras[0].yuv.length > 0){
-
-                        lastVersion = $scope.results[i].cameras[0].yuv.length;
-                        if (type == 'yuv_L')
-                            content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastVersion + '_L.tar\n';
-                        else
-                            content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastVersion + '_R.tar\n';
-
-                        // console.log("content: " + content);
-                    }
-                }
-
-
-
-            } else {
-
-                var lastVersion = 1;
-
-                for (var i = 0; i < $scope.results.length; i++){
-
-                    if (!$scope.results[i].no_annotation){
-
-                        // console.log("title: " + $scope.results[i].title + ', count: ' + i);
-
-                        for (var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
-                            if ($scope.results[i].cameras[0].annotation[j].category == type && ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted')){
-                                lastVersion = $scope.results[i].cameras[0].annotation[j].version[($scope.results[i].cameras[0].annotation[j].version.length)-1].version_number;
-                                content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + type + '_v' + lastVersion + '/' + $scope.results[i].title + '_' + type + '.json\n';
-                                break;
-                            }
-                        }
-
-
-                    }
-                }
-
-            }
-
-            // console.log("content: " + content);
-        }
-
-        return content;
-    };
+    // var fileContent = function (type) {
+    //
+    //     var content = "";
+    //
+    //     if ($scope.results){
+    //         if (type == 'yuv_L' || type == 'yuv_R'){
+    //             var lastVersion = 1;
+    //
+    //             for (var i = 0; i < $scope.results.length; i++){
+    //
+    //                 if ($scope.results[i].cameras[0].yuv.length > 0){
+    //
+    //                     lastVersion = $scope.results[i].cameras[0].yuv.length;
+    //                     if (type == 'yuv_L')
+    //                         content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastVersion + '_L.tar\n';
+    //                     else
+    //                         content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastVersion + '_R.tar\n';
+    //
+    //                     // console.log("content: " + content);
+    //                 }
+    //             }
+    //
+    //
+    //
+    //         } else {
+    //
+    //             var lastVersion = 1;
+    //
+    //             for (var i = 0; i < $scope.results.length; i++){
+    //
+    //                 if (!$scope.results[i].no_annotation){
+    //
+    //                     // console.log("title: " + $scope.results[i].title + ', count: ' + i);
+    //
+    //                     for (var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
+    //                         if ($scope.results[i].cameras[0].annotation[j].category == type && ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted')){
+    //                             lastVersion = $scope.results[i].cameras[0].annotation[j].version[($scope.results[i].cameras[0].annotation[j].version.length)-1].version_number;
+    //                             content += dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + type + '_v' + lastVersion + '/' + $scope.results[i].title + '_' + type + '.json\n';
+    //                             break;
+    //                         }
+    //                     }
+    //
+    //
+    //                 }
+    //             }
+    //
+    //         }
+    //
+    //         // console.log("content: " + content);
+    //     }
+    //
+    //     return content;
+    // };
 
 
 

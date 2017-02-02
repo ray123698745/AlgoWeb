@@ -251,7 +251,7 @@ app.controller('resultCtrl', ['$scope', '$http', '$state', '$stateParams', '$sce
 
         for (var i = 0; i < $scope.result.cameras[$scope.cameraIdx].annotation.length; i++){
 
-            if ($scope.result.cameras[$scope.cameraIdx].annotation[i].state == 'Accepted')
+            if ($scope.result.cameras[$scope.cameraIdx].annotation[i].state == 'Accepted' || $scope.result.cameras[$scope.cameraIdx].annotation[i].state == 'Finished' || $scope.result.cameras[$scope.cameraIdx].annotation[i].state == 'Finished_Basic')
                 return false;
         }
 

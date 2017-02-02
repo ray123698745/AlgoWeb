@@ -245,20 +245,20 @@ app.controller('reviewCtrl', ['$scope', '$http', '$state', '$sce', '$uibModal', 
                     //         console.log("submit request failed!");
                     //     });
 
-                    
-                    // Todo: delete unselected sequence
-                    var param = {
-                        id: $scope.results[i]._id,
-                        path: utilService.getRootPathBySite($scope.results[i].file_location)
-                    };
 
-                    $http.post("/api/sequence/deleteSequence", JSON.stringify(param))
-                        .success(function (respond) {
-                            console.log(respond);
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("delete sequence failed!");
-                        });
+                    // Todo: delete unselected sequence
+                    // var param = {
+                    //     id: $scope.results[i]._id,
+                    //     path: utilService.getRootPathBySite($scope.results[i].file_location)
+                    // };
+                    //
+                    // $http.post("/api/sequence/deleteSequence", JSON.stringify(param))
+                    //     .success(function (respond) {
+                    //         console.log(respond);
+                    //     })
+                    //     .error(function (data, status, header, config) {
+                    //         console.log("delete sequence failed!");
+                    //     });
 
                 }
             }

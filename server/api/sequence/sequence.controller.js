@@ -5,6 +5,7 @@ var unfilteredSequence = require('./sequence.model.js').unfilteredsequence;
 
 var log = require('log4js').getLogger('db');
 require('shelljs/global');
+var util = require('util');
 
 module.exports = {
 
@@ -57,6 +58,7 @@ module.exports = {
         var query = req.body;
 
         // log.debug("Query object: ", query);
+        console.log(util.inspect(query, false, null));
 
         Sequence.find(query, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) {
@@ -314,7 +316,42 @@ module.exports = {
             compareRequest(params[i], res, params.length);
         }
 
+    },
+
+    allSeqCount: function (req, res) {
+
+        Sequence.count({}, function(err, result) {
+            if (err) throw err;
+
+            log.debug('allSeqCount result:', result);
+            res.send({count: result});
+        });
+
+    },
+
+    keywordCount: function (req, res) {
+
+        var keyword = req.body.keyword;
+
+
+        Sequence.count({keywords: keyword}, function(err, result) {
+            if (err) throw err;
+
+            // log.debug('keywordCount result:', result);
+            // log.debug('keyword:', keyword);
+            // log.debug('key', req.body.key);
+
+            res.send({
+                count: result,
+                keyword: keyword,
+                key: req.body.key
+            });
+        });
+
     }
+
+
+
 
 };
 

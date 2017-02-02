@@ -7,19 +7,21 @@ app.controller('NavigationController', function($scope, dataService) {
     //     alert("test");
     // };
 
-    $scope.Annotation = [{
-        name: "Request",
-        link: 'filter'
-    }, {
-        name: "divider",
-        link: "#"
-    }, {
-        name: "Review",
-        link: "review"
-    }, {
-        name: "divider",
-        link: "#"
-    }, {
+    $scope.Annotation = [
+    //     {
+    //     name: "Request",
+    //     link: 'filter'
+    // }, {
+    //     name: "divider",
+    //     link: "#"
+    // }, {
+    //     name: "Review",
+    //     link: "review"
+    // }, {
+    //     name: "divider",
+    //     link: "#"
+    // },
+        {
         name: "Tasks",
         link: "annotationTrack"
     },{
