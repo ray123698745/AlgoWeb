@@ -13,7 +13,7 @@ app.controller('monitorCtrl', ['$scope', '$http', '$state', 'dataService', funct
 
         $scope.open = !$scope.open;
 
-        console.log($scope.open);
+        // console.log($scope.open);
     };
 
     $http.get("/api/sequence/allSeqCount")
