@@ -16,6 +16,8 @@ router.get('/getAccepted', controller.getAccepted);
 router.get('/removeUnfiltered', controller.removeUnfiltered);
 router.get('/genTitle', controller.genTitle);
 router.get('/allSeqCount', controller.allSeqCount);
+router.get('/getAllGPS', controller.getAllGPS);
+
 
 
 
@@ -28,6 +30,8 @@ router.post('/insertUnfiltered', controller.insertUnfiltered);
 router.post('/deleteSequence', controller.deleteSequence);
 router.post('/addAnnotationRequest', controller.addAnnotationRequest);
 router.post('/keywordCount', controller.keywordCount);
+router.post('/seqCount', controller.seqCount);
+
 
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);

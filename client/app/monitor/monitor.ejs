@@ -19,13 +19,72 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-1">
+                                <label class="control-label title_label">Moving Object: </label>
+                                <span style="padding-left: 10px">{{taskCount.moving_object}}</span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label title_label">Free Space: </label>
+                                <span style="padding-left: 10px">{{taskCount.free_space}}</span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label title_label">Free Space w Curb: </label>
+                                <span style="padding-left: 10px">{{taskCount.free_space_with_curb}}</span>
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>
             </div>
 
+            <!--Map-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-muted">Map </h3>
+                            </div>
+                        </div>
 
-            <!--KEYWORDS & ANNOTATION-->
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <!--<div map-lazy-load="https://maps.google.com/maps/api/js">-->
+                                    <!--<ng-map center="41,-87" zoom="3"></ng-map>-->
+                                <!--</div>-->
+
+                                <div ng-controller="mapController as vm">
+                                    <ng-map zoom="2" center="[43.6650000, -79.4103000]" style="height:600px">
+
+                                        <!--<info-window id="foo-iw">-->
+                                            <!--<div ng-non-bindable="">-->
+                                                <!--hi-->
+                                                <!--&lt;!&ndash;id: {{vm.shop.id}}<br/>&ndash;&gt;-->
+                                                <!--&lt;!&ndash;name: {{vm.shop.name}}<br/>&ndash;&gt;-->
+                                                <!--&lt;!&ndash;Position 1: {{vm.shop.position}}<br/>&ndash;&gt;-->
+                                                <!--&lt;!&ndash;Position 2: {{anchor.getPosition()}}<br/>&ndash;&gt;-->
+                                                <!--&lt;!&ndash;Position 3: {{vm.map.markers[vm.shop.id].getPosition()}}<br/>&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<a href="#" ng-click="vm.clicked()">Click Here</a>&ndash;&gt;-->
+                                            <!--</div>-->
+                                        <!--</info-window>-->
+
+                                    </ng-map>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--KEYWORDS-->
             <div class="row">
 
                 <!--KEYWORDS-->
@@ -33,12 +92,27 @@
                     <div class="well">
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="text-muted">KEYWORDS <button class="btn btn-default" type="button" style="text-align: right" ng-click="toggleCollapse()">Collapse/Open All</button>
+                                <h3 class="text-muted">KEYWORDS
+                                    <!--<button class="btn btn-default" type="button" style="text-align: right" ng-click="toggleCollapse()">Collapse/Open All</button>-->
                                 </h3>
+
 
                             </div>
                         </div>
-                        <div class="row">
+
+                        <div class="row" style="padding-top: 30px">
+                            <div class="col-md-12">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li ng-class="{active: tab.all}"><a ng-click="switchTab('all')" class="title_label">All Sequence</a></li>
+                                    <li ng-class="{active: tab.moving_object}"><a ng-click="switchTab('moving_object')" class="title_label">Moving Object</a></li>
+                                    <li ng-class="{active: tab.free_space}"><a ng-click="switchTab('free_space')" class="title_label">Free Space</a></li>
+                                    <!--<li ng-class="{active: tab.free_space_with_curb}"><a ng-click="switchTab('free_space_with_curb')" class="title_label">Free Space w Curb</a></li>-->
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 40px">
                             <div class="col-md-12">
                                 <uib-accordion close-others="false">
 

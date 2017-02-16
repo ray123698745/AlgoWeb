@@ -318,12 +318,31 @@ module.exports = {
 
     },
 
+    seqCount: function (req, res) {
+
+        var countObj = req.body;
+        // log.debug('countObj:', countObj);
+
+        Sequence.count(countObj, function(err, result) {
+            if (err) throw err;
+
+            // log.debug('keywordCount result:', result);
+            // log.debug('keyword:', keyword);
+            // log.debug('key', req.body.key);
+
+            res.send({
+                count: result
+            });
+        });
+
+    },
+
     allSeqCount: function (req, res) {
 
         Sequence.count({}, function(err, result) {
             if (err) throw err;
 
-            log.debug('allSeqCount result:', result);
+            // log.debug('allSeqCount result:', result);
             res.send({count: result});
         });
 
@@ -331,10 +350,11 @@ module.exports = {
 
     keywordCount: function (req, res) {
 
-        var keyword = req.body.keyword;
+        var countObj = req.body.query;
 
+        // log.debug('countObj:', countObj);
 
-        Sequence.count({keywords: keyword}, function(err, result) {
+        Sequence.count(countObj, function(err, result) {
             if (err) throw err;
 
             // log.debug('keywordCount result:', result);
@@ -343,15 +363,27 @@ module.exports = {
 
             res.send({
                 count: result,
-                keyword: keyword,
+                keyword: countObj.keywords,
                 key: req.body.key
             });
         });
 
+    },
+
+    getAllGPS: function (req, res) {
+
+        // log.debug('countObj:', countObj);
+
+        Sequence.find({},{gps: 1}, function(err, result) {
+            if (err) throw err;
+
+            log.debug('result', result);
+
+            res.send({gps: result});
+
+        });
+
     }
-
-
-
 
 };
 

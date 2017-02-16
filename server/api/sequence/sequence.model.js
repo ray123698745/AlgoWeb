@@ -16,7 +16,7 @@ var class_object = new Schema({class: String, occurrence: Number},{_id : false }
 var annotation = new Schema({category: String, fps: Number, priority: Number, state: String, version: [version], total_objects: Number, unique_id: Number, density: Number, classes: [class_object]},{_id : false });
 var cameras = new Schema({name: String, is_stereo: Boolean, yuv: [yuv], annotation: [annotation]},{_id : false });
 
-// var database_version = new Schema({version: Number, id: ObjectId},{_id : false });
+var batchNum = new Schema({country: String, num: Number},{_id : false });
 
 var sequenceSchema = new Schema({
     title: String,
@@ -31,7 +31,7 @@ var sequenceSchema = new Schema({
     cameras:[cameras],
     no_annotation: Boolean,
     version: Number,
-    batchNum: String
+    batchNum: batchNum
 }, {versionKey: false});
 
 

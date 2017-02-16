@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('AlgoWeb', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
+var app = angular.module('AlgoWeb', ['ngMap', 'ui.router', 'ngAnimate', 'ui.bootstrap', 'angularUtils.directives.dirPagination', 'angularjs-dropdown-multiselect']);
 
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider',function ($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider) {
