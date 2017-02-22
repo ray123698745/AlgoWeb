@@ -164,7 +164,7 @@ app.controller('monitorCtrl', ['$scope', '$http', '$state', 'dataService', 'NgMa
 
 app.controller('mapController', function($scope, $http, $interval, NgMap) {
 
-    // $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKazcMqdk5t0mJcyv7lroFEKtLthpFaLg";
+    $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKazcMqdk5t0mJcyv7lroFEKtLthpFaLg";
 
     var vm = this;
     vm.dynMarkers = [];

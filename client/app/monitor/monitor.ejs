@@ -59,7 +59,8 @@
                                     <!--<ng-map center="41,-87" zoom="3"></ng-map>-->
                                 <!--</div>-->
 
-                                <div ng-controller="mapController as vm">
+                                <div ng-controller="mapController as vm" map-lazy-load="https://maps.google.com/maps/api/js"
+                                     map-lazy-load-params="{{googleMapsUrl}}">
                                     <ng-map zoom="2" center="[43.6650000, -79.4103000]" style="height:600px">
 
                                         <!--<info-window id="foo-iw">-->
