@@ -176,7 +176,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     $scope.download = function (file, result) {
 
         if (file === 'annotation') {
-            return dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/annotation/moving_object_v1/" + result.title + "_moving_object.json";
+            return dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/Front_Stereo/annotation/moving_object_v1/" + result.title + "_moving_object.json";
         }
 
         if (file === 'h265') {
