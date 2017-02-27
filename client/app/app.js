@@ -90,7 +90,7 @@ app.service('dataService', function () {
         "Road_Type": ["Urban", "Suburban", "Rural", "Highway", "Parking_lot"],
         "Lane_Mark_Type": ["Full_lane_marking", "Center_lane_only", "No_lane_Marking", "Special_lane_Marking"],
         "Special_Condition": ["Accident", "Pot_hole"],
-        "Vehicle": ["No_vehicle", "Few_vehicle", "More_vehicle", "Special_vehicle"],
+        "Vehicle": ["No_vehicle", "Few_vehicle", "More_vehicle", "Cyclist", "Special_vehicle"],
         "Pedestrian": ["No_Pedestrian", "Few_Pedestrian", "More_Pedestrian", "Special_Pedestrian"],
         "Free_Space": ["Construction", "Intersection", "Round_about"]
     }
