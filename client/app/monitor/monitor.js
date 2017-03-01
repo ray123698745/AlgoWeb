@@ -162,9 +162,10 @@ app.controller('monitorCtrl', ['$scope', '$http', '$state', 'dataService', 'NgMa
 
 }]);
 
-app.controller('mapController', function($scope, $http, $interval, NgMap) {
+app.controller('mapController', function($scope, $http, $sce, $interval, NgMap, dataService, utilService) {
 
     $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKazcMqdk5t0mJcyv7lroFEKtLthpFaLg";
+    var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
 
     var vm = this;
     vm.dynMarkers = [];
@@ -173,16 +174,63 @@ app.controller('mapController', function($scope, $http, $interval, NgMap) {
         $http.get("/api/sequence/getAllGPS")
             .success(function (databaseResult) {
 
-                for (var i = 0; i < databaseResult.gps.length; i++) {
-                    var latLng = new google.maps.LatLng(databaseResult.gps[i].gps.x, databaseResult.gps[i].gps.y);
-                    vm.dynMarkers.push(new google.maps.Marker({position:latLng}));
+                var result = databaseResult.result;
+                // var infoWindow = new google.maps.InfoWindow();
+
+                var infoBubble = new InfoBubble({
+                    map: map,
+                    shadowStyle: 1,
+                    padding: 15,
+                    backgroundColor: 'rgb(57,57,57)',
+                    borderRadius: 10,
+                    arrowSize: 10,
+                    borderWidth: 1,
+                    maxWidth: 1000,
+                    maxHeight: 1000,
+                    minWidth: 400,
+                    minHeight: 300,
+                    borderColor: '#2c2c2c',
+                    disableAutoPan: true,
+                    hideCloseButton: true,
+                    arrowPosition: 50,
+                    arrowStyle: 0
+                });
+
+                google.maps.event.addListener(map, 'click', function() {
+                    infoBubble.close();
+                });
+
+                for (var i = 0; i < result.length; i++) {
+
+                    var latLng = new google.maps.LatLng(result[i].gps.x, result[i].gps.y);
+                    var marker = new google.maps.Marker({position:latLng, map: map});
+
+
+                    (function (marker, result) {
+                        google.maps.event.addListener(marker, "click", function (e) {
+                            //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                            infoBubble.setContent("<div>" +
+                                "<h4>" + result.title + "</h4>" +
+                                "<div class='embed-responsive embed-responsive-16by9'>" +
+                                "<video src='"+ $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/Front_Stereo/R/"+ result.title +"_h264_R.mp4") +"' type='video/mp4' controls></video>" +
+                                "</div>" +
+                                "</div>");
+                            // var div = document.createElement('DIV');
+                            // div.innerHTML = 'Hello';
+
+                            infoBubble.open(map, marker);
+                        });
+                    })(marker, result[i]);
+
+
+                    vm.dynMarkers.push(marker);
                 }
                 vm.markerClusterer = new MarkerClusterer(map, vm.dynMarkers, {});
 
 
             })
             .error(function (data, status, header, config) {
-                $scope.result = "failed!";
+                console.log("query failed!");
             });
 
 
