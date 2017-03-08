@@ -59,7 +59,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             "location.country": $scope.country,
             "location.state": $scope.state,
             "location.city": $scope.city,
-            "version": $scope.version
+            "version": {$gte: $scope.version}
         };
 
 

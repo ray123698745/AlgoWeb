@@ -58,7 +58,7 @@ module.exports = {
         var query = req.body;
 
         // log.debug("Query object: ", query);
-        console.log(util.inspect(query, false, null));
+        // console.log(util.inspect(query, false, null));
 
         Sequence.find(query, null, {sort: {capture_time: -1}}, function(err, sequence) {
             if (err) {
@@ -293,9 +293,9 @@ module.exports = {
         var id = req.body.id;
         var path = req.body.path;
 
-        rm('-r', '/supercam' + path);
+        rm('-rf', '/supercam' + path);
 
-        unfilteredSequence.remove( {_id: id}, function(err, result) {
+        Sequence.remove( {_id: id}, function(err, result) {
             if (err) throw err;
 
             log.debug('deleteSequence result: ' + result);
