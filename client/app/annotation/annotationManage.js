@@ -69,6 +69,7 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
             $scope.results = "failed!";
         });
 
+
     $scope.switchTab = function (tab) {
 
         $scope.tab.moving_object = false;
@@ -391,6 +392,50 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
         } else {
             alert("Please upload both annotation and state file");
         }
+    };
+
+
+    $scope.batchUpload = function (ele) {
+
+        var file = ele.files;
+
+        var item = angular.element(ele).scope().item;
+        var index = item.index;
+
+        if (file.length == 1){
+
+            console.log("item.batchName:" + item.batchName);
+
+            console.log(file[0]);
+
+            var fd = new FormData();
+            fd.append("batch", file[0]);
+            fd.append("batchName", item.batchName);
+
+
+
+            $http.post("/api/upload/batchUpload", fd,
+                {
+                    withCredentials: true,
+                    headers: {'Content-Type': undefined },
+                    transformRequest: angular.identity
+                })
+                .success(function(data) {
+                    alert(data);
+                    console.log(data);
+
+
+
+                })
+                .error(function (data, status, header, config) {
+                    alert("Batch update failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("Batch update failed!");
+                });
+        } else {
+            alert("Please upload at least one file!");
+        }
+
     };
 
 

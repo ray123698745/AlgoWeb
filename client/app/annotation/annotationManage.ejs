@@ -97,8 +97,8 @@
                                     </ul>
                                 </div>
 
-                                <div class="btn-group btn-group-sm" ng-show="result.state == 'Modifying' || result.state == 'Reviewing'">
-                                    <label ng-show="result.state == 'Modifying' || result.state == 'Reviewing'" class="btn btn-default btn-file" ng-click="disableEdit()">
+                                <div class="btn-group btn-group-sm" ng-show="result.state == 'Modifying' || result.state == 'Reviewing' || result.state == 'Pending'">
+                                    <label ng-show="result.state == 'Modifying' || result.state == 'Reviewing' || result.state == 'Pending'" class="btn btn-default btn-file" ng-click="disableEdit()">
                                         Upload <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
                                     </label>
                                     <button ng-show="result.state == 'Modifying'" class="btn btn-default" type="button" uib-popover="{{result.version[result.version.length-1].comments}}" popover-trigger="click outsideClick" popover-append-to-body="true">Comments</button>
@@ -147,6 +147,9 @@
                             <div class="btn-group btn-group-sm">
                                 <a download ng-href="{{downloadBatch(item)}}" target="_self" class="btn btn-info" >Download</a>
                                 <button class="btn btn-danger" type="button" ng-click="deleteBatch(item)">&nbsp;&nbsp;&nbsp;Delete&nbsp;&nbsp;&nbsp;</button>
+                                <label class="btn btn-success btn-file">
+                                    &nbsp;&nbsp;&nbsp;Upload&nbsp;&nbsp;&nbsp; <input type="file" name="batch" multiple style="display: none;" onchange="angular.element(this).scope().batchUpload(this)">
+                                </label>
                             </div>
                         </td>
                     </tr>

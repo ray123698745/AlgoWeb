@@ -72,20 +72,20 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
                     var seq = {};
                     // console.log("title: " + $scope.results[i].title + ', count: ' + i);
-
+                    seq.annotation = {};
                     for (var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
                         if ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted'){
                             var lastAnnotationVersion = $scope.results[i].cameras[0].annotation[j].version.length;
                             var category = $scope.results[i].cameras[0].annotation[j].category;
-                            seq.annotation = {};
+
                             seq.annotation[category] = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + category + '_v' + lastAnnotationVersion + '/' + $scope.results[i].title + '_' + category + '.json';
                         }
                     }
 
 
                     var lastYuvVersion = $scope.results[i].cameras[0].yuv.length;
-                    seq.yuv_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_L.tar';
-                    seq.yuv_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_R.tar';
+                    // seq.yuv_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_L.tar';
+                    // seq.yuv_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_R.tar';
 
                     seq.h265_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_h265_v' + lastYuvVersion + '_L.mp4';
                     seq.h265_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_h265_v' + lastYuvVersion + '_R.mp4';
@@ -98,6 +98,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
                     seq.LUT_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/cali_data/RECT_Left.blt';
                     seq.LUT_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/cali_data/RECT_Right.blt';
+                    seq.gold_sensor = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/' + $scope.results[i].title + '_Sensor.tar';
 
                     content.sequence.push(seq);
 
@@ -254,7 +255,7 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
             path: utilService.getRootPathBySite(selectedSeq.file_location)
         };
 
-        if (confirm("Delete this sequence?\nThis action cannot be recoverd.") == true) {
+        if (confirm("Delete this sequence?\nThis action cannot be recovered.") == true) {
             $http.post("/api/sequence/deleteSequence", JSON.stringify(param))
                 .success(function (respond) {
                     alert(respond);

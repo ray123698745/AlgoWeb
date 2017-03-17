@@ -187,6 +187,137 @@ module.exports = {
     },
 
 
+    batchUpload: function (req, res) {
+
+        var file = req.file;
+        var batchName = req.body.batchName;
+        var uploadTempPath = '/supercam/vol1/annotation/upload_temp/';
+
+        // var title = req.body.title;
+        // var category = req.body.category;
+        // var version_number = req.body.version_number;
+        // var fileName = title + '_' + category + '.json';
+        // log.debug("fileName: " + fileName);
+        log.debug("files: " + file.originalname);
+        log.debug("batchName: " + batchName);
+
+
+
+        if (file.originalname == batchName + '.tar'){
+
+            mv(__dirname + '/uploads/' + file.filename, uploadTempPath + file.originalname);
+            mkdir(uploadTempPath + '/' + batchName);
+            exec('tar -C ' + uploadTempPath + '/' + batchName + ' -xf ' + uploadTempPath + file.originalname);
+
+            fs.readdir(uploadTempPath + '/' + batchName, function(err, seqs) {
+                if (err) {
+                    log.error(err);
+                } else {
+
+
+                    for (var i = 0; i < seqs.length; i++) {
+                        log.debug("seqs: " + seqs[i]);
+
+                        var title = seqs[i].substring(0, 18);
+                        log.debug("title: " + title);
+
+                        if (i % 2 != 0){
+
+                            Sequence.find({title: title}, function(err, sequence) {
+                                if (err) {
+                                    log.debug("Result error: ", err);
+                                    throw err;
+                                } else{
+                                    log.debug("Result found: ", sequence[0].title);
+
+                                    var destPath = '/supercam' + sequence[0].file_location[0].root_path + '/Front_Stereo/annotation/moving_object_v1/';
+                                    log.debug("destPath: " + destPath);
+
+                                    mkdir (destPath);
+
+
+                                    var statFile = JSON.parse(fs.readFileSync(uploadTempPath + batchName + '/' + sequence[0].title + '_moving_object_stat.json', 'utf-8'));
+                                    var uploadTime = new Date().toISOString();
+                                    var set_obj = {};
+
+                                    // var versionIndex = version_number -1;
+                                    // log.debug('versionIndex: ', versionIndex);
+
+                                    var state_key = 'cameras.0.annotation.0.state';
+                                    var time_key = 'cameras.0.annotation.0.version.0.upload_time';
+                                    var total_objects_key = 'cameras.0.annotation.0.total_objects';
+                                    var unique_id_key = 'cameras.0.annotation.0.unique_id';
+                                    var classes_key = 'cameras.0.annotation.0.classes';
+                                    var density_key = 'cameras.0.annotation.0.density';
+
+
+                                    set_obj[state_key] = 'Finished_Basic';
+
+
+                                    set_obj[time_key] = uploadTime;
+                                    set_obj[total_objects_key] = statFile.n_objects;
+                                    set_obj[unique_id_key] = statFile.ids;
+                                    set_obj[density_key] = statFile.n_objects/statFile.frames;
+                                    set_obj[classes_key] = [];
+
+                                    for (var i = 0; i < statFile.class_count.length; i++){
+                                        set_obj[classes_key][i] = {};
+                                        set_obj[classes_key][i].class = statFile.class_count[i][0];
+                                        set_obj[classes_key][i].occurrence = statFile.class_count[i][1];
+                                    }
+
+
+                                    var query = {
+                                        condition: {_id: sequence[0]._id},
+                                        update: {$set: set_obj},
+                                        options: {multi: false}
+                                    };
+
+                                    // log.debug('query.condition: ', query.condition);
+                                    // log.debug('query.update: ', query.update);
+                                    // log.debug('query.options: ', query.options);
+
+
+                                    Sequence.update(query.condition, query.update, query.options, function(err, numAffected) {
+                                        if (err) {
+                                            log.debug("uploadAnnotation error: ", err);
+                                            throw err;
+                                        } else{
+                                            log.debug("uploadAnnotation numAffected: ", numAffected);
+
+                                            // res.send('Upload success!');
+                                        }
+                                    });
+
+                                    mv(uploadTempPath + batchName + '/' + sequence[0].title + '_moving_object_stat.json', destPath);
+                                    mv(uploadTempPath + batchName + '/' + sequence[0].title + '_moving_object.json', destPath);
+
+                                }
+                            });
+
+
+
+                        } else {
+
+                        }
+
+                    }
+
+
+                    rm(uploadTempPath + file.originalname);
+                    res.send('Upload success!');
+                }
+            });
+
+
+        } else {
+
+            rm(__dirname + '/uploads/' + file.filename);
+            res.send('Wrong file. \nBatch name doesn\'t match.');
+        }
+    },
+
+
     batchUpdate: function (req, res) {
 
         var file = req.file;
@@ -258,3 +389,7 @@ module.exports = {
         }
     }
 };
+
+// var uploadOne = function (title, callback) {
+//
+// };
