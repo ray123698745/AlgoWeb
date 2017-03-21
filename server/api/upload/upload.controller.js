@@ -203,11 +203,11 @@ module.exports = {
 
 
 
-        if (file.originalname == batchName + '.tar'){
+        if (file.originalname == batchName + '.tar.gz'){
 
             mv(__dirname + '/uploads/' + file.filename, uploadTempPath + file.originalname);
             mkdir(uploadTempPath + '/' + batchName);
-            exec('tar -C ' + uploadTempPath + '/' + batchName + ' -xf ' + uploadTempPath + file.originalname);
+            exec('tar -C ' + uploadTempPath + '/' + batchName + ' -xzf ' + uploadTempPath + file.originalname);
 
             fs.readdir(uploadTempPath + '/' + batchName, function(err, seqs) {
                 if (err) {
@@ -228,10 +228,10 @@ module.exports = {
                                     log.debug("Result error: ", err);
                                     throw err;
                                 } else{
-                                    log.debug("Result found: ", sequence[0].title);
+                                    // log.debug("Result found: ", sequence[0].title);
 
                                     var destPath = '/supercam' + sequence[0].file_location[0].root_path + '/Front_Stereo/annotation/moving_object_v1/';
-                                    log.debug("destPath: " + destPath);
+                                    // log.debug("destPath: " + destPath);
 
                                     mkdir (destPath);
 

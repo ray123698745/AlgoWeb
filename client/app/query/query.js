@@ -8,7 +8,7 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
         class: null,
         occurrence: null
     }];
-    $scope.version = 4;
+    $scope.version = 5;
     $scope.annotation = 'Yes';
 
     $scope.toggleSelection = function (keyword) {
@@ -59,7 +59,9 @@ app.controller('queryCtrl', ['$scope', '$http', '$state', 'dataService', functio
             "location.country": $scope.country,
             "location.state": $scope.state,
             "location.city": $scope.city,
-            "version": {$gte: $scope.version}
+            "version": {$gte: $scope.version},
+            "batchNum.country": $scope.batchCountry,
+            "batchNum.num": $scope.batchNum
         };
 
 

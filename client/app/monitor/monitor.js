@@ -171,7 +171,14 @@ app.controller('mapController', function($scope, $http, $sce, $interval, NgMap, 
     vm.dynMarkers = [];
     NgMap.getMap().then(function(map) {
 
-        $http.get("/api/sequence/getAllGPS")
+        // var query = {
+        //     "batchNum.country": "ITA",
+        //     "batchNum.num": 5
+        // };
+
+        var query = {};
+
+        $http.post("/api/sequence/getGPS", JSON.stringify(query))
             .success(function (databaseResult) {
 
                 var result = databaseResult.result;

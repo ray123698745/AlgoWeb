@@ -95,15 +95,39 @@
                                             <!--</div>-->
                                         <!--</div>-->
 
+                                        <!--<div class="form-group">-->
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-md-12">-->
+                                                    <!--<label class="control-label title_label">Have Annotation</label>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<br/>-->
+                                            <!--<span><label class="control-label radio-inline"><input type="radio" name="yuv" value="Yes" ng-model="annotation" />Yes</label></span>-->
+                                            <!--<span><label class="control-label radio-inline"><input type="radio" name="yuv" value="No" ng-model="annotation" />No</label></span>-->
+                                        <!--</div>-->
+
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label title_label">Have Annotation</label>
+                                                    <label class="control-label title_label">Batch Number</label>
                                                 </div>
                                             </div>
                                             <br/>
-                                            <span><label class="control-label radio-inline"><input type="radio" name="yuv" value="Yes" ng-model="annotation" />Yes</label></span>
-                                            <span><label class="control-label radio-inline"><input type="radio" name="yuv" value="No" ng-model="annotation" />No</label></span>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <select class="form-control" ng-model="batchCountry">
+                                                        <option value="TW">TW</option>
+                                                        <option value="US">US</option>
+                                                        <option value="ITA">ITA</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <input type="text" ng-model="batchNum" class="form-control" placeholder="" />
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                     </div>

@@ -372,12 +372,31 @@ module.exports = {
 
     getAllGPS: function (req, res) {
 
+        var countObj = req.body.query;
+
         // log.debug('countObj:', countObj);
 
-        Sequence.find({},{title:1, gps:1, file_location:1, keywords:1},{sort: {capture_time: 1}}, function(err, result) {
+        Sequence.find({"batchNum.country":"ITA", "batchNum.num":5},{title:1, gps:1, file_location:1, keywords:1},{sort: {capture_time: 1}}, function(err, result) {
             if (err) throw err;
 
             log.debug('result', result);
+
+            res.send({result: result});
+
+        });
+
+    },
+
+    getGPS: function (req, res) {
+
+        var query = req.body;
+
+        // log.debug('query:', query);
+
+        Sequence.find(query,{title:1, gps:1, file_location:1, keywords:1},{sort: {capture_time: 1}}, function(err, result) {
+            if (err) throw err;
+
+            // log.debug('result', result);
 
             res.send({result: result});
 

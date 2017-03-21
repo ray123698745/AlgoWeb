@@ -31,6 +31,7 @@ router.post('/deleteSequence', controller.deleteSequence);
 router.post('/addAnnotationRequest', controller.addAnnotationRequest);
 router.post('/keywordCount', controller.keywordCount);
 router.post('/seqCount', controller.seqCount);
+router.post('/getGPS', controller.getGPS);
 
 
 // router.patch('/:id', controller.update);
