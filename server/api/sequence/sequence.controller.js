@@ -245,7 +245,7 @@ module.exports = {
     //     });
     // },
 
-    updateUnfiltered: function(req, res) {
+    batchUpdate: function(req, res) {
 
 
         var queries = req.body;
@@ -260,7 +260,7 @@ module.exports = {
             log.debug('options: ', queries[i].options);
 
 
-            unfilteredSequence.update(queries[i].condition, queries[i].update, queries[i].options, function(err, numAffected) {
+            Sequence.update(queries[i].condition, queries[i].update, queries[i].options, function(err, numAffected) {
                 if (err) {
                     log.debug("Result error: ", err);
                     throw err;
@@ -268,7 +268,7 @@ module.exports = {
                     log.debug("numAffected: ", numAffected);
                     numUpdated += numAffected.nModified;
                     if (numUpdated === queries.length)
-                        res.send(numUpdated + " Sequence selected!");
+                        res.send("Sequence updated!");
                 }
             });
         }

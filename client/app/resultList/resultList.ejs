@@ -32,6 +32,7 @@
                     <!--</ul>-->
                 <!--</div>-->
 
+                <button class="btn btn-default" type="button" ng-click="markTrained(results)">Mark as Trained</button>
 
                 <a download="training.json" ng-href="{{jsonUrl}}" target="_self" class="btn btn-default" role="button" >Download All Training Data</a>
 
@@ -101,7 +102,16 @@
                     </div>
 
                     <div class="col-md-2">
-                        <a download ng-href="{{download('h265', result)}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H265</a>
+                        <!--<a download ng-href="{{download('h265', result)}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >H265</a>-->
+                        <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body="true">
+                            <button id="single-button" type="button" class="btn btn-default btn-block" uib-dropdown-toggle>
+                                H.265 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem" ><a download ng-href="{{download('h265', 'left', result)}}" target="_self">Left</a></li>
+                                <li role="menuitem" ><a download ng-href="{{download('h265', 'right', result)}}" target="_self">Right</a></li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!--<div class="col-md-2">-->

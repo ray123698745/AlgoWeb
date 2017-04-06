@@ -170,16 +170,55 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
     //     return content;
     // };
 
-    $scope.download = function (file, result) {
+    $scope.download = function (file, channel, result) {
 
         if (file === 'annotation') {
             return dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/Front_Stereo/annotation/moving_object_v1/" + result.title + "_moving_object.json";
         }
 
         if (file === 'h265') {
-            return dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/Front_Stereo/R/yuv/" + result.title + "_h265_v1_R.mp4";
+            if (channel == 'right')
+                return dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/Front_Stereo/R/yuv/" + result.title + "_h265_v1_R.mp4";
+            else
+                return dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/Front_Stereo/L/yuv/" + result.title + "_h265_v1_L.mp4";
         }
     };
+
+
+    $scope.markTrained = function (results) {
+
+        if (confirm("Mark this batch as trained?") == true) {
+
+            var queries = [];
+
+            for (var i = 0; i < results.length; i++){
+                var query = {
+                    condition: {_id: results[i]._id},
+                    update: {$set: {trained: true}},
+                    options: {multi: false}
+                };
+
+                queries.push(query);
+                console.log(query);
+            }
+
+
+
+
+
+            $http.post("/api/sequence/batchUpdate", JSON.stringify(queries))
+                .success(function(databaseResult) {
+                    alert('Marked!');
+                })
+                .error(function (data, status, header, config) {
+                    alert("edit request failed!\nStatus: " + status + "\nData: " + data);
+
+                    console.log("submit request failed!");
+                });
+        }
+
+    };
+
 
     $scope.thumbSrc = function (result) {
         return $sce.trustAsResourceUrl(dataService.data.fileServerAddr + utilService.getRootPathBySite(result.file_location) + "/thumb.jpg");

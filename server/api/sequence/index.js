@@ -24,7 +24,7 @@ router.get('/getAllGPS', controller.getAllGPS);
 
 router.post('/query', controller.result);
 router.post('/update', controller.update);
-router.post('/updateUnfiltered', controller.updateUnfiltered);
+router.post('/batchUpdate', controller.batchUpdate);
 router.post('/insert', controller.insert);
 router.post('/insertUnfiltered', controller.insertUnfiltered);
 router.post('/deleteSequence', controller.deleteSequence);

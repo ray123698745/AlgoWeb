@@ -30,6 +30,7 @@ var sequenceSchema = new Schema({
     file_location: [file_location],
     cameras:[cameras],
     no_annotation: Boolean,
+    trained: Boolean,
     version: Number,
     batchNum: batchNum
 }, {versionKey: false});
