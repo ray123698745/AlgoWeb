@@ -84,8 +84,8 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
 
 
                     var lastYuvVersion = $scope.results[i].cameras[0].yuv.length;
-                    // seq.yuv_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_L.tar';
-                    // seq.yuv_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_R.tar';
+                    seq.yuv_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_L/';
+                    seq.yuv_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_yuv_v' + lastYuvVersion + '_R/';
 
                     seq.h265_L = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/L/yuv/' + $scope.results[i].title + '_h265_v' + lastYuvVersion + '_L.mp4';
                     seq.h265_R = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/R/yuv/' + $scope.results[i].title + '_h265_v' + lastYuvVersion + '_R.mp4';

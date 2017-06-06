@@ -69,6 +69,18 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
             $scope.results = "failed!";
         });
 
+    $scope.showLimitedResults = [];
+    $scope.currentItems = 0;
+
+    // $scope.loadMore = function () {
+    //     console.log('run!');
+    //
+    //     for (var i = $scope.currentItems; i < $scope.currentItems+30; i++){
+    //         $scope.showLimitedResults.push($scope.showResults[i]);
+    //     }
+    //
+    //     $scope.currentItems += 30;
+    // };
 
     $scope.switchTab = function (tab) {
 

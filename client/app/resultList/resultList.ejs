@@ -32,9 +32,9 @@
                     <!--</ul>-->
                 <!--</div>-->
 
-                <button class="btn btn-default" type="button" ng-click="markTrained(results)">Mark as Trained</button>
+                <!--<button class="btn btn-default" type="button" ng-click="markTrained(results)">Mark as Trained</button>-->
 
-                <a download="training.json" ng-href="{{jsonUrl}}" target="_self" class="btn btn-default" role="button" >Download All Training Data</a>
+                <!--<a download="training.json" ng-href="{{jsonUrl}}" target="_self" class="btn btn-default" role="button" >Download All Training Data</a>-->
 
                 <!--<a download="file.txt" ng-href="{{download('json')}}" target="_self" class="btn btn-primary" role="button" >Download All JSON</a>-->
                 <!--<a download ng-href="{{download('yuv')}}" target="_self" class="btn btn-primary" role="button" >Download All YUV</a>-->
@@ -98,7 +98,7 @@
                     <div class="col-md-4"><button class="btn btn-default btn-block" type="button" ng-click="preview(result)">Preview</button></div>
 
                     <div class="col-md-2">
-                        <a download ng-href="{{download('annotation', result)}}" target="_self" class="btn btn-default btn-block" role="button" role="button" >Annotation</a>
+                        <a download ng-href="{{download('annotation', null, result)}}" target="_self" class="btn btn-default btn-block" role="button" >Annotation</a>
                     </div>
 
                     <div class="col-md-2">
