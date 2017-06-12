@@ -32,6 +32,8 @@ router.post('/addAnnotationRequest', controller.addAnnotationRequest);
 router.post('/keywordCount', controller.keywordCount);
 router.post('/seqCount', controller.seqCount);
 router.post('/getGPS', controller.getGPS);
+router.post('/getUnfinishedByDate', controller.getUnfinishedByDate);
+
 
 
 // router.patch('/:id', controller.update);

@@ -137,22 +137,35 @@ module.exports = {
 
             res.send(sequence);
         });
+    },
 
-        // Sequence.
-        // find().
-        // // where('cameras[0].annotation.length').gt(0).
-        // // elemMatch('this.cameras[0].annotation', {"category":"Finished"}).
-        // // where('age').gt(17).lt(66).
-        // // where('likes').in(['vaporizing', 'talking']).
-        // // limit(10).
-        // sort('-capture_time').
-        // // select('name occupation').
-        // exec(function(err, sequence) {
-        //     if (err) throw err;
-        //     console.log('sequence: ' + sequence);
-        //
-        //     res.send(sequence);
-        // });
+    getUnfinishedByDate: function(req, res) {
+
+        var data = req.body;
+
+        log.debug('data: ', data);
+
+        // var testQuery = {"$gte": data.year + '-' + data.month + '-01-00:00:00', "$lte": data.year + '-' + data.month + '-31-00:00:00'};
+        // log.debug(testQuery);
+
+
+        Sequence.find( {
+            "capture_time":{"$gte": data.year + '-' + data.month + '-01-00:00:00', "$lte": data.year + '-' + data.month + '-31-00:00:00'},
+            $or: [
+            { 'cameras.0.annotation': { $elemMatch: { state: "Pending"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Annotating"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Reviewing"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Finished"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Finished_Basic"} }},
+            { 'cameras.0.annotation': { $elemMatch: { state: "Modifying"} }}
+
+        ] }, null, {sort: {capture_time: -1}}, function(err, sequence) {
+            if (err) throw err;
+
+            // log.debug('getUnfinished: ' + sequence.length);
+
+            res.send(sequence);
+        });
     },
 
     getAccepted: function(req, res) {

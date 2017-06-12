@@ -11,10 +11,10 @@
                 <li ng-class="{active: tab.free_space}"><a ng-click="switchTab('free_space')" class="title_label">Free Space</a></li>
                 <li ng-class="{active: tab.free_space_with_curb}"><a ng-click="switchTab('free_space_with_curb')" class="title_label">Free Space w Curb</a></li>
                 <li ng-class="{active: tab.download}"><a ng-click="switchToDownload()" class="title_label">Download Package</a></li>
-                <li><label class="btn btn-default btn-file btn-block title_label">
-                        Batch Update <input type="file" name="annotation" style="display: none;" onchange="angular.element(this).scope().batchUpdate(this)">
-                    </label>
-                </li>
+                <!--<li><label class="btn btn-default btn-file btn-block title_label">-->
+                        <!--Batch Update <input type="file" name="annotation" style="display: none;" onchange="angular.element(this).scope().batchUpdate(this)">-->
+                    <!--</label>-->
+                <!--</li>-->
 
             </ul>
 
@@ -47,6 +47,25 @@
                             </div>
                             <div class="col-md-1" style="padding-left: 0; padding-right: 0">
                                 <div ng-dropdown-multiselect options="orderData" selected-model="selectedOrder" extra-settings="multiSelectSettings"></div>
+                            </div>
+
+
+
+                        </div> <br>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="control-label" style="color: white; font-size: medium;">Year: </label>
+                            </div>
+                            <div class="col-md-1" style="padding-left: 0; padding-right: 0">
+                                <div ng-dropdown-multiselect events="changeDateEvent" options="yearData" selected-model="selectedYear" extra-settings="multiSelectSettings"></div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label" style="color: white; font-size: medium;">Month: </label>
+                            </div>
+                            <div class="col-md-1" style="padding-left: 0; padding-right: 0">
+                                <div ng-dropdown-multiselect events="changeDateEvent" options="monthData" selected-model="selectedMonth" extra-settings="multiSelectSettings"></div>
                             </div>
                         </div>
                     </div>

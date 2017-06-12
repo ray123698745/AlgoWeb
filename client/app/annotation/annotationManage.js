@@ -22,8 +22,14 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
 
     $scope.selectedState = {id: "all_state", label: "All State"};
     $scope.selectedOrder = {id: "date", label: "Date"};
+    $scope.selectedMonth = {id: "05", label: "05"};
+    $scope.selectedYear = {id: "2017", label: "2017"};
+
+
     $scope.stateData = [ {id: "all_state", label: "All State"}, {id: "Pending", label: "Pending"}, {id: "Annotating", label: "Annotating"}, {id: "Reviewing", label: "Reviewing"}, {id: "Finished_Basic", label: "Finished_Basic"}, {id: "Finished", label: "Finished"}, {id: "Modifying", label: "Modifying"}];
     $scope.orderData = [ {id: "date", label: "Date"}, {id: "priority", label: "Priority"}];
+    $scope.yearData = [ {id: "2016", label: "2016"}, {id: "2017", label: "2017"}, {id: "2018", label: "2018"}];
+    $scope.monthData = [ {id: "01", label: "01"}, {id: "02", label: "02"}, {id: "03", label: "03"}, {id: "04", label: "04"}, {id: "05", label: "05"}, {id: "06", label: "06"}, {id: "07", label: "07"}, {id: "08", label: "08"}, {id: "09", label: "09"}, {id: "10", label: "10"}, {id: "11", label: "11"}, {id: "12", label: "12"}];
 
     $scope.multiSelectSettings = {
         smartButtonMaxItems: 1,
@@ -42,11 +48,26 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
         }
     };
 
+    $scope.changeDateEvent = {
+        onItemSelect: function (item) {
+            // console.log(item);
+            $scope.changeDate();
+        },
+        onItemDeselect: function (item) {
+            // $scope.selectedResults();
+        }
+    };
 
 
-    $http.get("/api/sequence/getUnfinished")
+    var query = {
+        year: $scope.selectedYear.id,
+        month: $scope.selectedMonth.id
+    };
+
+    $http.post("/api/sequence/getUnfinishedByDate", JSON.stringify(query))
         .success(function(databaseResult) {
             $scope.results = databaseResult;
+            console.log("$scope.results.length: " + $scope.results.length);
 
             for (var i = 0; i < $scope.results.length; i++){
                 for ( var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
@@ -63,11 +84,37 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
                     }
                 }
             }
-
         })
         .error(function (data, status, header, config) {
-            $scope.results = "failed!";
+
+            console.log("submit request failed!");
         });
+
+
+    // $http.get("/api/sequence/getUnfinished")
+    //     .success(function(databaseResult) {
+    //         $scope.results = databaseResult;
+    //
+    //         for (var i = 0; i < $scope.results.length; i++){
+    //             for ( var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
+    //
+    //                 if ($scope.results[i].cameras[0].annotation[j].category == currentTab){
+    //                     $scope.showResults.push($scope.results[i].cameras[0].annotation[j]);
+    //                     $scope.showResults[$scope.showResults.length-1].title = $scope.results[i].title;
+    //                     $scope.showResults[$scope.showResults.length-1]._id = $scope.results[i]._id;
+    //                     $scope.showResults[$scope.showResults.length-1].index = j;
+    //                     $scope.showResults[$scope.showResults.length-1].file_location = $scope.results[i].file_location;
+    //                     tempResults.push($scope.showResults[$scope.showResults.length-1]);
+    //
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //
+    //     })
+    //     .error(function (data, status, header, config) {
+    //         $scope.results = "failed!";
+    //     });
 
     $scope.showLimitedResults = [];
     $scope.currentItems = 0;
@@ -151,6 +198,44 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
 
             }
         }
+
+
+    };
+
+    $scope.changeDate = function () {
+
+        $scope.showResults = [];
+
+        var query = {
+            year: $scope.selectedYear.id,
+            month: $scope.selectedMonth.id
+        };
+
+        $http.post("/api/sequence/getUnfinishedByDate", JSON.stringify(query))
+            .success(function(databaseResult) {
+                $scope.results = databaseResult;
+                console.log("$scope.results.length: " + $scope.results.length);
+
+                for (var i = 0; i < $scope.results.length; i++){
+                    for ( var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
+
+                        if ($scope.results[i].cameras[0].annotation[j].category == currentTab){
+                            $scope.showResults.push($scope.results[i].cameras[0].annotation[j]);
+                            $scope.showResults[$scope.showResults.length-1].title = $scope.results[i].title;
+                            $scope.showResults[$scope.showResults.length-1]._id = $scope.results[i]._id;
+                            $scope.showResults[$scope.showResults.length-1].index = j;
+                            $scope.showResults[$scope.showResults.length-1].file_location = $scope.results[i].file_location;
+                            tempResults.push($scope.showResults[$scope.showResults.length-1]);
+
+                            break;
+                        }
+                    }
+                }
+            })
+            .error(function (data, status, header, config) {
+
+                console.log("submit request failed!");
+            });
 
 
     };
@@ -366,12 +451,15 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
                     alert(data);
                     console.log(data);
 
-                    $http.get("/api/sequence/getUnfinished")
+                    var query = {
+                        year: $scope.selectedYear.id,
+                        month: $scope.selectedMonth.id
+                    };
+
+                    $http.post("/api/sequence/getUnfinishedByDate", JSON.stringify(query))
                         .success(function(databaseResult) {
                             $scope.results = databaseResult;
-                            tempResults = [];
-                            $scope.showResults = [];
-                            $scope.selectedState.id = 'all_state';
+                            console.log("$scope.results.length: " + $scope.results.length);
 
                             for (var i = 0; i < $scope.results.length; i++){
                                 for ( var j = 0; j < $scope.results[i].cameras[0].annotation.length; j++){
@@ -390,7 +478,8 @@ app.controller('annotationManageCtrl', ['$scope', '$http', '$state', '$sce', '$u
                             }
                         })
                         .error(function (data, status, header, config) {
-                            $scope.results = "failed!";
+
+                            console.log("submit request failed!");
                         });
 
                 })
