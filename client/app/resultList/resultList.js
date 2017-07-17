@@ -77,8 +77,11 @@ app.controller('resultListCtrl', ['$scope', '$http', '$state', '$sce', '$uibModa
                         if ($scope.results[i].cameras[0].annotation[j].state == 'Finished' || $scope.results[i].cameras[0].annotation[j].state == 'Finished_Basic' || $scope.results[i].cameras[0].annotation[j].state == 'Accepted'){
                             var lastAnnotationVersion = $scope.results[i].cameras[0].annotation[j].version.length;
                             var category = $scope.results[i].cameras[0].annotation[j].category;
+                            var traffic = "traffic_sign";
 
                             seq.annotation[category] = dataService.data.fileServerAddr + utilService.getRootPathBySite($scope.results[i].file_location) + '/Front_Stereo/annotation/' + category + '_v' + lastAnnotationVersion + '/' + $scope.results[i].title + '_' + category + '.json';
+                            seq.annotation[traffic] = dataService.data.fileServerAddr + '/vol1/test_field/US-4_traffic/' + $scope.results[i].title + '_traffic_sign.json';
+
                         }
                     }
 

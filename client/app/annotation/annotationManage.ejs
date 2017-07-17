@@ -222,7 +222,7 @@
                                 <a download ng-href="{{downloadBatch(item)}}" target="_self" class="btn btn-info" >Download</a>
                                 <button class="btn btn-danger" type="button" ng-click="deleteBatch(item)">&nbsp;&nbsp;&nbsp;Delete&nbsp;&nbsp;&nbsp;</button>
                                 <label class="btn btn-success btn-file">
-                                    &nbsp;&nbsp;&nbsp;Upload&nbsp;&nbsp;&nbsp; <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().upload(this)">
+                                    &nbsp;&nbsp;&nbsp;Upload&nbsp;&nbsp;&nbsp; <input type="file" name="annotation" multiple style="display: none;" onchange="angular.element(this).scope().batchUpload(this)">
                                 </label>
                             </div>
                         </td>

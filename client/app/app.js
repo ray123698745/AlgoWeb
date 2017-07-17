@@ -78,7 +78,7 @@ app.service('dataService', function () {
         queryResult: [],
         selectedSeq:{},
         site: "us",    // us or it
-        fileServerAddr: "http://10.1.2.209:8080",
+        fileServerAddr: "http://10.1.3.105:8000",
         resultListPageNum: 1,
         filterPageNum: 1,
         annotationPageNum: 1
